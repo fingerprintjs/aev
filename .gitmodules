@@ -1,0 +1,3 @@
+[submodule "fingerprint-android"]
+	path = fingerprint-android
+	url = https://github.com/fingerprintjs/fingerprint-android
