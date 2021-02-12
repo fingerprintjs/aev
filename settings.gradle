@@ -1,3 +1,4 @@
-include ':fingerprint'
+include ':fingerprint-pro'
 include ':app'
+include ':fingerprint-android:fingerprint'
 rootProject.name = "Fingerprint-Android PRO"
