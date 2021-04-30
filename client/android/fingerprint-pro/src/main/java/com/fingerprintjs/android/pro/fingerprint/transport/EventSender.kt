@@ -23,7 +23,7 @@ class EventSenderImpl(
         File("$internalFileDir/request1.json").writeText(requestBody)
 
         executor.execute {
-            val result = httpClient.performHttpUrlRequest(
+            val result = httpClient.performRequest(
                     event.type,
                     "$endpointURL${event.path}",
                     event.headers,
