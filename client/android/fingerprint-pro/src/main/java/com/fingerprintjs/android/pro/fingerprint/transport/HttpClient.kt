@@ -6,6 +6,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.net.URL
+import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
 
 
@@ -43,6 +44,7 @@ class HttpClientImpl() : HttpClient {
 
             requestBody?.let {
                 connection.doOutput = true
+                connection.setRequestProperty("Content-Length", it.toByteArray(Charsets.UTF_8).size.toString())
                 val writer = OutputStreamWriter(connection.outputStream, Charsets.UTF_8)
                 writer.write(requestBody)
             }
