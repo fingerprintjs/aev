@@ -1,37 +1,28 @@
 package com.fingerprintjs.android.pro.fingerprint.transport
 
 
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.OutputStreamWriter
+import java.io.*
 import java.net.URL
-import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
 
 
 interface HttpClient {
-    fun performHttpUrlRequest(
-            type: String,
-            url: String,
-            headers: Map<String, String>,
-            requestBody: String? = null
-    ): String
+    fun performRequest(responseListener: (RequestResult) -> (Unit))
 }
 
-class HttpClientImpl() : HttpClient {
-    override fun performHttpUrlRequest(
-            type: String,
-            url: String,
-            headers: Map<String, String>,
-            requestBody: String?
-    ): String {
+class HttpClientImpl private constructor(
+        private val type: String,
+        private val url: String,
+        private val headers: Map<String, String>,
+        private val body: ByteArray?
+) : HttpClient {
 
+    override fun performRequest(responseListener: (RequestResult) -> (Unit)) {
         var reader: BufferedReader? = null
         var stream: InputStream? = null
         var connection: HttpsURLConnection? = null
 
-        return try {
+        try {
             val url = URL(url)
             connection = url.openConnection() as HttpsURLConnection
 
@@ -42,11 +33,11 @@ class HttpClientImpl() : HttpClient {
             connection.requestMethod = type
             connection.readTimeout = 10000
 
-            requestBody?.let {
+            body?.let {
                 connection.doOutput = true
-                connection.setRequestProperty("Content-Length", it.toByteArray(Charsets.UTF_8).size.toString())
-                val writer = OutputStreamWriter(connection.outputStream, Charsets.UTF_8)
-                writer.write(requestBody)
+                connection.setRequestProperty("Content-Length", it.size.toString())
+                val writer = ByteArrayOutputStream(connection.outputStream, Charsets.UTF_8)
+                writer.write(body)
             }
 
             connection.connect()
@@ -67,6 +58,42 @@ class HttpClientImpl() : HttpClient {
             reader?.close()
             stream?.close()
             connection?.disconnect()
+        }
+    }
+
+    class Builder {
+        private var type: String = "GET"
+        private lateinit var url: String
+        private var headers: Map<String, String> = emptyMap()
+        private var body: ByteArray? = null
+
+        fun build(): HttpClient {
+            return HttpClientImpl(
+                    type,
+                    url,
+                    headers,
+                    body
+            )
+        }
+
+        fun withType(type: String): Builder {
+            this.type = type
+            return this
+        }
+
+        fun withUrl(url: String): Builder {
+            this.url = url
+            return this
+        }
+
+        fun withHeaders(headers: Map<String, String>): Builder {
+            this.headers = headers
+            return this
+        }
+
+        fun withBody(body: ByteArray): Builder {
+            this.body = body
+            return this
         }
     }
 }

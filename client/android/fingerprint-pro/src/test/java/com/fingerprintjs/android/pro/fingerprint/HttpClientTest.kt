@@ -8,7 +8,7 @@ class HttpClientTest {
     fun `google request success`() {
         val client = HttpClientImpl()
 
-        val result = client.performHttpUrlRequest("GET", "https://google.com", emptyMap())
+        val result = client.performRequest("GET", "https://google.com", emptyMap())
 
         print(result)
     }

@@ -9,5 +9,5 @@ enum class RequestResultType {
 
 open class RequestResult(
         val type: RequestResultType,
-        val rawResponse: String
+        val rawResponse: ByteArray
 )
