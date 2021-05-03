@@ -7,7 +7,7 @@ import java.util.concurrent.Executors
 
 
 interface EventSender {
-    fun send(event: Event, listener: (RequestResult) -> (Unit))
+    fun send(request: Request, listener: (RequestResult) -> (Unit))
 }
 
 class EventSenderImpl(
@@ -17,16 +17,16 @@ class EventSenderImpl(
 ) : EventSender {
     val executor = Executors.newSingleThreadExecutor()
 
-    override fun send(event: Event, listener: (RequestResult) -> Unit) {
-        val requestBody = JSONObject(event.asMap()).toString()
+    override fun send(request: Request, listener: (RequestResult) -> Unit) {
+        val requestBody = JSONObject(request.bodyAsMap()).toString()
 
         File("$internalFileDir/request1.json").writeText(requestBody)
 
         executor.execute {
             val result = httpClient.performRequest(
-                    event.type,
-                    "$endpointURL${event.path}",
-                    event.headers,
+                    request.type,
+                    "$endpointURL${request.path}",
+                    request.headers,
                     requestBody
             )
 

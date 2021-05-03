@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.pro.fingerprint.events
+package com.fingerprintjs.android.pro.fingerprint.requests
 
 const val STATE_KEY = "s"
 const val VALUE_KEY = "v"

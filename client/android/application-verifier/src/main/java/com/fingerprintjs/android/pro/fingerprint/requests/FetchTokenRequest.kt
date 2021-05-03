@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.pro.fingerprint.events
+package com.fingerprintjs.android.pro.fingerprint.requests
 
 
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
@@ -11,19 +11,19 @@ import com.fingerprintjs.android.fingerprint.signal_providers.device_state.Devic
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareFingerprintRawData
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsRawData
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildRawData
-import com.fingerprintjs.android.pro.fingerprint.transport.Event
+import com.fingerprintjs.android.pro.fingerprint.transport.Request
 import com.fingerprintjs.android.pro.fingerprint.transport.RequestResult
 import com.fingerprintjs.android.pro.fingerprint.transport.RequestResultType
 
 
-class VisitorIdRequestResult(
-        val visitorId: String,
+class FetchTokenRequestResult(
+        val token: String,
         type: RequestResultType,
-        rawResponse: String
+        rawResponse: ByteArray
 ) : RequestResult(type, rawResponse)
 
 
-class FetchVisitorIdEvent(
+class FetchTokenRequest(
         appName: String,
         token: String,
         private val deviceIdResult: DeviceIdResult,
@@ -31,17 +31,16 @@ class FetchVisitorIdEvent(
         private val osBuildRawData: OsBuildRawData,
         private val deviceStateRawData: DeviceStateRawData,
         private val installedAppsRawData: InstalledAppsRawData
-) : Event {
+) : Request {
 
     override val path = "/"
     override val type = "POST"
     override val headers = mapOf(
             "appname" to appName,
-            "token" to token,
             "Content-Type" to "application/json"
     )
 
-    override fun asMap(): Map<String, Any> {
+    override fun bodyAsMap(): Map<String, Any> {
         val resultMap = HashMap<String, Any>()
 
         val deviceIdSignal = mapOf(
