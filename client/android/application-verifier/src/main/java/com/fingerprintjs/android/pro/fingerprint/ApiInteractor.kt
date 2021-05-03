@@ -7,28 +7,28 @@ import com.fingerprintjs.android.fingerprint.signal_providers.device_state.Devic
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
-import com.fingerprintjs.android.pro.fingerprint.events.FetchVisitorIdEvent
-import com.fingerprintjs.android.pro.fingerprint.events.VisitorIdRequestResult
+import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequest
+import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequestResult
 import com.fingerprintjs.android.pro.fingerprint.transport.EventSender
 
 
-interface CoreApiInteractor {
-    fun getVisitorId(
+interface ApiInteractor {
+    fun getToken(
             deviceIdResult: DeviceIdResult,
             fingerprintResult: FingerprintResult,
-            listener: (VisitorIdRequestResult) -> (Unit)
+            listener: (FetchTokenRequestResult) -> (Unit)
     )
 }
 
-class CoreApiInteractorImpl(
+class ApiInteractorImpl(
         private val eventSender: EventSender,
         private val token: String,
         private val appId: String,
-) : CoreApiInteractor {
-    override fun getVisitorId(
+) : ApiInteractor {
+    override fun getToken(
             deviceIdResult: DeviceIdResult,
             fingerprintResult: FingerprintResult,
-            listener: (VisitorIdRequestResult) -> Unit
+            listener: (FetchTokenRequestResult) -> Unit
     ) {
         val hardwareSignalGroupProviderRawData = fingerprintResult.getSignalProvider(HardwareSignalGroupProvider::class.java)?.rawData()
                 ?: return
@@ -39,7 +39,7 @@ class CoreApiInteractorImpl(
         val installedAppsSignalGroupProviderRawData = fingerprintResult.getSignalProvider(InstalledAppsSignalGroupProvider::class.java)?.rawData()
                 ?: return
 
-        val visitorIdEvent = FetchVisitorIdEvent(
+        val fetchTokenRequest = FetchTokenRequest(
                 appId,
                 token,
                 deviceIdResult,
@@ -49,8 +49,8 @@ class CoreApiInteractorImpl(
                 installedAppsSignalGroupProviderRawData
         )
 
-        eventSender.send(visitorIdEvent) { requestResult ->
-            listener.invoke(VisitorIdRequestResult(requestResult.rawResponse, requestResult.type, requestResult.rawResponse))
+        eventSender.send(fetchTokenRequest) { requestResult ->
+            listener.invoke(FetchTokenRequestResult(requestResult.rawResponse, requestResult.type, requestResult.rawResponse))
         }
     }
 }

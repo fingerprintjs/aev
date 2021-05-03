@@ -1,9 +1,9 @@
 package com.fingerprintjs.android.pro.fingerprint.transport
 
 
-interface Event {
+interface Request {
     val path: String
     val type: String
     val headers: Map<String, String>
-    fun asMap(): Map<String, Any>
+    fun bodyAsMap(): Map<String, Any>
 }

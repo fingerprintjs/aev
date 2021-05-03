@@ -11,7 +11,7 @@ import com.fingerprintjs.android.pro.fingerprint.transport.EventSenderImpl
 import com.fingerprintjs.android.pro.fingerprint.transport.HttpClientImpl
 
 
-object FingerprinterFactory {
+object ApplicationVerifierFactory {
 
     private var ossInstance: Fingerprinter? = null
     private var hasher: Hasher = MurMur3x64x128Hasher()
@@ -24,12 +24,12 @@ object FingerprinterFactory {
             context: Context,
             apiToken: String,
             endpointUrl: String? = null
-    ): Fingerprinter {
+    ): ApplicationVerifier {
         val ossInstance = FingerprinterFactory.getInstance(context, ossConfiguration)
         this.ossInstance = ossInstance
 
 
-        val instance = FingerprinterPro(
+        val instance = ApplicationVerifierImpl(
                 ossInstance,
                 getCoreApiInteractor(
                         endpointUrl ?: DEFAULT_ENDPOINT_URL,
@@ -48,7 +48,7 @@ object FingerprinterFactory {
             apiToken: String,
             appName: String,
             context: Context
-    ) = CoreApiInteractorImpl(
+    ) = ApiInteractorImpl(
             getEventSender(
                     endpointUrl,
                     context
@@ -72,4 +72,4 @@ object FingerprinterFactory {
 }
 
 
-private const val DEFAULT_ENDPOINT_URL = "https://api.fpjs.io"
+private const val DEFAULT_ENDPOINT_URL = BuildConfig.BACKEND_URL

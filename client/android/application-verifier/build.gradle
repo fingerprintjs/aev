@@ -12,6 +12,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "BACKEND_URL", '"https://api.fpjs.io/verify"'
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }

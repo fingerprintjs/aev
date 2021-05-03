@@ -1,8 +1,12 @@
 package com.fingerprintjs.android.pro.fingerprint.transport
 
 
-import java.io.*
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 import java.net.URL
+import java.net.URLConnection
 import javax.net.ssl.HttpsURLConnection
 
 
@@ -36,28 +40,48 @@ class HttpClientImpl private constructor(
             body?.let {
                 connection.doOutput = true
                 connection.setRequestProperty("Content-Length", it.size.toString())
-                val writer = ByteArrayOutputStream(connection.outputStream, Charsets.UTF_8)
-                writer.write(body)
+                val writer = OutputStreamWriter(connection.outputStream, Charsets.UTF_8)
+                writer.write(body.toString(Charsets.UTF_8))
             }
 
-            connection.connect()
 
             stream = connection.inputStream
             reader = BufferedReader(InputStreamReader(stream, Charsets.UTF_8))
 
-            val buf = StringBuilder()
-            var line: String?
-
-            while (reader.readLine().also { line = it } != null) {
-                buf.append(line).append("\n")
-            }
-
-            buf.toString()
+            responseListener.invoke(handleResponse(connection, stream, reader))
 
         } finally {
             reader?.close()
             stream?.close()
             connection?.disconnect()
+        }
+    }
+
+    private fun handleResponse(connection: HttpsURLConnection,
+                               stream: InputStream,
+                               reader: BufferedReader
+    ): RequestResult {
+        return  when (connection.responseCode) {
+            HttpsURLConnection.HTTP_OK -> {
+                val buf = StringBuilder()
+                var line: String?
+
+                while (reader.readLine().also { line = it } != null) {
+                    buf.append(line).append("\n")
+                }
+
+                buf.toString()
+
+                RequestResult(
+
+                )
+            }
+            else -> {
+                RequestResult(
+                        RequestResultType.ERROR,
+                        null
+                )
+            }
         }
     }
 
