@@ -14,6 +14,14 @@ internal class ApplicationVerifierImpl(
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     override fun getToken(listener: (String) -> Unit) {
-
+        executor.execute {
+            ossAgent.getDeviceId { deviceIdResult ->
+                ossAgent.getFingerprint { fingerprintResult ->
+                    apiInteractor.getToken(deviceIdResult, fingerprintResult) {
+                        listener.invoke(it.token)
+                    }
+                }
+            }
+        }
     }
 }

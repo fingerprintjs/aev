@@ -50,7 +50,7 @@ class ApiInteractorImpl(
         )
 
         eventSender.send(fetchTokenRequest) { requestResult ->
-            listener.invoke(FetchTokenRequestResult(requestResult.rawResponse, requestResult.type, requestResult.rawResponse))
+            listener.invoke(FetchTokenRequestResult(requestResult.rawResponse.toString(), requestResult.type, requestResult.rawResponse))
         }
     }
 }

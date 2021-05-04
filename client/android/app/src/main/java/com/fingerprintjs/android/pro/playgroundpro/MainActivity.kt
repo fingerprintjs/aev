@@ -12,11 +12,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ApplicationVerifierFactory.getInstance(
                 applicationContext,
-                "apiToken",
-                "https://api.fpjs.io"
-        ).getFingerprint {
+                "apiToken"
+        ).getToken {
             runOnUiThread {
-                Toast.makeText(this, it.fingerprint, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
             }
         }
     }
