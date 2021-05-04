@@ -2,7 +2,6 @@ package com.fingerprintjs.android.pro.fingerprint.transport
 
 
 import org.json.JSONObject
-import java.io.File
 import java.util.concurrent.Executors
 
 
@@ -12,25 +11,21 @@ interface EventSender {
 
 class EventSenderImpl(
         private val httpClient: HttpClient,
-        private val endpointURL: String,
-        private val internalFileDir: String
+        private val endpointURL: String
 ) : EventSender {
     val executor = Executors.newSingleThreadExecutor()
 
     override fun send(request: Request, listener: (RequestResult) -> Unit) {
-        val requestBody = JSONObject(request.bodyAsMap()).toString()
-
-        File("$internalFileDir/request1.json").writeText(requestBody)
+        val requestBody = JSONObject(request.bodyAsMap()).toString().toByteArray()
 
         executor.execute {
-            val result = httpClient.performRequest(
+            httpClient.performRequest(
                     request.type,
                     "$endpointURL${request.path}",
                     request.headers,
                     requestBody
-            )
+            ) { listener.invoke(it) }
 
-            listener.invoke(RequestResult(RequestResultType.SUCCESS, result))
         }
     }
 }

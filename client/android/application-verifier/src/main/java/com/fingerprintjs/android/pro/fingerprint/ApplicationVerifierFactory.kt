@@ -8,7 +8,7 @@ import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 import com.fingerprintjs.android.pro.fingerprint.transport.EventSenderImpl
-import com.fingerprintjs.android.pro.fingerprint.transport.HttpClientImpl
+import com.fingerprintjs.android.pro.fingerprint.transport.OkHttpClientImpl
 
 
 object ApplicationVerifierFactory {
@@ -17,7 +17,7 @@ object ApplicationVerifierFactory {
     private var hasher: Hasher = MurMur3x64x128Hasher()
     private var ossConfiguration: Configuration = Configuration(version = 1, hasher)
 
-    private var instance: Fingerprinter? = null
+    private var instance: ApplicationVerifier? = null
 
     @JvmStatic
     fun getInstance(
@@ -50,23 +50,20 @@ object ApplicationVerifierFactory {
             context: Context
     ) = ApiInteractorImpl(
             getEventSender(
-                    endpointUrl,
-                    context
+                    endpointUrl
             ),
             apiToken,
             appName
     )
 
     private fun getEventSender(
-            endpointUrl: String,
-            context: Context
+            endpointUrl: String
     ) = EventSenderImpl(
             getHttpClient(),
-            endpointUrl,
-            context.filesDir.absolutePath
+            endpointUrl
     )
 
-    private fun getHttpClient() = HttpClientImpl()
+    private fun getHttpClient() = OkHttpClientImpl()
 
     private fun getAppName(context: Context) = context.applicationInfo.packageName.toString()
 }

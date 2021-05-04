@@ -1,27 +1,85 @@
 package com.fingerprintjs.android.pro.fingerprint.transport
 
 
+import okhttp3.*
+import okhttp3.Headers.Companion.toHeaders
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.Request
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 import java.net.URL
-import java.net.URLConnection
 import javax.net.ssl.HttpsURLConnection
 
 
 interface HttpClient {
-    fun performRequest(responseListener: (RequestResult) -> (Unit))
+    fun performRequest(
+            type: String,
+            url: String,
+            headers: Map<String, String>,
+            body: ByteArray?,
+            responseListener: (RequestResult) -> (Unit)
+    )
 }
 
-class HttpClientImpl private constructor(
-        private val type: String,
-        private val url: String,
-        private val headers: Map<String, String>,
-        private val body: ByteArray?
-) : HttpClient {
+class OkHttpClientImpl : HttpClient {
 
-    override fun performRequest(responseListener: (RequestResult) -> (Unit)) {
+    private val client = OkHttpClient()
+    private val jsonSchema: MediaType = "application/json; charset=utf-8".toMediaType()
+
+    override fun performRequest(
+            type: String,
+            url: String,
+            headers: Map<String, String>,
+            body: ByteArray?,
+            responseListener: (RequestResult) -> Unit) {
+        val requestResult = when (type) {
+            "GET" -> {
+                val request = Request.Builder()
+                        .url(url)
+                        .headers(headers.toHeaders())
+                        .build()
+
+                val response: Response = client.newCall(request).execute()
+                RequestResult(RequestResultType.SUCCESS, response.body?.bytes())
+
+                RequestResult(RequestResultType.SUCCESS, response.body?.bytes())
+
+            }
+            "POST" -> {
+                val json = body?.toString(Charsets.UTF_8) ?: return
+                val body: RequestBody = RequestBody.create(jsonSchema, json)
+                val request = Request.Builder()
+                        .url(url)
+                        .headers(headers.toHeaders())
+                        .post(body)
+                        .build()
+
+                try {
+                    val response: Response = client.newCall(request).execute()
+                    RequestResult(RequestResultType.SUCCESS, response.body?.bytes())
+                } catch (e: Throwable) {
+                    RequestResult(RequestResultType.ERROR, null)
+                }
+            }
+            else -> {
+                RequestResult(RequestResultType.ERROR, null)
+            }
+        }
+        responseListener.invoke(requestResult)
+    }
+}
+
+
+class HttpClientImpl : HttpClient {
+
+    override fun performRequest(
+            type: String,
+            url: String,
+            headers: Map<String, String>,
+            body: ByteArray?,
+            responseListener: (RequestResult) -> (Unit)) {
         var reader: BufferedReader? = null
         var stream: InputStream? = null
         var connection: HttpsURLConnection? = null
@@ -61,7 +119,7 @@ class HttpClientImpl private constructor(
                                stream: InputStream,
                                reader: BufferedReader
     ): RequestResult {
-        return  when (connection.responseCode) {
+        return when (connection.responseCode) {
             HttpsURLConnection.HTTP_OK -> {
                 val buf = StringBuilder()
                 var line: String?
@@ -73,7 +131,8 @@ class HttpClientImpl private constructor(
                 buf.toString()
 
                 RequestResult(
-
+                        RequestResultType.ERROR,
+                        null
                 )
             }
             else -> {
@@ -82,42 +141,6 @@ class HttpClientImpl private constructor(
                         null
                 )
             }
-        }
-    }
-
-    class Builder {
-        private var type: String = "GET"
-        private lateinit var url: String
-        private var headers: Map<String, String> = emptyMap()
-        private var body: ByteArray? = null
-
-        fun build(): HttpClient {
-            return HttpClientImpl(
-                    type,
-                    url,
-                    headers,
-                    body
-            )
-        }
-
-        fun withType(type: String): Builder {
-            this.type = type
-            return this
-        }
-
-        fun withUrl(url: String): Builder {
-            this.url = url
-            return this
-        }
-
-        fun withHeaders(headers: Map<String, String>): Builder {
-            this.headers = headers
-            return this
-        }
-
-        fun withBody(body: ByteArray): Builder {
-            this.body = body
-            return this
         }
     }
 }

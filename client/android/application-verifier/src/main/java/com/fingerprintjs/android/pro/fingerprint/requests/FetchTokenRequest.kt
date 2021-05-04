@@ -19,7 +19,7 @@ import com.fingerprintjs.android.pro.fingerprint.transport.RequestResultType
 class FetchTokenRequestResult(
         val token: String,
         type: RequestResultType,
-        rawResponse: ByteArray
+        rawResponse: ByteArray?
 ) : RequestResult(type, rawResponse)
 
 
