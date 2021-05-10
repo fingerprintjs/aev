@@ -1,10 +1,6 @@
 package com.fingerprintjs.android.pro.fingerprint.transport
 
 
-import okhttp3.*
-import okhttp3.Headers.Companion.toHeaders
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.Request
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -18,74 +14,23 @@ interface HttpClient {
             type: String,
             url: String,
             headers: Map<String, String>,
-            body: ByteArray?,
-            responseListener: (RequestResult) -> (Unit)
-    )
+            body: ByteArray?
+    ): RawRequestResult
 }
-
-class OkHttpClientImpl : HttpClient {
-
-    private val client = OkHttpClient()
-    private val jsonSchema: MediaType = "application/json; charset=utf-8".toMediaType()
-
-    override fun performRequest(
-            type: String,
-            url: String,
-            headers: Map<String, String>,
-            body: ByteArray?,
-            responseListener: (RequestResult) -> Unit) {
-        val requestResult = when (type) {
-            "GET" -> {
-                val request = Request.Builder()
-                        .url(url)
-                        .headers(headers.toHeaders())
-                        .build()
-
-                val response: Response = client.newCall(request).execute()
-                RequestResult(RequestResultType.SUCCESS, response.body?.bytes())
-
-                RequestResult(RequestResultType.SUCCESS, response.body?.bytes())
-
-            }
-            "POST" -> {
-                val json = body?.toString(Charsets.UTF_8) ?: return
-                val body: RequestBody = RequestBody.create(jsonSchema, json)
-                val request = Request.Builder()
-                        .url(url)
-                        .headers(headers.toHeaders())
-                        .post(body)
-                        .build()
-
-                try {
-                    val response: Response = client.newCall(request).execute()
-                    RequestResult(RequestResultType.SUCCESS, response.body?.bytes())
-                } catch (e: Throwable) {
-                    RequestResult(RequestResultType.ERROR, null)
-                }
-            }
-            else -> {
-                RequestResult(RequestResultType.ERROR, null)
-            }
-        }
-        responseListener.invoke(requestResult)
-    }
-}
-
 
 class HttpClientImpl : HttpClient {
 
     override fun performRequest(
             type: String,
-            url: String,
+            urlString: String,
             headers: Map<String, String>,
-            body: ByteArray?,
-            responseListener: (RequestResult) -> (Unit)) {
+            body: ByteArray?): RawRequestResult {
         var reader: BufferedReader? = null
         var stream: InputStream? = null
         var connection: HttpsURLConnection? = null
 
         try {
-            val url = URL(url)
+            val url = URL(urlString)
             connection = url.openConnection() as HttpsURLConnection
 
             headers.forEach {
@@ -106,7 +51,7 @@ class HttpClientImpl : HttpClient {
             stream = connection.inputStream
             reader = BufferedReader(InputStreamReader(stream, Charsets.UTF_8))
 
-            responseListener.invoke(handleResponse(connection, stream, reader))
+            return handleResponse(connection, reader)
 
         } finally {
             reader?.close()
@@ -116,9 +61,8 @@ class HttpClientImpl : HttpClient {
     }
 
     private fun handleResponse(connection: HttpsURLConnection,
-                               stream: InputStream,
                                reader: BufferedReader
-    ): RequestResult {
+    ): RawRequestResult {
         return when (connection.responseCode) {
             HttpsURLConnection.HTTP_OK -> {
                 val buf = StringBuilder()
@@ -128,15 +72,13 @@ class HttpClientImpl : HttpClient {
                     buf.append(line).append("\n")
                 }
 
-                buf.toString()
-
-                RequestResult(
+                RawRequestResult(
                         RequestResultType.ERROR,
-                        null
+                        buf.toString().toByteArray()
                 )
             }
             else -> {
-                RequestResult(
+                RawRequestResult(
                         RequestResultType.ERROR,
                         null
                 )

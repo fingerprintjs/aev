@@ -41,10 +41,6 @@
             android:layout_marginVertical="8dp"
             tools:text="Hello World!" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fetch VisitorID"/>
 
     </LinearLayout>
 </ScrollView>
