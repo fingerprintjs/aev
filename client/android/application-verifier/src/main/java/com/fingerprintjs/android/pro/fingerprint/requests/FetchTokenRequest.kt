@@ -12,20 +12,37 @@ import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareF
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsRawData
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildRawData
 import com.fingerprintjs.android.pro.fingerprint.transport.Request
-import com.fingerprintjs.android.pro.fingerprint.transport.RequestResult
 import com.fingerprintjs.android.pro.fingerprint.transport.RequestResultType
+import com.fingerprintjs.android.pro.fingerprint.transport.TypedRequestResult
+import org.json.JSONObject
 
+
+data class FetchTokenResponse(
+        val token: String,
+        val deviceId: String
+)
 
 class FetchTokenRequestResult(
-        val token: String,
         type: RequestResultType,
         rawResponse: ByteArray?
-) : RequestResult(type, rawResponse)
+) : TypedRequestResult<FetchTokenResponse>(type, rawResponse) {
+    override fun result(): FetchTokenResponse {
+        val errorResponse = FetchTokenResponse("", "")
+        val body = rawResponse?.toString(Charsets.UTF_8) ?: return errorResponse
+        return try {
+            val jsonBody = JSONObject(body)
+            val deviceId = jsonBody.getString(DEVICE_ID_RESPONSE_KEY)
+            val token = jsonBody.getString(TOKEN_RESPONSE_KEY)
+            FetchTokenResponse(token, deviceId)
+        } catch (exception: Exception) {
+            errorResponse
+        }
+    }
+}
 
 
 class FetchTokenRequest(
         appName: String,
-        token: String,
         private val deviceIdResult: DeviceIdResult,
         private val hardwareRawData: HardwareFingerprintRawData,
         private val osBuildRawData: OsBuildRawData,
@@ -36,7 +53,7 @@ class FetchTokenRequest(
     override val path = "/"
     override val type = "POST"
     override val headers = mapOf(
-            "appname" to appName,
+            "App-Name" to appName,
             "Content-Type" to "application/json"
     )
 

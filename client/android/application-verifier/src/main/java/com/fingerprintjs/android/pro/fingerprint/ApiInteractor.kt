@@ -7,28 +7,30 @@ import com.fingerprintjs.android.fingerprint.signal_providers.device_state.Devic
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
+import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequest
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequestResult
-import com.fingerprintjs.android.pro.fingerprint.transport.EventSender
+import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenResponse
+import com.fingerprintjs.android.pro.fingerprint.transport.RequestPerformer
 
 
 interface ApiInteractor {
     fun getToken(
             deviceIdResult: DeviceIdResult,
             fingerprintResult: FingerprintResult,
-            listener: (FetchTokenRequestResult) -> (Unit)
+            listener: (FetchTokenResponse) -> (Unit)
     )
 }
 
 class ApiInteractorImpl(
-        private val eventSender: EventSender,
-        private val token: String,
+        private val requestPerformer: RequestPerformer,
         private val appId: String,
+        private val logger: Logger
 ) : ApiInteractor {
     override fun getToken(
             deviceIdResult: DeviceIdResult,
             fingerprintResult: FingerprintResult,
-            listener: (FetchTokenRequestResult) -> Unit
+            listener: (FetchTokenResponse) -> Unit
     ) {
         val hardwareSignalGroupProviderRawData = fingerprintResult.getSignalProvider(HardwareSignalGroupProvider::class.java)?.rawData()
                 ?: return
@@ -41,7 +43,6 @@ class ApiInteractorImpl(
 
         val fetchTokenRequest = FetchTokenRequest(
                 appId,
-                token,
                 deviceIdResult,
                 hardwareSignalGroupProviderRawData,
                 osBuildSignalGroupProviderRawData,
@@ -49,8 +50,10 @@ class ApiInteractorImpl(
                 installedAppsSignalGroupProviderRawData
         )
 
-        eventSender.send(fetchTokenRequest) { requestResult ->
-            listener.invoke(FetchTokenRequestResult(requestResult.rawResponse.toString(), requestResult.type, requestResult.rawResponse))
+        requestPerformer.perform(fetchTokenRequest) { requestResult ->
+            val response = FetchTokenRequestResult(requestResult.type, requestResult.rawResponse)
+            logger.debug(this, response.rawResponse?.toString() ?: "")
+            listener.invoke(response.result())
         }
     }
 }

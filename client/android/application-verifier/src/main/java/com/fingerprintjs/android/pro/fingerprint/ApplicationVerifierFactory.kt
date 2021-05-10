@@ -7,8 +7,10 @@ import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
-import com.fingerprintjs.android.pro.fingerprint.transport.EventSenderImpl
+import com.fingerprintjs.android.pro.fingerprint.logger.ConsoleLogger
+import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.transport.OkHttpClientImpl
+import com.fingerprintjs.android.pro.fingerprint.transport.RequestPerformerImpl
 
 
 object ApplicationVerifierFactory {
@@ -16,13 +18,13 @@ object ApplicationVerifierFactory {
     private var ossInstance: Fingerprinter? = null
     private var hasher: Hasher = MurMur3x64x128Hasher()
     private var ossConfiguration: Configuration = Configuration(version = 1, hasher)
+    private val logger = getLogger()
 
     private var instance: ApplicationVerifier? = null
 
     @JvmStatic
     fun getInstance(
             context: Context,
-            apiToken: String,
             endpointUrl: String? = null
     ): ApplicationVerifier {
         val ossInstance = FingerprinterFactory.getInstance(context, ossConfiguration)
@@ -31,41 +33,43 @@ object ApplicationVerifierFactory {
 
         val instance = ApplicationVerifierImpl(
                 ossInstance,
-                getCoreApiInteractor(
+                getApiInteractor(
                         endpointUrl ?: DEFAULT_ENDPOINT_URL,
-                        apiToken,
-                        getAppName(context),
-                        context
-                )
+                        getAppName(context)
+                ),
+                logger
         )
 
         this.instance = instance
         return instance
     }
 
-    private fun getCoreApiInteractor(
+    private fun getApiInteractor(
             endpointUrl: String,
-            apiToken: String,
-            appName: String,
-            context: Context
+            appName: String
     ) = ApiInteractorImpl(
             getEventSender(
                     endpointUrl
             ),
-            apiToken,
-            appName
+            appName,
+            logger
     )
 
     private fun getEventSender(
             endpointUrl: String
-    ) = EventSenderImpl(
+    ) = RequestPerformerImpl(
             getHttpClient(),
-            endpointUrl
+            endpointUrl,
+            logger
     )
 
-    private fun getHttpClient() = OkHttpClientImpl()
+    private fun getHttpClient() = OkHttpClientImpl(logger)
 
     private fun getAppName(context: Context) = context.applicationInfo.packageName.toString()
+
+    private fun getLogger(): Logger {
+        return ConsoleLogger()
+    }
 }
 
 
