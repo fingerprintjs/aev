@@ -11,49 +11,60 @@ import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequest
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequestResult
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenResponse
+import com.fingerprintjs.android.pro.fingerprint.signals.Signal
+import com.fingerprintjs.android.pro.fingerprint.signals.SignalProvider
 import com.fingerprintjs.android.pro.fingerprint.transport.RequestPerformer
 
 
 interface ApiInteractor {
     fun getToken(
-            deviceIdResult: DeviceIdResult,
-            fingerprintResult: FingerprintResult,
-            listener: (FetchTokenResponse) -> (Unit)
-    )
+        deviceIdResult: DeviceIdResult,
+        fingerprintResult: FingerprintResult,
+        signals: SignalProvider
+    ): FetchTokenResponse?
 }
 
 class ApiInteractorImpl(
-        private val requestPerformer: RequestPerformer,
-        private val appId: String,
-        private val logger: Logger
+    private val requestPerformer: RequestPerformer,
+    private val appId: String,
+    private val logger: Logger
 ) : ApiInteractor {
     override fun getToken(
-            deviceIdResult: DeviceIdResult,
-            fingerprintResult: FingerprintResult,
-            listener: (FetchTokenResponse) -> Unit
-    ) {
-        val hardwareSignalGroupProviderRawData = fingerprintResult.getSignalProvider(HardwareSignalGroupProvider::class.java)?.rawData()
-                ?: return
-        val osBuildSignalGroupProviderRawData = fingerprintResult.getSignalProvider(OsBuildSignalGroupProvider::class.java)?.rawData()
-                ?: return
-        val deviceStateSignalGroupProviderRawData = fingerprintResult.getSignalProvider(DeviceStateSignalGroupProvider::class.java)?.rawData()
-                ?: return
-        val installedAppsSignalGroupProviderRawData = fingerprintResult.getSignalProvider(InstalledAppsSignalGroupProvider::class.java)?.rawData()
-                ?: return
+        deviceIdResult: DeviceIdResult,
+        fingerprintResult: FingerprintResult,
+        signals: SignalProvider
+    ): FetchTokenResponse? {
+        val hardwareSignalGroupProviderRawData =
+            fingerprintResult.getSignalProvider(HardwareSignalGroupProvider::class.java)?.rawData()
+                ?: return null
+        val osBuildSignalGroupProviderRawData =
+            fingerprintResult.getSignalProvider(OsBuildSignalGroupProvider::class.java)?.rawData()
+                ?: return null
+        val deviceStateSignalGroupProviderRawData =
+            fingerprintResult.getSignalProvider(DeviceStateSignalGroupProvider::class.java)
+                ?.rawData()
+                ?: return null
+        val installedAppsSignalGroupProviderRawData =
+            fingerprintResult.getSignalProvider(InstalledAppsSignalGroupProvider::class.java)
+                ?.rawData()
+                ?: return null
 
         val fetchTokenRequest = FetchTokenRequest(
-                appId,
-                deviceIdResult,
-                hardwareSignalGroupProviderRawData,
-                osBuildSignalGroupProviderRawData,
-                deviceStateSignalGroupProviderRawData,
-                installedAppsSignalGroupProviderRawData
+            appId,
+            deviceIdResult,
+            hardwareSignalGroupProviderRawData,
+            osBuildSignalGroupProviderRawData,
+            deviceStateSignalGroupProviderRawData,
+            installedAppsSignalGroupProviderRawData
         )
 
-        requestPerformer.perform(fetchTokenRequest) { requestResult ->
-            val response = FetchTokenRequestResult(requestResult.type, requestResult.rawResponse)
-            logger.debug(this, response.rawResponse?.toString() ?: "")
-            listener.invoke(response.result())
+        logger.debug(this, "Request formed")
+
+        val requestResult = requestPerformer.perform(fetchTokenRequest)
+        val response = FetchTokenRequestResult(requestResult.type, requestResult.rawResponse)
+        requestResult.rawResponse?.let {
+            logger.debug(this, String(it, Charsets.UTF_8))
         }
+        return response.result()
     }
 }
