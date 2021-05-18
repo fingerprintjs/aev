@@ -10,24 +10,28 @@ import java.util.concurrent.Executors
 
 
 internal class ApplicationVerifierImpl(
-        private val ossAgent: Fingerprinter,
-        private val apiInteractor: ApiInteractor,
-        private val signalProvider: SignalProvider,
-        private val logger: Logger
+    private val ossAgent: Fingerprinter,
+    private val apiInteractor: ApiInteractor,
+    private val signalProvider: SignalProvider,
+    private val logger: Logger
 ) : ApplicationVerifier {
 
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     override fun getToken(listener: (FetchTokenResponse) -> Unit) {
         executor.execute {
-            logger.debug(this, "Start getting token." )
+            logger.debug(this, "Start getting token.")
             ossAgent.getDeviceId { deviceIdResult ->
-                logger.debug(this, "Got deviceId: ${deviceIdResult.deviceId}" )
+                logger.debug(this, "Got deviceId: ${deviceIdResult.deviceId}")
                 ossAgent.getFingerprint { fingerprintResult ->
                     logger.debug(this, "Got fingerprint: ${fingerprintResult.fingerprint}")
-                    apiInteractor.getToken(deviceIdResult, fingerprintResult, signalProvider)?.let {
-                        logger.debug(this, "Got token: ${it.token}")
-                        listener.invoke(it)
+                    apiInteractor.getToken(signalProvider.signals(deviceIdResult, fingerprintResult)).let {
+                        if (it.token.isEmpty()) {
+                            logger.debug(this, "Token hasn't been received. See logs for details.")
+                        } else {
+                            logger.debug(this, "Got token: ${it.token}")
+                            listener.invoke(it)
+                        }
                     }
                 }
             }
