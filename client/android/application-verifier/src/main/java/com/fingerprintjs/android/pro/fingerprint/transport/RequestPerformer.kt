@@ -22,11 +22,6 @@ class RequestPerformerImpl(
         logger.debug(this, "Request body: ${JSONObject(request.bodyAsMap()).toString(2)}")
         // Calculate signatures and verify the host here
 
-        return httpClient.performRequest(
-            request.type,
-            "$endpointURL${request.path}",
-            request.headers,
-            requestBody
-        )
+        return
     }
 }
