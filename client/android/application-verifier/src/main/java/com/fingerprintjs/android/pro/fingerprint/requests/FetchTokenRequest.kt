@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.pro.fingerprint.requests
 
 
-import com.fingerprintjs.android.pro.fingerprint.signals.Signal
+import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.pro.fingerprint.transport.Request
 import com.fingerprintjs.android.pro.fingerprint.transport.RequestResultType
 import com.fingerprintjs.android.pro.fingerprint.transport.TypedRequestResult
@@ -17,7 +17,7 @@ class FetchTokenRequestResult(
     type: RequestResultType,
     rawResponse: ByteArray?
 ) : TypedRequestResult<FetchTokenResponse>(type, rawResponse) {
-    override fun result(): FetchTokenResponse {
+    override fun typedResult(): FetchTokenResponse {
         val errorResponse = FetchTokenResponse("", "")
         val body = rawResponse?.toString(Charsets.UTF_8) ?: return errorResponse
         return try {
@@ -35,9 +35,10 @@ class FetchTokenRequestResult(
 class FetchTokenRequest(
     endpointUrl: String,
     appName: String,
-    private val signals: List<Signal>
+    private val signals: List<Signal<*>>
 ) : Request {
 
+    // TODO Write body structure
     override val url = "$endpointUrl/verify"
     override val type = "POST"
     override val headers = mapOf(
@@ -47,16 +48,6 @@ class FetchTokenRequest(
 
     override fun bodyAsMap(): Map<String, Any> {
         val resultMap = HashMap<String, Any>()
-
-        val deviceIdSignal = mapOf(
-            STATE_KEY to "0",
-            VALUE_KEY to mapOf(
-                ANDROID_ID_KEY to deviceIdResult.androidId,
-                GSF_ID_KEY to deviceIdResult.gsfId
-            )
-        )
-
-        resultMap[DEVICE_ID_SECTION_KEY] = deviceIdSignal
 
         return resultMap
     }
