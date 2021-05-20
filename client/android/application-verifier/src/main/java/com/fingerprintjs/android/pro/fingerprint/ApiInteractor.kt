@@ -29,20 +29,21 @@ class ApiInteractorImpl(
     ): FetchTokenResponse {
 
         if (!sslConnectionInspector.inspectConnection(endpointURL)) {
-            return FetchTokenRequestResult(RequestResultType.ERROR, null).result()
+            return FetchTokenRequestResult(RequestResultType.ERROR, null).typedResult()
         }
         
         val fetchTokenRequest = FetchTokenRequest(
             endpointURL, appId, signals
         )
 
-        val requestResult = httpClient.performRequest(
+        val rawRequestResult = httpClient.performRequest(
             fetchTokenRequest
         )
-        val response = FetchTokenRequestResult(requestResult.type, requestResult.rawResponse)
-        requestResult.rawResponse?.let {
-            logger.debug(this, String(it, Charsets.UTF_8))
+
+        val response = FetchTokenRequestResult(rawRequestResult.type, rawRequestResult.rawResponse)
+        rawRequestResult.rawResponse?.let {
+            logger.debug(this, "Response: ${String(it, Charsets.UTF_8)}")
         }
-        return response.result()
+        return response.typedResult()
     }
 }

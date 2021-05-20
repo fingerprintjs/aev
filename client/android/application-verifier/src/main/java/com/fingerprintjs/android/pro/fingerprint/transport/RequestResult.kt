@@ -15,5 +15,5 @@ abstract class TypedRequestResult<T>(
         type: RequestResultType,
         rawResponse: ByteArray?
 ) : RawRequestResult(type, rawResponse) {
-    abstract fun result(): T?
+    abstract fun typedResult(): T?
 }
