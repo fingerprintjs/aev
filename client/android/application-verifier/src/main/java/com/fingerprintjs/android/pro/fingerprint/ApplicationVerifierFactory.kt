@@ -11,7 +11,10 @@ import com.fingerprintjs.android.pro.fingerprint.logger.ConsoleLogger
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.signals.SignalProviderImpl
 import com.fingerprintjs.android.pro.fingerprint.transport.OkHttpClientImpl
-import com.fingerprintjs.android.pro.fingerprint.transport.RequestPerformerImpl
+import com.fingerprintjs.android.pro.fingerprint.transport.jwt.JwtClient
+import com.fingerprintjs.android.pro.fingerprint.transport.jwt.JwtClientImpl
+import com.fingerprintjs.android.pro.fingerprint.transport.ssl.SSLConnectionInspector
+import com.fingerprintjs.android.pro.fingerprint.transport.ssl.SSLConnectionInspectorImpl
 
 
 object ApplicationVerifierFactory {
@@ -38,7 +41,6 @@ object ApplicationVerifierFactory {
                 endpointUrl ?: DEFAULT_ENDPOINT_URL,
                 getAppName(context)
             ),
-
             getSignalProvider(),
             logger
         )
@@ -51,22 +53,14 @@ object ApplicationVerifierFactory {
         endpointUrl: String,
         appName: String
     ) = ApiInteractorImpl(
-        getEventSender(
-            endpointUrl
-        ),
-        appName,
-        logger
-    )
-
-    private fun getEventSender(
-        endpointUrl: String
-    ) = RequestPerformerImpl(
         getHttpClient(),
         endpointUrl,
-        logger
+        appName,
+        logger,
+        getSslConnectionInspector()
     )
 
-    private fun getHttpClient() = OkHttpClientImpl(logger)
+    private fun getHttpClient() = OkHttpClientImpl(logger, getJwtClient())
 
     private fun getSignalProvider() = SignalProviderImpl()
 
@@ -75,7 +69,12 @@ object ApplicationVerifierFactory {
     private fun getLogger(): Logger {
         return ConsoleLogger()
     }
-}
 
+    private fun getSslConnectionInspector(): SSLConnectionInspector = SSLConnectionInspectorImpl()
+
+    private fun getJwtClient(): JwtClient {
+        return JwtClientImpl()
+    }
+}
 
 private const val DEFAULT_ENDPOINT_URL = BuildConfig.BACKEND_URL
