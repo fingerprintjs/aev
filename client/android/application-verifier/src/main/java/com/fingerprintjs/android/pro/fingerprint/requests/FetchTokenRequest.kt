@@ -38,7 +38,6 @@ class FetchTokenRequest(
     private val signals: List<Signal<*>>
 ) : Request {
 
-    // TODO Write body structure
     override val url = "$endpointUrl/verify"
     override val type = "POST"
     override val headers = mapOf(
@@ -48,7 +47,11 @@ class FetchTokenRequest(
 
     override fun bodyAsMap(): Map<String, Any> {
         val resultMap = HashMap<String, Any>()
-
+        resultMap[SIGNALS_KEY] = signals.map {
+            it.toMap()
+        }
         return resultMap
     }
 }
+
+private const val SIGNALS_KEY = "signals"

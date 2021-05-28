@@ -1,11 +1,11 @@
 package com.fingerprintjs.android.pro.fingerprint
 
 
+import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequest
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequestResult
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenResponse
-import com.fingerprintjs.android.pro.fingerprint.signals.Signal
 import com.fingerprintjs.android.pro.fingerprint.transport.HttpClient
 import com.fingerprintjs.android.pro.fingerprint.transport.RequestResultType
 import com.fingerprintjs.android.pro.fingerprint.transport.ssl.SSLConnectionInspector
@@ -13,7 +13,7 @@ import com.fingerprintjs.android.pro.fingerprint.transport.ssl.SSLConnectionInsp
 
 interface ApiInteractor {
     fun getToken(
-        signals: List<Signal>
+        signals: List<Signal<*>>
     ): FetchTokenResponse
 }
 
@@ -25,7 +25,7 @@ class ApiInteractorImpl(
     private val sslConnectionInspector: SSLConnectionInspector
 ) : ApiInteractor {
     override fun getToken(
-        signals: List<Signal>
+        signals: List<Signal<*>>
     ): FetchTokenResponse {
 
         if (!sslConnectionInspector.inspectConnection(endpointURL)) {
