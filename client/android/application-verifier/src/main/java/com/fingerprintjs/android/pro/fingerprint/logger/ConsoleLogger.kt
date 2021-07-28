@@ -2,6 +2,7 @@ package com.fingerprintjs.android.pro.fingerprint.logger
 
 
 import com.fingerprintjs.android.pro.fingerprint.BuildConfig
+import org.json.JSONObject
 import java.lang.Exception
 
 
@@ -9,6 +10,13 @@ class ConsoleLogger : Logger {
     override fun debug(obj: Any, message: String?) {
         if (BuildConfig.DEBUG) {
             print("$PREFIX${obj.javaClass.canonicalName}: ${message ?: ""}")
+            println()
+        }
+    }
+
+    override fun debug(obj: Any, message: JSONObject) {
+        if (BuildConfig.DEBUG) {
+            print("$PREFIX${obj.javaClass.canonicalName}: ${message.toString()}")
             println()
         }
     }

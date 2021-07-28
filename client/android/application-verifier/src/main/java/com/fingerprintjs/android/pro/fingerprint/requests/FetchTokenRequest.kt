@@ -9,8 +9,7 @@ import org.json.JSONObject
 
 
 data class FetchTokenResponse(
-    val token: String,
-    val deviceId: String
+    val token: String
 )
 
 class FetchTokenRequestResult(
@@ -18,13 +17,12 @@ class FetchTokenRequestResult(
     rawResponse: ByteArray?
 ) : TypedRequestResult<FetchTokenResponse>(type, rawResponse) {
     override fun typedResult(): FetchTokenResponse {
-        val errorResponse = FetchTokenResponse("", "")
+        val errorResponse = FetchTokenResponse("")
         val body = rawResponse?.toString(Charsets.UTF_8) ?: return errorResponse
         return try {
             val jsonBody = JSONObject(body)
-            val deviceId = jsonBody.getString(DEVICE_ID_RESPONSE_KEY)
             val token = jsonBody.getString(TOKEN_RESPONSE_KEY)
-            FetchTokenResponse(token, deviceId)
+            FetchTokenResponse(token)
         } catch (exception: Exception) {
             errorResponse
         }
@@ -38,7 +36,7 @@ class FetchTokenRequest(
     private val signals: List<Signal<*>>
 ) : Request {
 
-    override val url = "$endpointUrl/verify"
+    override val url = "$endpointUrl/api/v1/request"
     override val type = "POST"
     override val headers = mapOf(
         "App-Name" to appName,
