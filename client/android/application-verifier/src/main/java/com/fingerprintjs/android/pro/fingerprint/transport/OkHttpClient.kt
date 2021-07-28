@@ -10,6 +10,8 @@ import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.json.JSONObject
+import java.lang.Exception
 import okhttp3.Request as OkHttpRequest
 
 
@@ -25,6 +27,10 @@ class OkHttpClientImpl(
         request: Request
     ): RawRequestResult {
         logger.debug(this, "Performing ${request.type} request")
+        logger.debug(this, "Headers:")
+        logger.debug(this, JSONObject(request.headers))
+        logger.debug(this, "Body:")
+        logger.debug(this, JSONObject(request.bodyAsMap()))
         return when (request.type) {
             "GET" -> {
                 val okHttpRequest = OkHttpRequest.Builder()
@@ -48,8 +54,8 @@ class OkHttpClientImpl(
                 try {
                     val response: Response = client.newCall(okHttpRequest).execute()
                     RawRequestResult(RequestResultType.SUCCESS, response.body?.bytes())
-                } catch (e: Throwable) {
-                    logger.error(this, "Error while performing request")
+                } catch (e: Exception) {
+                    logger.error(this, e)
                     RawRequestResult(RequestResultType.ERROR, null)
                 }
             }
