@@ -19,20 +19,18 @@ import java.util.LinkedList
 
 
 interface SignalProvider {
-    fun signals(
-        deviceIdResult: DeviceIdResult,
-        fingerprintResult: FingerprintResult
-    ): List<Signal<*>>
+    fun signals(): List<Signal<*>>
+    fun deviceIdSignal(): Signal<DeviceIdData>
+    fun installedAppsSignal(): Signal<InstalledAppsData>
 }
 
-class SignalProviderImpl(
+class SignalProviderImpl private constructor(
     private val mountedPathsReader: MountedPathsReader,
-    private val suChecker: SuChecker
+    private val suChecker: SuChecker,
+    private val deviceIdResult: DeviceIdResult,
+    private val fingerprintResult: FingerprintResult
 ) : SignalProvider {
-    override fun signals(
-        deviceIdResult: DeviceIdResult,
-        fingerprintResult: FingerprintResult
-    ): List<Signal<*>> {
+    override fun signals(): List<Signal<*>> {
         val signals = LinkedList<Signal<*>>()
 
         val hardwareSignals = fingerprintResult
@@ -75,6 +73,51 @@ class SignalProviderImpl(
         return signals
     }
 
+    override fun deviceIdSignal() = DeviceIdSignal(
+        DeviceIdData(
+            deviceIdResult.androidId,
+            deviceIdResult.gsfId,
+            deviceIdResult.mediaDrmId
+        )
+    )
 
+    override fun installedAppsSignal(): Signal<InstalledAppsData> {
+        val applicationsList = fingerprintResult
+            .getSignalProvider(InstalledAppsSignalGroupProvider::class.java)
+            ?.rawData()?.signals() ?: return InstalledAppsSignal(InstalledAppsData(emptyList()))
 
+        return InstalledAppsSignal(
+            InstalledAppsData(
+                applicationsList[0].value.map {
+                    AppInfo(it.packageName)
+                })
+        )
+    }
+
+    class SignalProviderBuilder(
+        private val mountedPathsReader: MountedPathsReader,
+        private val suChecker: SuChecker
+    ) {
+        private lateinit var fingerprintResult: FingerprintResult
+        private lateinit var deviceIdResult: DeviceIdResult
+
+        fun withFingerprintResult(fingerprintResult: FingerprintResult): SignalProviderBuilder {
+            this.fingerprintResult = fingerprintResult
+            return this
+        }
+
+        fun withDeviceIdResult(deviceIdResult: DeviceIdResult): SignalProviderBuilder {
+            this.deviceIdResult = deviceIdResult
+            return this
+        }
+
+        fun build(): SignalProvider {
+            return SignalProviderImpl(
+                mountedPathsReader,
+                suChecker,
+                deviceIdResult,
+                fingerprintResult
+            )
+        }
+    }
 }
