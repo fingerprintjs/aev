@@ -1,4 +1,0 @@
-include ':application-verifier'
-include ':app'
-include ':fingerprint-android:fingerprint'
-rootProject.name = "Fingerprint-Android PRO"
