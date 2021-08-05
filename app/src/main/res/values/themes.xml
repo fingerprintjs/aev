@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.PlaygroundPRO" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/colorLightGray</item>
+        <item name="colorPrimaryDark">@color/colorDarkGray</item>
+        <item name="colorAccent">@color/colorDarkGray</item>
+        <item name="actionBarStyle">@style/Theme.PlaygroundPRO.ActionBar</item>
+    </style>
+</resources>
