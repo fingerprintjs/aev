@@ -52,7 +52,7 @@ object ApplicationVerifierFactory {
                 endpointUrl ?: DEFAULT_ENDPOINT_URL,
                 getAppName(context)
             ),
-            getSignalProvider(),
+            getSignalProviderBuilder(),
             getLogger()
         )
 
@@ -73,8 +73,13 @@ object ApplicationVerifierFactory {
 
     private fun getHttpClient() = OkHttpClientImpl(logger, getJwtClient())
 
-    private fun getSignalProvider() =
-        SignalProviderImpl(MountedPathsReaderImpl(Build.VERSION.SDK_INT, logger), SuCheckerImpl(FileCheckerImpl(), logger))
+    private fun getSignalProviderBuilder() =
+        SignalProviderImpl.SignalProviderBuilder(
+            MountedPathsReaderImpl(
+                Build.VERSION.SDK_INT,
+                logger
+            ), SuCheckerImpl(FileCheckerImpl(), logger)
+        )
 
     private fun getAppName(context: Context) = context.applicationInfo.packageName.toString()
 

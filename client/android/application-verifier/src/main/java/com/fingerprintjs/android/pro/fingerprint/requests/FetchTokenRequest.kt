@@ -1,7 +1,8 @@
 package com.fingerprintjs.android.pro.fingerprint.requests
 
 
-import com.fingerprintjs.android.fingerprint.signal_providers.Signal
+import com.fingerprintjs.android.pro.fingerprint.signals.SignalProvider
+import com.fingerprintjs.android.pro.fingerprint.signals.VALUE_KEY
 import com.fingerprintjs.android.pro.fingerprint.transport.Request
 import com.fingerprintjs.android.pro.fingerprint.transport.RequestResultType
 import com.fingerprintjs.android.pro.fingerprint.transport.TypedRequestResult
@@ -33,23 +34,29 @@ class FetchTokenRequestResult(
 class FetchTokenRequest(
     endpointUrl: String,
     appName: String,
-    private val signals: List<Signal<*>>
+    autorizationToken: String,
+    private val signalProvider: SignalProvider
 ) : Request {
 
     override val url = "$endpointUrl/api/v1/request"
     override val type = "POST"
     override val headers = mapOf(
         "App-Name" to appName,
-        "Content-Type" to "application/json"
+        "Content-Type" to "application/json",
+        "Authorization" to autorizationToken
     )
 
     override fun bodyAsMap(): Map<String, Any> {
         val resultMap = HashMap<String, Any>()
-        resultMap[SIGNALS_KEY] = signals.map {
-            it.toMap()
+
+        signalProvider.deviceIdSignal().let {
+            resultMap[it.name] = it.toMap()
         }
+
+        signalProvider.installedAppsSignal().let {
+            resultMap[it.name] = it.toMap()
+        }
+
         return resultMap
     }
 }
-
-private const val SIGNALS_KEY = "signals"

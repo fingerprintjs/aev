@@ -5,6 +5,7 @@ import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenResponse
 import com.fingerprintjs.android.pro.fingerprint.signals.SignalProvider
+import com.fingerprintjs.android.pro.fingerprint.signals.SignalProviderImpl
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -12,7 +13,7 @@ import java.util.concurrent.Executors
 internal class ApplicationVerifierImpl(
     private val ossAgent: Fingerprinter,
     private val apiInteractor: ApiInteractor,
-    private val signalProvider: SignalProvider,
+    private val signalProviderBuilder: SignalProviderImpl.SignalProviderBuilder,
     private val logger: Logger
 ) : ApplicationVerifier {
 
@@ -25,7 +26,12 @@ internal class ApplicationVerifierImpl(
                 logger.debug(this, "Got deviceId: ${deviceIdResult.deviceId}")
                 ossAgent.getFingerprint { fingerprintResult ->
                     logger.debug(this, "Got fingerprint: ${fingerprintResult.fingerprint}")
-                    apiInteractor.getToken(signalProvider.signals(deviceIdResult, fingerprintResult)).let {
+                    apiInteractor.getToken(
+                        signalProviderBuilder
+                            .withDeviceIdResult(deviceIdResult)
+                            .withFingerprintResult(fingerprintResult)
+                            .build()
+                    ).let {
                         if (it.token.isEmpty()) {
                             logger.debug(this, "Token hasn't been received. See logs for details.")
                         } else {
