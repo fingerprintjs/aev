@@ -11,7 +11,6 @@ class InstalledAppsData(
     val installedApps: List<AppInfo>
 )
 
-//172.17.36.149
 class InstalledAppsSignal(value: InstalledAppsData) :
     Signal<InstalledAppsData>(INSTALLED_APPS_NAME, value) {
     override fun toMap() = mapOf(
