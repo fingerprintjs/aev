@@ -12,6 +12,13 @@
         android:background="@drawable/bg_main"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/token_input"
+            android:layout_width="match_parent"
+            android:hint="Token"
+            android:layout_marginHorizontal="12dp"
+            android:layout_height="wrap_content" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,8 +26,9 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/endpoint_input"
+                android:id="@+id/endpoint_url_input"
                 android:layout_width="0dp"
+                android:hint="@string/endpoint_url_hint"
                 android:layout_height="wrap_content"
                 android:text="@string/dev_default_url"
                 android:layout_margin="8dp"
@@ -36,7 +44,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:paddingVertical="8dp"
-                android:text="@string/run_btn_text"
+                android:text="@string/verify_btn"
                 android:textAlignment="center"
                 android:textColor="@color/white" />
 
@@ -55,7 +63,7 @@
 
 
             <ImageView
-                android:id="@+id/copy_token_button"
+                android:id="@+id/copy_verdict_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|top"

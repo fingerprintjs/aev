@@ -16,7 +16,7 @@ class DeviceIdSignal(value: DeviceIdData): Signal<DeviceIdData>(DEVICE_ID_SIGNAL
             ANDROID_ID_KEY to value.androidId,
             GSF_ID_KEY to value.gsfId,
             MEDIA_DRM_KEY to value.mediaDrmId
-        ).mapNotNull { it }
+        )
     )
 }
 

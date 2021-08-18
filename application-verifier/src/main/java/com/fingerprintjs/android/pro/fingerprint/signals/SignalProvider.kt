@@ -9,8 +9,7 @@ import com.fingerprintjs.android.fingerprint.signal_providers.device_state.Devic
 import com.fingerprintjs.android.fingerprint.signal_providers.hardware.HardwareSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
 import com.fingerprintjs.android.fingerprint.signal_providers.os_build.OsBuildSignalGroupProvider
-import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.MountedPathsReader
-import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.SuChecker
+import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.*
 import com.fingerprintjs.android.pro.fingerprint.signals.filesystem.MountedPathsSignal
 import com.fingerprintjs.android.pro.fingerprint.signals.filesystem.SuBinarySignal
 import com.fingerprintjs.android.pro.fingerprint.signals.filesystem.WhichCallSignal
@@ -27,6 +26,7 @@ interface SignalProvider {
 class SignalProviderImpl private constructor(
     private val mountedPathsReader: MountedPathsReader,
     private val suChecker: SuChecker,
+    private val packageManagerInfoProvider: PackageManagerInfoProvider,
     private val deviceIdResult: DeviceIdResult,
     private val fingerprintResult: FingerprintResult
 ) : SignalProvider {
@@ -89,14 +89,15 @@ class SignalProviderImpl private constructor(
         return InstalledAppsSignal(
             InstalledAppsData(
                 applicationsList[0].value.map {
-                    AppInfo(it.packageName)
+                    AppInfo(it.packageName, packageManagerInfoProvider.getCertificateInfo(it.packageName))
                 })
         )
     }
 
     class SignalProviderBuilder(
         private val mountedPathsReader: MountedPathsReader,
-        private val suChecker: SuChecker
+        private val suChecker: SuChecker,
+        private val packageManagerInfoProvider: PackageManagerInfoProvider
     ) {
         private lateinit var fingerprintResult: FingerprintResult
         private lateinit var deviceIdResult: DeviceIdResult
@@ -115,6 +116,7 @@ class SignalProviderImpl private constructor(
             return SignalProviderImpl(
                 mountedPathsReader,
                 suChecker,
+                packageManagerInfoProvider,
                 deviceIdResult,
                 fingerprintResult
             )
