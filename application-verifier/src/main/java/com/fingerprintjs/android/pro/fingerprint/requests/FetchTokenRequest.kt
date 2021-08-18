@@ -37,24 +37,28 @@ class FetchTokenRequest(
     private val signalProvider: SignalProvider
 ) : Request {
 
-    override val url = "$endpointUrl/api/v1/protect"
+    override val url = "$endpointUrl/api/v1/token"
     override val type = "POST"
     override val headers = mapOf(
         "App-Name" to appName,
         "Content-Type" to "application/json",
-        "X-Auth-Token" to autorizationToken
+        "Authorization" to autorizationToken
     )
 
     override fun bodyAsMap(): Map<String, Any> {
         val resultMap = HashMap<String, Any>()
 
+        val signalsMap = HashMap<String, Any>()
+
         signalProvider.deviceIdSignal().let {
-            resultMap[it.name] = it.toMap()
+            signalsMap[it.name] = it.toMap()
         }
 
         signalProvider.installedAppsSignal().let {
-            resultMap[it.name] = it.toMap()
+            signalsMap[it.name] = it.toMap()
         }
+
+        resultMap["signals"] = signalsMap
 
         return resultMap
     }

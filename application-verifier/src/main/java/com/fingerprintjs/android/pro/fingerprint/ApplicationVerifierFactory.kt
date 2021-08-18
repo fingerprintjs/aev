@@ -11,6 +11,7 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 import com.fingerprintjs.android.pro.fingerprint.logger.ConsoleLogger
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.MountedPathsReaderImpl
+import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.PackageManagerInfoProviderImpl
 import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.SuCheckerImpl
 import com.fingerprintjs.android.pro.fingerprint.signals.SignalProviderImpl
 import com.fingerprintjs.android.pro.fingerprint.tools.FileCheckerImpl
@@ -20,7 +21,6 @@ import com.fingerprintjs.android.pro.fingerprint.transport.jwt.JwtClientImpl
 import com.fingerprintjs.android.pro.fingerprint.transport.ssl.SSLConnectionInspector
 import com.fingerprintjs.android.pro.fingerprint.transport.ssl.SSLConnectionInspectorImpl
 import org.json.JSONObject
-import java.lang.Exception
 
 
 object ApplicationVerifierFactory {
@@ -54,7 +54,7 @@ object ApplicationVerifierFactory {
                 getAppName(context),
                 authToken
             ),
-            getSignalProviderBuilder(),
+            getSignalProviderBuilder(context),
             getLogger()
         )
 
@@ -77,12 +77,14 @@ object ApplicationVerifierFactory {
 
     private fun getHttpClient() = OkHttpClientImpl(logger, getJwtClient())
 
-    private fun getSignalProviderBuilder() =
+    private fun getSignalProviderBuilder(context: Context) =
         SignalProviderImpl.SignalProviderBuilder(
             MountedPathsReaderImpl(
                 Build.VERSION.SDK_INT,
                 logger
-            ), SuCheckerImpl(FileCheckerImpl(), logger)
+            ),
+            SuCheckerImpl(FileCheckerImpl(), logger),
+            PackageManagerInfoProviderImpl(context.packageManager)
         )
 
     private fun getAppName(context: Context) = context.applicationInfo.packageName.toString()
