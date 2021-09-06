@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        app:key="@string/endpointUrlKey"
+        app:title="URL of using endpoint"
+        app:defaultValue="http://app-protect-dev-use1.fpjs.sh"/>
+
+
+    <EditTextPreference
+        app:key="@string/apiTokenKey"
+        app:title="API token"/>
+
+
+</PreferenceScreen>

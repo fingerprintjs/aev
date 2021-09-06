@@ -3,6 +3,7 @@ package com.fingerprintjs.android.pro.playgroundpro.signals_screen
 
 import com.fingerprintjs.android.pro.fingerprint.ApplicationVerifier
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
+import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
 import org.json.JSONObject
 import java.util.LinkedList
 
@@ -60,6 +61,7 @@ class ReceiveTokenPresenterImpl(
                 applicationVerifier?.getToken {
                     handleToken(it.token)
                 }
+                handleToken("Button clicked")
             }
         }
     }
@@ -69,7 +71,7 @@ class ReceiveTokenPresenterImpl(
     }
 
     private fun handleToken(token: String) {
-
+        print(token)
     }
 
 }

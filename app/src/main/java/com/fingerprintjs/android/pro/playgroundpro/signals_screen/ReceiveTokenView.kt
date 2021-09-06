@@ -2,10 +2,12 @@ package com.fingerprintjs.android.pro.playgroundpro.signals_screen
 
 import android.app.Activity
 import android.os.Handler
+import android.text.Editable
 import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
 import com.fingerprintjs.android.pro.playgroundpro.R
 
 
@@ -15,7 +17,10 @@ interface ReceiveTokenView {
     fun update()
 }
 
-class ReceiveTokenViewImpl(private val activity: Activity) : ReceiveTokenView {
+class ReceiveTokenViewImpl(
+    private val activity: Activity,
+    private val preferences: ApplicationPreferences
+) : ReceiveTokenView {
 
     private val runButton = activity.findViewById<TextView>(R.id.run_btn)
     private val endpointUrlInput = activity.findViewById<EditText>(R.id.endpoint_input)
@@ -28,6 +33,7 @@ class ReceiveTokenViewImpl(private val activity: Activity) : ReceiveTokenView {
         runButton.setOnClickListener {
             listener.invoke(endpointUrlInput.text.toString())
         }
+        endpointUrlInput.setText(preferences.getEndpointUrl())
     }
 
     override fun setOnRunButtonClickedListener(listener: (String) -> Unit) {

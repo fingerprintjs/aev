@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Playground PRO</string>
     <string name="run_btn_text">Run</string>
+    <string name="btn_verify_text">VERIFY</string>
+    <string name="endpointUrlKey">endpointUrl</string>
+    <string name="apiTokenKey">apiToken</string>
 </resources>
