@@ -37,7 +37,7 @@ class FetchTokenRequest(
     private val signalProvider: SignalProvider
 ) : Request {
 
-    override val url = "$endpointUrl/api/v1/request"
+    override val url = "$endpointUrl/api/v1/protect"
     override val type = "POST"
     override val headers = mapOf(
         "App-Name" to appName,
