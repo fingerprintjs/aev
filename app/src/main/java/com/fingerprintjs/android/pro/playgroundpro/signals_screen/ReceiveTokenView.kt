@@ -24,12 +24,13 @@ class ReceiveTokenViewImpl(
 
     private val runButton = activity.findViewById<TextView>(R.id.run_btn)
     private val endpointUrlInput = activity.findViewById<EditText>(R.id.endpoint_input)
-    private val logsRecycler = activity.findViewById<RecyclerView>(R.id.logs_recycler)
+    private var logsRecycler = activity.findViewById<RecyclerView>(R.id.logs_recycler)
 
     private var listener: (String) -> Unit = {}
 
     init {
         logsRecycler.layoutManager = LinearLayoutManager(activity)
+        logsRecycler.adapter = LogAdapter(emptyList())
         runButton.setOnClickListener {
             listener.invoke(endpointUrlInput.text.toString())
         }

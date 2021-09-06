@@ -23,7 +23,7 @@ class ApiInteractorImpl(
     private val appId: String,
     private val logger: Logger,
     private val sslConnectionInspector: SSLConnectionInspector,
-    private val authorizationToken: String = ""
+    private val authorizationToken: String
 ) : ApiInteractor {
     override fun getToken(
         signalProvider: SignalProvider

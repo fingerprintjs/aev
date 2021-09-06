@@ -21,10 +21,12 @@ class VerifyTokenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.let {
-            preferences = ApplicationPreferencesImpl(it)
-            init()
-            presenter.attachView(VerifyTokenViewImpl(it, preferences))
+        activity?.apply {
+            runOnUiThread {
+                preferences = ApplicationPreferencesImpl(this)
+                init()
+                presenter.attachView(VerifyTokenViewImpl(this, preferences))
+            }
         }
     }
 
