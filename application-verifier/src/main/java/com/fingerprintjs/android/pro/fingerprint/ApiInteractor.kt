@@ -1,7 +1,6 @@
 package com.fingerprintjs.android.pro.fingerprint
 
 
-import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequest
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenRequestResult
