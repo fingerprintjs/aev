@@ -12,7 +12,7 @@
         android:theme="@style/Theme.PlaygroundPRO"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".signals_screen.ReceiveTokenActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
