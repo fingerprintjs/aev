@@ -26,12 +26,13 @@ class VerifyTokenViewImpl(
 
     private val verifyButton = activity.findViewById<TextView>(R.id.verify_btn)
     private val apiTokenInput = activity.findViewById<EditText>(R.id.api_token)
-    private val logsRecycler = activity.findViewById<RecyclerView>(R.id.logs_recycler)
+    private var logsRecycler = activity.findViewById<RecyclerView>(R.id.logs_recycler)
 
     private var listener: (String) -> Unit = {}
 
     init {
         logsRecycler.layoutManager = LinearLayoutManager(activity)
+        logsRecycler.adapter = LogAdapter(emptyList())
         verifyButton.setOnClickListener {
             listener.invoke(apiTokenInput.text.toString())
         }
@@ -47,6 +48,7 @@ class VerifyTokenViewImpl(
     }
 
     override fun setApiToken(token: String) {
+        apiTokenInput.setText(token)
     }
 
     override fun update() {

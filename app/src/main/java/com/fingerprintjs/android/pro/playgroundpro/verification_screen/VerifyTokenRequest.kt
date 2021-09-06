@@ -28,13 +28,12 @@ class VerifyTokenResponse(
         val body = rawResponse?.toString(Charsets.UTF_8) ?: return errorResponse
         return try {
             val jsonBody = JSONObject(body)
-            val requestId = jsonBody.getString(REQUEST_ID_KEY)
-            val deviceId = jsonBody.getString(DEVICE_ID_KEY)
-            val verdict = jsonBody.getJSONObject(VERDICT_KEY)
-            val analyzers = verdict.getJSONObject(ANALYZERS_KEY)
+            val requestId = jsonBody.getString(REQUEST_ID_KEY) ?: ""
+            val deviceId = jsonBody.getString(DEVICE_ID_KEY) ?: ""
+            val results = jsonBody.getJSONObject(RESULTS_KEY)
             val verdictList = LinkedList<Verdict>()
-            analyzers.keys().forEach {
-                verdictList.add(Verdict("$it: ${analyzers.getJSONObject(it).toString(2)}"))
+            results.keys().forEach {
+                verdictList.add(Verdict("$it: ${results.getJSONObject(it).toString(2)}"))
             }
             VerificationResult(requestId, deviceId, verdictList)
         } catch (exception: Exception) {
@@ -52,7 +51,7 @@ class VerifyTokenRequest(
     override val type = "POST"
     override val headers = mapOf(
         "Content-Type" to "application/json",
-        "Authorization" to autorizationToken
+        "X-Auth-Token" to autorizationToken
     )
 
     override fun bodyAsMap(): Map<String, Any> {
@@ -64,5 +63,4 @@ class VerifyTokenRequest(
 
 private const val REQUEST_ID_KEY = "requestId"
 private const val DEVICE_ID_KEY = "deviceId"
-private const val VERDICT_KEY = "verdict"
-private const val ANALYZERS_KEY = "analysers"
+private const val RESULTS_KEY = "results"

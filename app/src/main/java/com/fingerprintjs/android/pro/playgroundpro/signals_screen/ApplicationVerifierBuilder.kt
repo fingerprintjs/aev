@@ -12,7 +12,8 @@ class ApplicationVerifierBuilder(
 ) {
 
     private var loggers = emptyList<Logger>()
-    private var url: String? = null
+    private var url: String = ""
+    private var token: String = ""
 
     fun withLoggers(loggers: List<Logger>): ApplicationVerifierBuilder {
         this.loggers = loggers
@@ -24,7 +25,12 @@ class ApplicationVerifierBuilder(
         return this
     }
 
+    fun withAuthToken(token: String): ApplicationVerifierBuilder {
+        this.token = token
+        return this
+    }
+
     fun build(): ApplicationVerifier {
-        return ApplicationVerifierFactory.getInstance(applicationContext, url, loggers)
+        return ApplicationVerifierFactory.getInstance(applicationContext, url, token, loggers)
     }
 }

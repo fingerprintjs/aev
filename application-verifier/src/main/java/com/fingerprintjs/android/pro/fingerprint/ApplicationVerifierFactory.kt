@@ -39,8 +39,9 @@ object ApplicationVerifierFactory {
     @JvmStatic
     fun getInstance(
         context: Context,
-        endpointUrl: String? = null,
-        outerLoggers: List<Logger>
+        endpointUrl: String,
+        authToken: String,
+        outerLoggers: List<Logger> = emptyList()
     ): ApplicationVerifier {
         val ossInstance = FingerprinterFactory.getInstance(context, ossConfiguration)
         this.ossInstance = ossInstance
@@ -49,8 +50,9 @@ object ApplicationVerifierFactory {
         val instance = ApplicationVerifierImpl(
             ossInstance,
             getApiInteractor(
-                endpointUrl ?: DEFAULT_ENDPOINT_URL,
-                getAppName(context)
+                endpointUrl,
+                getAppName(context),
+                authToken
             ),
             getSignalProviderBuilder(),
             getLogger()
@@ -62,13 +64,15 @@ object ApplicationVerifierFactory {
 
     private fun getApiInteractor(
         endpointUrl: String,
-        appName: String
+        appName: String,
+        authToken: String
     ) = ApiInteractorImpl(
         getHttpClient(),
         endpointUrl,
         appName,
         logger,
-        getSslConnectionInspector()
+        getSslConnectionInspector(),
+        authToken
     )
 
     private fun getHttpClient() = OkHttpClientImpl(logger, getJwtClient())
@@ -121,5 +125,3 @@ object ApplicationVerifierFactory {
         return JwtClientImpl()
     }
 }
-
-private const val DEFAULT_ENDPOINT_URL = "http://192.168.0.149"

@@ -3,6 +3,7 @@ package com.fingerprintjs.android.pro.playgroundpro.signals_screen
 
 import com.fingerprintjs.android.pro.fingerprint.ApplicationVerifier
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
+import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
 import org.json.JSONObject
 import java.util.LinkedList
 
@@ -14,7 +15,8 @@ interface ReceiveTokenPresenter {
 
 
 class ReceiveTokenPresenterImpl(
-    private val applicationVerifierBuilder: ApplicationVerifierBuilder
+    private val applicationVerifierBuilder: ApplicationVerifierBuilder,
+    private val preferences: ApplicationPreferences
 ) : ReceiveTokenPresenter {
 
     private val logs = LinkedList<String>()
@@ -55,6 +57,7 @@ class ReceiveTokenPresenterImpl(
                 applicationVerifier = applicationVerifierBuilder
                     .withLoggers(listOf(logger))
                     .withUrl(url)
+                    .withAuthToken(preferences.getApiToken())
                     .build()
 
                 applicationVerifier?.getToken {

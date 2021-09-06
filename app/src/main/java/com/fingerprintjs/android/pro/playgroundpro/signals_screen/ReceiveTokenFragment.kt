@@ -18,7 +18,9 @@ class ReceiveTokenFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         activity?.let {
-            presenter.attachView(ReceiveTokenViewImpl(it, ApplicationPreferencesImpl(requireContext())))
+            it.runOnUiThread {
+                presenter.attachView(ReceiveTokenViewImpl(it, ApplicationPreferencesImpl(requireContext())))
+            }
         }
     }
 
@@ -33,6 +35,6 @@ class ReceiveTokenFragment : Fragment() {
 
     private fun init() {
         presenter =
-            ReceiveTokenPresenterImpl(ApplicationVerifierBuilder(requireContext().applicationContext))
+            ReceiveTokenPresenterImpl(ApplicationVerifierBuilder(requireContext().applicationContext), ApplicationPreferencesImpl(requireContext()))
     }
 }
