@@ -18,14 +18,14 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/endpoint_input"
+                android:id="@+id/api_token"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_weight="0.75" />
 
             <Button
-                android:id="@+id/run_btn"
+                android:id="@+id/verify_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"

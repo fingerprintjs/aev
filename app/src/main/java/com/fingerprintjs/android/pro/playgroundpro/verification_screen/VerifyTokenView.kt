@@ -1,4 +1,5 @@
-package com.fingerprintjs.android.pro.playgroundpro.signals_screen
+package com.fingerprintjs.android.pro.playgroundpro.verification_screen
+
 
 import android.app.Activity
 import android.os.Handler
@@ -11,29 +12,30 @@ import com.fingerprintjs.android.pro.playgroundpro.LogAdapter
 import com.fingerprintjs.android.pro.playgroundpro.R
 
 
-interface ReceiveTokenView {
+interface VerifyTokenView {
     fun setOnRunButtonClickedListener(listener: (String) -> (Unit))
     fun setLogsDataset(dataset: List<String>)
+    fun setApiToken(token: String)
     fun update()
 }
 
-class ReceiveTokenViewImpl(
+class VerifyTokenViewImpl(
     private val activity: Activity,
-    private val preferences: ApplicationPreferences
-) : ReceiveTokenView {
+    preferences: ApplicationPreferences
+) : VerifyTokenView {
 
-    private val runButton = activity.findViewById<TextView>(R.id.run_btn)
-    private val endpointUrlInput = activity.findViewById<EditText>(R.id.endpoint_input)
+    private val verifyButton = activity.findViewById<TextView>(R.id.verify_btn)
+    private val apiTokenInput = activity.findViewById<EditText>(R.id.api_token)
     private val logsRecycler = activity.findViewById<RecyclerView>(R.id.logs_recycler)
 
     private var listener: (String) -> Unit = {}
 
     init {
         logsRecycler.layoutManager = LinearLayoutManager(activity)
-        runButton.setOnClickListener {
-            listener.invoke(endpointUrlInput.text.toString())
+        verifyButton.setOnClickListener {
+            listener.invoke(apiTokenInput.text.toString())
         }
-        endpointUrlInput.setText(preferences.getEndpointUrl())
+        apiTokenInput.setText(preferences.getApiToken())
     }
 
     override fun setOnRunButtonClickedListener(listener: (String) -> Unit) {
@@ -42,6 +44,9 @@ class ReceiveTokenViewImpl(
 
     override fun setLogsDataset(dataset: List<String>) {
         logsRecycler.adapter = LogAdapter(dataset)
+    }
+
+    override fun setApiToken(token: String) {
     }
 
     override fun update() {

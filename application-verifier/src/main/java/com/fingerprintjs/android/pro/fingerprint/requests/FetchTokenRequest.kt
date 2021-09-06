@@ -2,7 +2,6 @@ package com.fingerprintjs.android.pro.fingerprint.requests
 
 
 import com.fingerprintjs.android.pro.fingerprint.signals.SignalProvider
-import com.fingerprintjs.android.pro.fingerprint.signals.VALUE_KEY
 import com.fingerprintjs.android.pro.fingerprint.transport.Request
 import com.fingerprintjs.android.pro.fingerprint.transport.RequestResultType
 import com.fingerprintjs.android.pro.fingerprint.transport.TypedRequestResult
