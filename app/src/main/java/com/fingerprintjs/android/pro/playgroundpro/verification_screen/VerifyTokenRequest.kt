@@ -48,7 +48,7 @@ class VerifyTokenRequest(
     autorizationToken: String,
     private val securityToken: String
 ) : Request {
-    override val url = "$endpointUrl/api/v1/request"
+    override val url = "$endpointUrl/api/v1/results"
     override val type = "POST"
     override val headers = mapOf(
         "Content-Type" to "application/json",
