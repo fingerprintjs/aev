@@ -1,7 +1,8 @@
 package com.fingerprintjs.android.pro.playgroundpro.signals_screen
 
-import android.app.Activity
+
 import android.os.Handler
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,21 +21,23 @@ interface ReceiveTokenView {
 }
 
 class ReceiveTokenViewImpl(
-    private val activity: Activity,
-    private val preferences: ApplicationPreferences
+    view: View,
+    preferences: ApplicationPreferences
 ) : ReceiveTokenView {
 
-    private val runButton = activity.findViewById<TextView>(R.id.run_btn)
-    private val copyButton = activity.findViewById<ImageView>(R.id.copy_token_button)
-    private val endpointUrlInput = activity.findViewById<EditText>(R.id.endpoint_input)
-    private var logsRecycler = activity.findViewById<RecyclerView>(R.id.logs_recycler)
+    private val runButton = view.findViewById<TextView>(R.id.run_btn)
+    private val copyButton = view.findViewById<ImageView>(R.id.copy_token_button)
+    private val endpointUrlInput = view.findViewById<EditText>(R.id.endpoint_input)
+    private var logsRecycler = view.findViewById<RecyclerView>(R.id.receive_logs_recycler)
+
+    private val adapter = LogAdapter(view.context)
 
     private var runButtonListener: (String) -> Unit = {}
     private var copyButtonListener: () -> Unit = {}
 
     init {
-        logsRecycler.layoutManager = LinearLayoutManager(activity)
-        logsRecycler.adapter = LogAdapter(emptyList())
+        logsRecycler.layoutManager = LinearLayoutManager(view.context)
+        logsRecycler.adapter = adapter
         runButton.setOnClickListener {
             runButtonListener.invoke(endpointUrlInput.text.toString())
         }
@@ -53,12 +56,12 @@ class ReceiveTokenViewImpl(
     }
 
     override fun setLogsDataset(dataset: List<String>) {
-        logsRecycler.adapter = LogAdapter(dataset)
+        (logsRecycler.adapter as? LogAdapter)?.setDataset(dataset)
     }
 
     override fun update() {
         logsRecycler.adapter?.let {
-            Handler(activity.mainLooper).post {
+            Handler(logsRecycler.context.mainLooper).post {
                 it.notifyItemInserted(it.itemCount)
             }
         }

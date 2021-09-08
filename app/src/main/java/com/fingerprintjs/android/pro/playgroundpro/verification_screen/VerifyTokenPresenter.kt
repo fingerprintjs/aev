@@ -1,6 +1,8 @@
 package com.fingerprintjs.android.pro.playgroundpro.verification_screen
 
-import java.util.*
+
+import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
+import java.util.LinkedList
 import java.util.concurrent.Executors
 
 
@@ -10,7 +12,8 @@ interface VerifyTokenPresenter {
 }
 
 class VerifyTokenPresenterImpl(
-    private val interactor: VerifyTokenInteractor
+    private val interactor: VerifyTokenInteractor,
+    private val preferences: ApplicationPreferences
 ) : VerifyTokenPresenter {
 
     private var view: VerifyTokenView? = null
@@ -29,11 +32,9 @@ class VerifyTokenPresenterImpl(
     private fun subscribeToView() {
         this.view?.apply {
             setLogsDataset(logs)
+            setSecurityToken(preferences.getLastSecurityToken())
             setOnRunButtonClickedListener {
                 verifyToken(it) {
-                    // Update view, store response to logs
-                    logs.add("deviceId: ${it.deviceId}")
-                    logs.add("requestId: ${it.requestId}")
                     logs.add("verdict:\n")
                     it.verdicts.forEach {
                         logs.add(it.description)

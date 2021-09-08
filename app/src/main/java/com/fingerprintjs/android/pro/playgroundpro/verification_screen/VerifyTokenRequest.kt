@@ -28,14 +28,12 @@ class VerifyTokenResponse(
         val body = rawResponse?.toString(Charsets.UTF_8) ?: return errorResponse
         return try {
             val jsonBody = JSONObject(body)
-            val requestId = jsonBody.getString(REQUEST_ID_KEY) ?: ""
-            val deviceId = jsonBody.getString(DEVICE_ID_KEY) ?: ""
             val results = jsonBody.getJSONObject(RESULTS_KEY)
             val verdictList = LinkedList<Verdict>()
             results.keys().forEach {
                 verdictList.add(Verdict("$it: ${results.getJSONObject(it).toString(2)}"))
             }
-            VerificationResult(requestId, deviceId, verdictList)
+            VerificationResult("", "", verdictList)
         } catch (exception: Exception) {
             errorResponse
         }
@@ -56,7 +54,7 @@ class VerifyTokenRequest(
 
     override fun bodyAsMap(): Map<String, Any> {
         val resultMap = HashMap<String, Any>()
-        resultMap["token"] = securityToken
+        resultMap["requestId"] = securityToken
         return resultMap
     }
 }

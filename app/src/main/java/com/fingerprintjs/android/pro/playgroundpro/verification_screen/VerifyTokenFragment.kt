@@ -44,7 +44,8 @@ class VerifyTokenFragment : Fragment() {
                 OkHttpClientImpl(ConsoleLogger(), JwtClientImpl()),
                 preferences.getEndpointUrl(),
                 preferences.getApiToken(),
-            )
+            ),
+            preferences
         )
     }
 }

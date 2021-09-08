@@ -15,7 +15,7 @@ import com.fingerprintjs.android.pro.playgroundpro.R
 interface VerifyTokenView {
     fun setOnRunButtonClickedListener(listener: (String) -> (Unit))
     fun setLogsDataset(dataset: List<String>)
-    fun setApiToken(token: String)
+    fun setSecurityToken(token: String)
     fun update()
 }
 
@@ -26,13 +26,15 @@ class VerifyTokenViewImpl(
 
     private val verifyButton = activity.findViewById<TextView>(R.id.verify_btn)
     private val apiTokenInput = activity.findViewById<EditText>(R.id.api_token)
-    private var logsRecycler = activity.findViewById<RecyclerView>(R.id.logs_recycler)
+    private var logsRecycler = activity.findViewById<RecyclerView>(R.id.verify_logs_recycler)
+
+    private val adapter = LogAdapter(activity)
 
     private var listener: (String) -> Unit = {}
 
     init {
         logsRecycler.layoutManager = LinearLayoutManager(activity)
-        logsRecycler.adapter = LogAdapter(emptyList())
+        logsRecycler.adapter = adapter
         verifyButton.setOnClickListener {
             listener.invoke(apiTokenInput.text.toString())
         }
@@ -44,10 +46,10 @@ class VerifyTokenViewImpl(
     }
 
     override fun setLogsDataset(dataset: List<String>) {
-        logsRecycler.adapter = LogAdapter(dataset)
+        (logsRecycler.adapter as? LogAdapter)?.setDataset(dataset)
     }
 
-    override fun setApiToken(token: String) {
+    override fun setSecurityToken(token: String) {
         apiTokenInput.setText(token)
     }
 
@@ -58,5 +60,4 @@ class VerifyTokenViewImpl(
             }
         }
     }
-
 }

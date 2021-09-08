@@ -42,7 +42,7 @@ class FetchTokenRequest(
     override val headers = mapOf(
         "App-Name" to appName,
         "Content-Type" to "application/json",
-        "Authorization" to autorizationToken
+        "X-Auth-Token" to autorizationToken
     )
 
     override fun bodyAsMap(): Map<String, Any> {
