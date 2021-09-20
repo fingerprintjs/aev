@@ -1,0 +1,43 @@
+name: Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - app/**
+
+env:
+  KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+  RELEASE_SIGN_KEY_ALIAS: ${{ secrets.RELEASE_SIGN_KEY_ALIAS }}
+  RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Lint
+        run: ./gradlew application-verifier:lint
+        
+      - name: Build library
+        run: ./gradlew application-verifier:assembleRelease
+
+      - name: Save library to artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: application-verifier/build/outputs/aar/*
+
+      - name: Build App
+        run: ./gradlew app:assembleRelease
+
+      - name: Save application to artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: app/build/outputs/apk/release/*
