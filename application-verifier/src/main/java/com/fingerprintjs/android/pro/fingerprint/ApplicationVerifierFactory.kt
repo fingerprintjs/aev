@@ -2,6 +2,7 @@ package com.fingerprintjs.android.pro.fingerprint
 
 
 import android.content.Context
+import android.hardware.SensorManager
 import android.os.Build
 import com.fingerprintjs.android.fingerprint.Configuration
 import com.fingerprintjs.android.fingerprint.Fingerprinter
@@ -10,16 +11,10 @@ import com.fingerprintjs.android.fingerprint.tools.hashers.Hasher
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 import com.fingerprintjs.android.pro.fingerprint.logger.ConsoleLogger
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
-import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.MountedPathsReaderImpl
-import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.PackageManagerInfoProviderImpl
-import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.SuCheckerImpl
+import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.*
 import com.fingerprintjs.android.pro.fingerprint.signals.SignalProviderImpl
 import com.fingerprintjs.android.pro.fingerprint.tools.FileCheckerImpl
 import com.fingerprintjs.android.pro.fingerprint.transport.OkHttpClientImpl
-import com.fingerprintjs.android.pro.fingerprint.transport.jwt.JwtClient
-import com.fingerprintjs.android.pro.fingerprint.transport.jwt.JwtClientImpl
-import com.fingerprintjs.android.pro.fingerprint.transport.ssl.SSLConnectionInspector
-import com.fingerprintjs.android.pro.fingerprint.transport.ssl.SSLConnectionInspectorImpl
 import org.json.JSONObject
 
 
@@ -71,11 +66,10 @@ object ApplicationVerifierFactory {
         endpointUrl,
         appName,
         logger,
-        getSslConnectionInspector(),
         authToken
     )
 
-    private fun getHttpClient() = OkHttpClientImpl(logger, getJwtClient())
+    private fun getHttpClient() = OkHttpClientImpl(logger)
 
     private fun getSignalProviderBuilder(context: Context) =
         SignalProviderImpl.SignalProviderBuilder(
@@ -84,7 +78,8 @@ object ApplicationVerifierFactory {
                 logger
             ),
             SuCheckerImpl(FileCheckerImpl(), logger),
-            PackageManagerInfoProviderImpl(context.packageManager)
+            PackageManagerInfoProviderImpl(context.packageManager),
+            getSensorsDataCollector(context)
         )
 
     private fun getAppName(context: Context) = context.applicationInfo.packageName.toString()
@@ -121,9 +116,9 @@ object ApplicationVerifierFactory {
         }
     }
 
-    private fun getSslConnectionInspector(): SSLConnectionInspector = SSLConnectionInspectorImpl()
 
-    private fun getJwtClient(): JwtClient {
-        return JwtClientImpl()
+    private fun getSensorsDataCollector(context: Context): SensorsDataCollector{
+        return SensorsDataCollectorImpl(context.getSystemService(Context.SENSOR_SERVICE) as SensorManager)
     }
+
 }
