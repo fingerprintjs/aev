@@ -21,12 +21,14 @@ interface SignalProvider {
     fun signals(): List<Signal<*>>
     fun deviceIdSignal(): Signal<DeviceIdData>
     fun installedAppsSignal(): Signal<InstalledAppsData>
+    fun sensorsSignal(): Signal<SensorsResult>
 }
 
 class SignalProviderImpl private constructor(
     private val mountedPathsReader: MountedPathsReader,
     private val suChecker: SuChecker,
     private val packageManagerInfoProvider: PackageManagerInfoProvider,
+    private val sensorsDataCollector: SensorsDataCollector,
     private val deviceIdResult: DeviceIdResult,
     private val fingerprintResult: FingerprintResult
 ) : SignalProvider {
@@ -94,10 +96,16 @@ class SignalProviderImpl private constructor(
         )
     }
 
+    override fun sensorsSignal(): Signal<SensorsResult> {
+        val sensorsResult = sensorsDataCollector.collect()
+        return SensorsSignal(sensorsResult)
+    }
+
     class SignalProviderBuilder(
         private val mountedPathsReader: MountedPathsReader,
         private val suChecker: SuChecker,
-        private val packageManagerInfoProvider: PackageManagerInfoProvider
+        private val packageManagerInfoProvider: PackageManagerInfoProvider,
+        private val sensorsDataCollector: SensorsDataCollector
     ) {
         private lateinit var fingerprintResult: FingerprintResult
         private lateinit var deviceIdResult: DeviceIdResult
@@ -117,6 +125,7 @@ class SignalProviderImpl private constructor(
                 mountedPathsReader,
                 suChecker,
                 packageManagerInfoProvider,
+                sensorsDataCollector,
                 deviceIdResult,
                 fingerprintResult
             )

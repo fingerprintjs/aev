@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.fingerprintjs.android.pro.fingerprint.logger.ConsoleLogger
 import com.fingerprintjs.android.pro.fingerprint.transport.OkHttpClientImpl
-import com.fingerprintjs.android.pro.fingerprint.transport.jwt.JwtClientImpl
 import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
 import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferencesImpl
 import com.fingerprintjs.android.pro.playgroundpro.R
@@ -41,7 +40,7 @@ class VerifyTokenFragment : Fragment() {
     private fun init() {
         this.presenter = VerifyTokenPresenterImpl(
             VerifyTokenInteractorImpl(
-                OkHttpClientImpl(ConsoleLogger(), JwtClientImpl()),
+                OkHttpClientImpl(ConsoleLogger()),
                 preferences.getEndpointUrl(),
                 preferences.getApiToken(),
             ),
