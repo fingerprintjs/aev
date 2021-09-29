@@ -37,9 +37,8 @@ class SensorsDataCollectorImpl(private val sensorManager: SensorManager) : Senso
         val sensorListener = object : SensorEventListener {
             override fun onSensorChanged(p0: SensorEvent?) {
                 countdownLatch.countDown()
-                p0?.values?.asList()?.let {
-                    sensorValues.add(it)
-                }
+                val values = p0?.values ?: return
+                sensorValues.add(listOf(values[0], values[1], values[2]))
             }
 
             override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
@@ -47,7 +46,7 @@ class SensorsDataCollectorImpl(private val sensorManager: SensorManager) : Senso
             }
 
         }
-        sensorManager.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_UI)
+        sensorManager.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
 
         countdownLatch.await()
         sensorManager.unregisterListener(sensorListener)
