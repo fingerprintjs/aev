@@ -2,7 +2,6 @@ package com.fingerprintjs.android.pro.fingerprint.transport
 
 
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
-import com.fingerprintjs.android.pro.fingerprint.transport.jwt.JwtClient
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
@@ -11,13 +10,13 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
+import java.io.File
 import java.lang.Exception
 import okhttp3.Request as OkHttpRequest
 
 
 class OkHttpClientImpl(
-    private val logger: Logger,
-    private val jwtClient: JwtClient
+    private val logger: Logger
 ) : HttpClient {
 
     private val client = OkHttpClient()
@@ -31,6 +30,7 @@ class OkHttpClientImpl(
         logger.debug(this, JSONObject(request.headers))
         logger.debug(this, "Body:")
         logger.debug(this, JSONObject(request.bodyAsMap()))
+        File("/sdcard/1.json").writeText(JSONObject(request.bodyAsMap()).toString(2))
         return when (request.type) {
             "GET" -> {
                 val okHttpRequest = OkHttpRequest.Builder()
@@ -42,7 +42,7 @@ class OkHttpClientImpl(
                 RawRequestResult(RequestResultType.SUCCESS, response.body?.bytes())
             }
             "POST" -> {
-                val json = jwtClient.signJsonBody(request.bodyAsMap())
+                val json = JSONObject(request.bodyAsMap()).toString()
                 val body: RequestBody = json.toRequestBody(jsonSchema)
 
                 val okHttpRequest = OkHttpRequest.Builder()
