@@ -3,7 +3,6 @@ package com.fingerprintjs.android.pro.fingerprint
 
 import android.content.Context
 import android.hardware.SensorManager
-import android.os.Build
 import com.fingerprintjs.android.fingerprint.Configuration
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory
@@ -13,7 +12,6 @@ import com.fingerprintjs.android.pro.fingerprint.logger.ConsoleLogger
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.raw_signal_providers.*
 import com.fingerprintjs.android.pro.fingerprint.signals.SignalProviderImpl
-import com.fingerprintjs.android.pro.fingerprint.tools.FileCheckerImpl
 import com.fingerprintjs.android.pro.fingerprint.transport.OkHttpClientImpl
 import org.json.JSONObject
 
@@ -73,11 +71,6 @@ object ApplicationVerifierFactory {
 
     private fun getSignalProviderBuilder(context: Context) =
         SignalProviderImpl.SignalProviderBuilder(
-            MountedPathsReaderImpl(
-                Build.VERSION.SDK_INT,
-                logger
-            ),
-            SuCheckerImpl(FileCheckerImpl(), logger),
             PackageManagerInfoProviderImpl(context.packageManager),
             getSensorsDataCollector(context)
         )

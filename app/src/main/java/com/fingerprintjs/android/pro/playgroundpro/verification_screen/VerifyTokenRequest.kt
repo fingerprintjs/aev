@@ -3,6 +3,7 @@ package com.fingerprintjs.android.pro.playgroundpro.verification_screen
 
 import com.fingerprintjs.android.pro.fingerprint.transport.Request
 import com.fingerprintjs.android.pro.fingerprint.transport.RequestResultType
+import com.fingerprintjs.android.pro.fingerprint.transport.RequestType
 import com.fingerprintjs.android.pro.fingerprint.transport.TypedRequestResult
 import org.json.JSONObject
 import java.util.*
@@ -46,7 +47,7 @@ class VerifyTokenRequest(
     private val securityToken: String
 ) : Request {
     override val url = "$endpointUrl/api/v1/results"
-    override val type = "POST"
+    override val type = RequestType.POST
     override val headers = mapOf(
         "Content-Type" to "application/json",
         "X-Auth-Token" to autorizationToken

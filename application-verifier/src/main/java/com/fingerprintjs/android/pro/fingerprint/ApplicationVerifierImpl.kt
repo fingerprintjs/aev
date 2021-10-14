@@ -4,7 +4,6 @@ package com.fingerprintjs.android.pro.fingerprint
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.fingerprint.requests.FetchTokenResponse
-import com.fingerprintjs.android.pro.fingerprint.signals.SignalProvider
 import com.fingerprintjs.android.pro.fingerprint.signals.SignalProviderImpl
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -20,6 +19,10 @@ internal class ApplicationVerifierImpl(
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     override fun getToken(listener: (FetchTokenResponse) -> Unit) {
+        getToken(listener, {})
+    }
+
+    override fun getToken(listener: (FetchTokenResponse) -> Unit, errorListener: (String) -> Unit) {
         executor.execute {
             logger.debug(this, "Start getting token.")
             ossAgent.getDeviceId { deviceIdResult ->
@@ -33,7 +36,9 @@ internal class ApplicationVerifierImpl(
                             .build()
                     ).let {
                         if (it.token.isEmpty()) {
-                            logger.debug(this, "Token hasn't been received. See logs for details.")
+                            val errorMessage = it.errorMessage ?: "Unknown"
+                            logger.debug(this, "Token hasn't been received. $errorMessage")
+                            errorListener.invoke(errorMessage)
                         } else {
                             logger.debug(this, "Got token: ${it.token}")
                             listener.invoke(it)
