@@ -1,6 +1,7 @@
 package com.fingerprintjs.android.pro.fingerprint.raw_signal_providers
 
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import java.io.ByteArrayInputStream
@@ -29,6 +30,7 @@ class PackageManagerInfoProviderImpl(
         )
     }
 
+    @SuppressLint("PackageManagerGetSignatures")
     private fun getSigningCertificates(packageName: String): List<X509Certificate> {
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             val packageInfo =
