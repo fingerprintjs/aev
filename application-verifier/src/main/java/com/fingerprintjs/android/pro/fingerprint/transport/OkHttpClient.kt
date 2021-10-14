@@ -10,7 +10,6 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import org.json.JSONObject
-import java.io.File
 import java.lang.Exception
 import okhttp3.Request as OkHttpRequest
 
@@ -20,7 +19,7 @@ class OkHttpClientImpl(
 ) : HttpClient {
 
     private val client = OkHttpClient()
-    private val jsonSchema: MediaType = "application/json; charset=utf-8".toMediaType()
+    private val jsonSchema: MediaType = MEDIA_TYPE.toMediaType()
 
     override fun performRequest(
         request: Request
@@ -30,39 +29,35 @@ class OkHttpClientImpl(
         logger.debug(this, JSONObject(request.headers))
         logger.debug(this, "Body:")
         logger.debug(this, JSONObject(request.bodyAsMap()))
-        File("/sdcard/1.json").writeText(JSONObject(request.bodyAsMap()).toString(2))
-        return when (request.type) {
-            "GET" -> {
-                val okHttpRequest = OkHttpRequest.Builder()
+
+
+        val okHttpRequest = when (request.type) {
+            RequestType.GET -> {
+                OkHttpRequest.Builder()
                     .url(request.url)
                     .headers(request.headers.toHeaders())
                     .build()
-
-                val response: Response = client.newCall(okHttpRequest).execute()
-                RawRequestResult(RequestResultType.SUCCESS, response.body?.bytes())
             }
-            "POST" -> {
+            RequestType.POST -> {
                 val json = JSONObject(request.bodyAsMap()).toString()
                 val body: RequestBody = json.toRequestBody(jsonSchema)
 
-                val okHttpRequest = OkHttpRequest.Builder()
+                OkHttpRequest.Builder()
                     .url(request.url)
                     .headers(request.headers.toHeaders())
                     .post(body)
                     .build()
+            }
+        }
 
-                try {
-                    val response: Response = client.newCall(okHttpRequest).execute()
-                    RawRequestResult(RequestResultType.SUCCESS, response.body?.bytes())
-                } catch (e: Exception) {
-                    logger.error(this, e)
-                    RawRequestResult(RequestResultType.ERROR, null)
-                }
-            }
-            else -> {
-                logger.error(this, "Unrecognized request type")
-                RawRequestResult(RequestResultType.ERROR, null)
-            }
+        return try {
+            val response: Response = client.newCall(okHttpRequest).execute()
+            RawRequestResult(RequestResultType.SUCCESS, response.body?.bytes())
+        } catch (e: Exception) {
+            logger.error(this, e)
+            RawRequestResult(RequestResultType.ERROR, e.localizedMessage?.toByteArray())
         }
     }
 }
+
+private const val MEDIA_TYPE = "application/json; charset=utf-8"

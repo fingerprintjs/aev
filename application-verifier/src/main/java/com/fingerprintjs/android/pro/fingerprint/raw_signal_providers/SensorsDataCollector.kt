@@ -1,11 +1,13 @@
 package com.fingerprintjs.android.pro.fingerprint.raw_signal_providers
 
+
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import java.util.*
 import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 
 class SensorsResult(
@@ -48,7 +50,11 @@ class SensorsDataCollectorImpl(private val sensorManager: SensorManager) : Senso
         }
         sensorManager.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
 
-        countdownLatch.await()
+        try {
+            countdownLatch.await(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+        } catch (exception: InterruptedException) {
+            // Continue execution
+        }
         sensorManager.unregisterListener(sensorListener)
 
         return sensorValues
@@ -56,4 +62,4 @@ class SensorsDataCollectorImpl(private val sensorManager: SensorManager) : Senso
 }
 
 private const val NUMBER_OF_SENSOR_VALUES = 30
-private const val TIMEOUT_IN_MILLIS = 3000L
+private const val TIMEOUT_IN_MILLIS = 1500L
