@@ -11,7 +11,8 @@ import com.fingerprintjs.android.pro.fingerprint.logger.ConsoleLogger
 import com.fingerprintjs.android.pro.fingerprint.transport.OkHttpClientImpl
 import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferencesImpl
 import com.fingerprintjs.android.pro.playgroundpro.R
-import com.fingerprintjs.android.pro.playgroundpro.demo.get_results.GetResultsInteractorImpl
+import com.fingerprintjs.android.pro.playgroundpro.demo.api.GetResultsInteractorImpl
+import com.fingerprintjs.android.pro.playgroundpro.demo.api.ApplicationVerifierBuilder
 
 
 class DemoActivity : AppCompatActivity(), DemoRouter {

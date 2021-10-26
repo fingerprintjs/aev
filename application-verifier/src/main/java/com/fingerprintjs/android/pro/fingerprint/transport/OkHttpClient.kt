@@ -27,8 +27,6 @@ class OkHttpClientImpl(
         logger.debug(this, "Performing ${request.type} request")
         logger.debug(this, "Headers:")
         logger.debug(this, JSONObject(request.headers))
-        logger.debug(this, "Body:")
-        logger.debug(this, JSONObject(request.bodyAsMap()))
 
 
         val okHttpRequest = when (request.type) {
@@ -39,6 +37,9 @@ class OkHttpClientImpl(
                     .build()
             }
             RequestType.POST -> {
+                logger.debug(this, "Body:")
+                logger.debug(this, JSONObject(request.bodyAsMap()))
+
                 val json = JSONObject(request.bodyAsMap()).toString()
                 val body: RequestBody = json.toRequestBody(jsonSchema)
 
