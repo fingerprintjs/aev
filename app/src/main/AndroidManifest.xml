@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.fingerprintjs.android.pro.playgroundpro">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-sdk tools:overrideLibrary="androidx.security.ktx"/>
 
     <application
         android:allowBackup="false"
@@ -30,5 +33,6 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/network_security_config" />
+
     </application>
 </manifest>

@@ -28,7 +28,7 @@ class TermsActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         toolbar.title = "Terms of use"
-        toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24)
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24)
         toolbar.setNavigationOnClickListener { onBackPressed() }
     }
 

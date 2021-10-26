@@ -2,9 +2,11 @@ package com.fingerprintjs.android.pro.playgroundpro.demo
 
 
 import android.app.Activity
+import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.fingerprintjs.android.pro.playgroundpro.R
 import com.fingerprintjs.android.pro.playgroundpro.extensions.hide
 import com.fingerprintjs.android.pro.playgroundpro.extensions.show
@@ -23,11 +25,16 @@ interface RequestIdView {
 class RequestIdViewImpl(
     private val activity: Activity
 ) : RequestIdView {
+
     private val logsButton = activity.findViewById<TextView>(R.id.logs_btn)
     private val requestIdAboutBtn = activity.findViewById<ImageView>(R.id.request_id_about_btn)
     private val getResultsButton = activity.findViewById<TextView>(R.id.get_results_btn)
     private val requestIdTextView = activity.findViewById<TextView>(R.id.request_id_tv)
+    private val requestIdContainer = activity.findViewById<View>(R.id.request_id_container)
     private val progressBar = activity.findViewById<ProgressBar>(R.id.progress_indicator)
+
+    private val buttonEnabledDrawable =  ContextCompat.getDrawable(activity, R.drawable.bg_primary_btn)
+    private val buttonDisabledDrawable = ContextCompat.getDrawable(activity, R.drawable.bg_primary_btn_disabled)
 
     override fun setOnGetResultsButtonClickedListener(listener: () -> Unit) {
         getResultsButton.setOnClickListener {
@@ -55,12 +62,18 @@ class RequestIdViewImpl(
     }
 
     override fun setRunBtnEnabled(enabled: Boolean) {
-        // Change background dependently on the flag
+        if (enabled) {
+            getResultsButton.background = buttonEnabledDrawable
+            getResultsButton.isClickable = true
+        } else {
+            getResultsButton.background = buttonDisabledDrawable
+            getResultsButton.isClickable = false
+        }
     }
 
     override fun showRequestIdProgressBar() {
         activity.runOnUiThread {
-            requestIdTextView.hide()
+            requestIdContainer.hide()
             progressBar.show()
         }
     }
@@ -68,7 +81,7 @@ class RequestIdViewImpl(
     override fun hideRequestIdProgressBar() {
         activity.runOnUiThread {
             progressBar.hide()
-            requestIdTextView.show()
+            requestIdContainer.show()
         }
     }
 }

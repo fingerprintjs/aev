@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import com.fingerprintjs.android.pro.playgroundpro.R
 
 
@@ -20,8 +21,8 @@ class ResultItemViewImpl @JvmOverloads constructor(
     private val detectedString = context.getString(R.string.verdict_detected_string)
     private val notDetectedString = context.getString(R.string.verdict_not_detected_string)
 
-    private val detectedColor = context.getColor(R.color.red)
-    private val notDetectedColor = context.getColor(R.color.green)
+    private val detectedColor = ContextCompat.getColor(context, R.color.red)
+    private val notDetectedColor = ContextCompat.getColor(context, R.color.green)
 
     private val nameTv: TextView by lazy {
         findViewById(R.id.name)
@@ -42,10 +43,5 @@ class ResultItemViewImpl @JvmOverloads constructor(
             valueTv.text = notDetectedString
             valueTv.setTextColor(notDetectedColor)
         }
-    }
-
-    private fun getStringRepresentationForValue(value: Boolean) = when(value) {
-        true -> detectedString
-        false -> notDetectedString
     }
 }
