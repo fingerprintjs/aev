@@ -16,4 +16,6 @@
     <string name="device_id_title">Device ID</string>
     <string name="raw_btn_text">Raw</string>
     <string name="try_again_btn_text">Try again?</string>
+    <string name="verdict_detected_string">YES</string>
+    <string name="verdict_not_detected_string">NO</string>
 </resources>

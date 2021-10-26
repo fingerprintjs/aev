@@ -1,13 +1,13 @@
-package com.fingerprintjs.android.pro.playgroundpro
+package com.fingerprintjs.android.pro.playgroundpro.adapters
 
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.fingerprintjs.android.pro.playgroundpro.R
 
 
 class LogAdapter(

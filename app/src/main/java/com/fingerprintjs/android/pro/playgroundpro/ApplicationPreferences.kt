@@ -35,5 +35,4 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
     override fun setApiToken(apiToken: String) {
         preferences.edit().putString(API_TOKEN_KEY, apiToken).apply()
     }
-
 }
