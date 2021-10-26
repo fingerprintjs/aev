@@ -69,6 +69,7 @@ class ReceiveTokenPresenterImpl(
     private fun subscribeToView() {
         this.view?.apply {
             setOnGetResultsButtonClickedListener {
+                setRunBtnEnabled(false)
                 showResults()
                 showResultsProgressBar()
                 getResultsByRequestId(requestId) {

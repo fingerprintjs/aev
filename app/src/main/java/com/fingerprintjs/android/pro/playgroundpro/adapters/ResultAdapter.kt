@@ -25,7 +25,7 @@ class ResultAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context)
-            .inflate(R.layout.result_item, parent, false) as ResultItemViewImpl
+            .inflate(R.layout.view_result_item, parent, false) as ResultItemViewImpl
 
         return ViewHolder(view)
     }
