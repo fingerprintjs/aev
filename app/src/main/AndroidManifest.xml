@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlaygroundPRO">
         <activity
-            android:name=".MainActivity"
+            android:name=".WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,6 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TermsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".demo.DemoActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.actions"

@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.pro.playgroundpro.signals_screen
+package com.fingerprintjs.android.pro.playgroundpro.demo
 
 
 import android.content.Context
@@ -20,7 +20,7 @@ class ApplicationVerifierBuilder(
         return this
     }
 
-    fun withUrl(url: String): ApplicationVerifierBuilder  {
+    fun withUrl(url: String): ApplicationVerifierBuilder {
         this.url = url
         return this
     }

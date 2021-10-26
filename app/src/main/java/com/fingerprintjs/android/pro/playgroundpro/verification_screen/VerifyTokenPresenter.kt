@@ -32,7 +32,6 @@ class VerifyTokenPresenterImpl(
     private fun subscribeToView() {
         this.view?.apply {
             setLogsDataset(logs)
-            setSecurityToken(preferences.getLastSecurityToken())
             setOnRunButtonClickedListener {
                 verifyToken(it) {
                     logs.add("verdict:\n")
