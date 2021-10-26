@@ -8,26 +8,25 @@ import androidx.preference.PreferenceManager
 interface ApplicationPreferences {
     fun getEndpointUrl(): String
     fun getApiToken(): String
-    fun getLastSecurityToken(): String
 
     fun setEndpointUrl(endpointUrl: String)
     fun setApiToken(apiToken: String)
-    fun setLastSecurityToken(lastSecurityToken: String)
 }
 
 class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
 
     private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
+    private val defaultEndpointUrl = context.getString(R.string.defaultEndpointUrl)
+    private val defaultAPIToken = context.getString(R.string.defaultApiToken)
+
     private val API_TOKEN_KEY = context.getString(R.string.apiTokenKey)
     private val ENDPOINT_URL_KEY = context.getString(R.string.endpointUrlKey)
-    private val LAST_SECURITY_TOKEN = context.getString(R.string.lastSavedSecurityToken)
 
-    override fun getEndpointUrl() = preferences.getString(ENDPOINT_URL_KEY, "") ?: ""
+    override fun getEndpointUrl() = preferences.getString(ENDPOINT_URL_KEY, null) ?: defaultEndpointUrl
 
-    override fun getApiToken() = preferences.getString(API_TOKEN_KEY, "") ?: ""
+    override fun getApiToken() = preferences.getString(API_TOKEN_KEY, null) ?: defaultAPIToken
 
-    override fun getLastSecurityToken() = preferences.getString(LAST_SECURITY_TOKEN, "") ?: ""
 
     override fun setEndpointUrl(endpointUrl: String) {
         preferences.edit().putString(ENDPOINT_URL_KEY, endpointUrl).apply()
@@ -37,7 +36,4 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
         preferences.edit().putString(API_TOKEN_KEY, apiToken).apply()
     }
 
-    override fun setLastSecurityToken(lastSecurityToken: String) {
-        preferences.edit().putString(LAST_SECURITY_TOKEN, lastSecurityToken).apply()
-    }
 }

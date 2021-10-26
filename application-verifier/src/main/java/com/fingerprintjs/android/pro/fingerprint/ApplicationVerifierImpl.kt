@@ -35,12 +35,12 @@ internal class ApplicationVerifierImpl(
                             .withFingerprintResult(fingerprintResult)
                             .build()
                     ).let {
-                        if (it.token.isEmpty()) {
+                        if (it.requestId.isEmpty()) {
                             val errorMessage = it.errorMessage ?: "Unknown"
                             logger.debug(this, "Token hasn't been received. $errorMessage")
                             errorListener.invoke(errorMessage)
                         } else {
-                            logger.debug(this, "Got token: ${it.token}")
+                            logger.debug(this, "Got token: ${it.requestId}")
                             listener.invoke(it)
                         }
                     }

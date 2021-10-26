@@ -1,7 +1,6 @@
-package com.fingerprintjs.android.pro.playgroundpro.signals_screen
+package com.fingerprintjs.android.pro.playgroundpro.demo
 
 
-import androidx.core.graphics.rotationMatrix
 import com.fingerprintjs.android.pro.fingerprint.ApplicationVerifier
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
@@ -10,9 +9,9 @@ import java.util.LinkedList
 
 
 interface ReceiveTokenPresenter {
-    fun attachView(view: ReceiveTokenView)
+    fun attachView(view: DemoView)
     fun detachView()
-    fun attachRouter(router: ReceiveTokenRouter)
+    fun attachRouter(router: DemoRouter)
 }
 
 
@@ -22,8 +21,8 @@ class ReceiveTokenPresenterImpl(
 ) : ReceiveTokenPresenter {
 
     private val logs = LinkedList<String>()
-    private var view: ReceiveTokenView? = null
-    private var router: ReceiveTokenRouter? = null
+    private var view: DemoView? = null
+    private var router: DemoRouter? = null
     private var applicationVerifier: ApplicationVerifier? = null
 
     private var receivedToken: String = ""
@@ -32,46 +31,37 @@ class ReceiveTokenPresenterImpl(
         override fun debug(obj: Any, message: String?) {
             message?.let {
                 logs.add(it)
-                view?.update()
             }
         }
 
         override fun debug(obj: Any, message: JSONObject) {
             logs.add(message.toString(2))
-            view?.update()
         }
 
         override fun error(obj: Any, message: String?) {
             message?.let {
                 logs.add(it)
-                view?.update()
             }
         }
 
         override fun error(obj: Any, exception: Exception) {
             logs.add(exception.localizedMessage ?: "")
-            view?.update()
         }
     }
 
-    override fun attachView(view: ReceiveTokenView) {
+    override fun attachView(view: DemoView) {
         this.view = view
-        view.apply {
-            setLogsDataset(logs)
-            setOnRunButtonClickedListener { url ->
-                applicationVerifier = applicationVerifierBuilder
-                    .withLoggers(listOf(logger))
-                    .withUrl(url)
-                    .withAuthToken(preferences.getApiToken())
-                    .build()
+        applicationVerifier = applicationVerifierBuilder
+            .withLoggers(listOf(logger))
+            .withUrl(preferences.getEndpointUrl())
+            .withAuthToken(preferences.getApiToken())
+            .build()
 
-                applicationVerifier?.getToken {
-                    saveTokenToPreferences(it.token)
-                    receivedToken = it.token
-                }
-            }
-            setOnCopyButtonClickedListener {
-                router?.saveTextToBuffer(receivedToken)
+        this.view?.apply {
+            showRequestIdProgressBar()
+            applicationVerifier?.getToken {
+                hideRequestIdProgressBar()
+                setRequestId(it.requestId)
             }
         }
     }
@@ -80,12 +70,7 @@ class ReceiveTokenPresenterImpl(
         view = null
     }
 
-    override fun attachRouter(router: ReceiveTokenRouter) {
+    override fun attachRouter(router: DemoRouter) {
         this.router = router
     }
-
-    private fun saveTokenToPreferences(token: String) {
-        preferences.setLastSecurityToken(token)
-    }
-
 }
