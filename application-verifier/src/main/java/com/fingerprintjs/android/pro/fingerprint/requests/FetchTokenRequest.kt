@@ -10,7 +10,7 @@ import org.json.JSONObject
 
 
 data class FetchTokenResponse(
-    val token: String,
+    val requestId: String,
     val errorMessage: String? = ""
 )
 

@@ -1,8 +1,16 @@
 <resources>
-    <string name="app_name">Playground PRO</string>
+    <string name="app_name">App-Protect Demo</string>
     <string name="run_btn_text">Run</string>
     <string name="btn_verify_text">VERIFY</string>
     <string name="endpointUrlKey">endpointUrl</string>
+    <string name="defaultEndpointUrl">https://app-protect-dev-use1.fpjs.sh</string>
     <string name="apiTokenKey">apiToken</string>
-    <string name="lastSavedSecurityToken">securityToken</string>
+    <string name="defaultApiToken">1zzjNALL0FY8Z0vGPKrO7iZItG4</string>
+    <string name="demo_description">The demo app shows general capabilities of the app-protect library for verification security of environment. The library sends a bunch of signals to the server, which performs verification of the application environment.</string>
+    <string name="get_started_btn_text">Verify environment</string>
+    <string name="agreement">by clicking this button I agree to the terms.</string>
+    <string name="fingerprintjs">FingerprintJS</string>
+    <string name="request_id_text">Request ID</string>
+    <string name="logs_btn_text">Logs</string>
+    <string name="get_results_by_request_id">Get results by Request ID</string>
 </resources>
