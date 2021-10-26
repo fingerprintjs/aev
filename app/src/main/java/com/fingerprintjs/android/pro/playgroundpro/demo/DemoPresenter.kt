@@ -4,8 +4,11 @@ package com.fingerprintjs.android.pro.playgroundpro.demo
 import com.fingerprintjs.android.pro.fingerprint.ApplicationVerifier
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
+import com.fingerprintjs.android.pro.playgroundpro.demo.get_results.GetResultsInteractor
+import com.fingerprintjs.android.pro.playgroundpro.demo.get_results.VerificationResult
 import org.json.JSONObject
 import java.util.LinkedList
+import java.util.concurrent.Executors
 
 
 interface ReceiveTokenPresenter {
@@ -17,6 +20,7 @@ interface ReceiveTokenPresenter {
 
 class ReceiveTokenPresenterImpl(
     private val applicationVerifierBuilder: ApplicationVerifierBuilder,
+    private val getResultsInteractor: GetResultsInteractor,
     private val preferences: ApplicationPreferences
 ) : ReceiveTokenPresenter {
 
@@ -25,7 +29,9 @@ class ReceiveTokenPresenterImpl(
     private var router: DemoRouter? = null
     private var applicationVerifier: ApplicationVerifier? = null
 
-    private var receivedToken: String = ""
+    private val executor = Executors.newSingleThreadExecutor()
+
+    private var requestId: String = ""
 
     val logger = object : Logger {
         override fun debug(obj: Any, message: String?) {
@@ -51,6 +57,28 @@ class ReceiveTokenPresenterImpl(
 
     override fun attachView(view: DemoView) {
         this.view = view
+        subscribeToView()
+        startGettingRequestId()
+    }
+
+    override fun detachView() {
+        view = null
+    }
+
+    private fun subscribeToView() {
+        this.view?.apply {
+            setOnGetResultsButtonClickedListener {
+                showResults()
+                showResultsProgressBar()
+                getResultsByRequestId(requestId) {
+                    hideResultsProgressBar()
+                    setDeviceId(it.deviceId)
+                }
+            }
+        }
+    }
+
+    private fun startGettingRequestId() {
         applicationVerifier = applicationVerifierBuilder
             .withLoggers(listOf(logger))
             .withUrl(preferences.getEndpointUrl())
@@ -58,19 +86,22 @@ class ReceiveTokenPresenterImpl(
             .build()
 
         this.view?.apply {
+            hideResults()
             showRequestIdProgressBar()
             applicationVerifier?.getToken {
                 hideRequestIdProgressBar()
+                requestId = it.requestId
                 setRequestId(it.requestId)
             }
         }
     }
-
-    override fun detachView() {
-        view = null
-    }
-
     override fun attachRouter(router: DemoRouter) {
         this.router = router
+    }
+
+    private fun getResultsByRequestId(requestId: String, listener: (VerificationResult) -> (Unit)) {
+        executor.execute {
+            listener.invoke(getResultsInteractor.results(requestId))
+        }
     }
 }

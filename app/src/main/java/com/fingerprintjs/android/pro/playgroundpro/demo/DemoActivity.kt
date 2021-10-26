@@ -7,8 +7,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.fingerprintjs.android.pro.fingerprint.logger.ConsoleLogger
+import com.fingerprintjs.android.pro.fingerprint.transport.OkHttpClientImpl
 import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferencesImpl
 import com.fingerprintjs.android.pro.playgroundpro.R
+import com.fingerprintjs.android.pro.playgroundpro.demo.get_results.GetResultsInteractorImpl
 
 
 class DemoActivity : AppCompatActivity(), DemoRouter {
@@ -29,10 +32,12 @@ class DemoActivity : AppCompatActivity(), DemoRouter {
     }
 
     private fun init() {
+        val applicationPreferences = ApplicationPreferencesImpl(this)
         presenter =
             ReceiveTokenPresenterImpl(
                 ApplicationVerifierBuilder(this.applicationContext),
-                ApplicationPreferencesImpl(this)
+                GetResultsInteractorImpl(OkHttpClientImpl(ConsoleLogger()), applicationPreferences),
+                applicationPreferences
             )
     }
 

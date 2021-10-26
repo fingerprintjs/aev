@@ -13,4 +13,7 @@
     <string name="request_id_text">Request ID</string>
     <string name="logs_btn_text">Logs</string>
     <string name="get_results_by_request_id">Get results by Request ID</string>
+    <string name="device_id_title">Device ID</string>
+    <string name="raw_btn_text">Raw</string>
+    <string name="try_again_btn_text">Try again?</string>
 </resources>
