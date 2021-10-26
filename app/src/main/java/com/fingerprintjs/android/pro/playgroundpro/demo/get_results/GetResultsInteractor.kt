@@ -1,19 +1,22 @@
-package com.fingerprintjs.android.pro.playgroundpro.verification_screen
+package com.fingerprintjs.android.pro.playgroundpro.demo.get_results
 
 
 import com.fingerprintjs.android.pro.fingerprint.transport.HttpClient
+import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
 
 
-interface VerifyTokenInteractor {
-    fun verifyToken(token: String): VerificationResult
+interface GetResultsInteractor {
+    fun results(token: String): VerificationResult
 }
 
-class VerifyTokenInteractorImpl(
+class GetResultsInteractorImpl(
     private val httpClient: HttpClient,
-    private val endpointURL: String,
-    private val authorizationToken: String
-) : VerifyTokenInteractor {
-    override fun verifyToken(token: String): VerificationResult {
+    private val applicationPreferences: ApplicationPreferences
+) : GetResultsInteractor {
+    override fun results(token: String): VerificationResult {
+        val endpointURL = applicationPreferences.getEndpointUrl()
+        val authorizationToken = applicationPreferences.getApiToken()
+
         val verifyTokenRequest = VerifyTokenRequest(
             endpointURL,
             authorizationToken,

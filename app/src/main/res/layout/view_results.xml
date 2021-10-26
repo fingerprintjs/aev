@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/results_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -10,44 +11,69 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/raw_results_btn"
             style="@style/SecondaryActionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Raw" />
+            android:text="@string/raw_btn_text" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Body1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            tools:text="Device ID" />
+            android:text="@string/device_id_title" />
 
         <ImageView
+            android:id="@+id/about_results_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:src="@drawable/ic_question_mark"
-            android:contentDescription="@null" />
+            android:contentDescription="@null"
+            android:src="@drawable/ic_question_mark" />
     </FrameLayout>
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:layout_marginVertical="16dp"
-        style="@style/TextAppearance.AppCompat.Title"
-        tools:text="1yoc9t4lWxaG5TxngTywJZUN3QJ"/>
-    
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
-        style="@style/MainActionButton"
-        tools:text="Try again?"/>
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/results_progress_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:indeterminate="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/device_id_container"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/device_id_tv"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:textAlignment="center"
+                tools:text="1yoc9t4lWxaG5TxngTywJZUN3QJ" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/results_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/try_again_btn"
+                style="@style/MainActionButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="8dp"
+                android:text="@string/try_again_btn_text" />
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>
