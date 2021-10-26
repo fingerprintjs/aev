@@ -1,6 +1,8 @@
 package com.fingerprintjs.android.pro.playgroundpro.extensions
 
+
 import android.view.View
+
 
 fun View.hide() {
     visibility = View.GONE

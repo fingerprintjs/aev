@@ -5,7 +5,7 @@
         <item name="elevation">0dp</item>
     </style>
     <style name="MainActionButton" parent="@style/TextAppearance.MaterialComponents.Button">
-        <item name="android:background">@drawable/bg_action_btn</item>
+        <item name="android:background">@drawable/bg_primary_btn</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAlignment">center</item>
         <item name="android:focusable">true</item>

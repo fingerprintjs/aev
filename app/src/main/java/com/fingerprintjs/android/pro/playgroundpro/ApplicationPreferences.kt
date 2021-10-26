@@ -2,7 +2,11 @@ package com.fingerprintjs.android.pro.playgroundpro
 
 
 import android.content.Context
+import android.os.Build
 import androidx.preference.PreferenceManager
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+import androidx.security.crypto.MasterKeys
 
 
 interface ApplicationPreferences {
@@ -15,7 +19,7 @@ interface ApplicationPreferences {
 
 class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
 
-    private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private val preferences = createPreferences(context)
 
     private val defaultEndpointUrl = context.getString(R.string.defaultEndpointUrl)
     private val defaultAPIToken = context.getString(R.string.defaultApiToken)
@@ -23,7 +27,8 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
     private val API_TOKEN_KEY = context.getString(R.string.apiTokenKey)
     private val ENDPOINT_URL_KEY = context.getString(R.string.endpointUrlKey)
 
-    override fun getEndpointUrl() = preferences.getString(ENDPOINT_URL_KEY, null) ?: defaultEndpointUrl
+    override fun getEndpointUrl() =
+        preferences.getString(ENDPOINT_URL_KEY, null) ?: defaultEndpointUrl
 
     override fun getApiToken() = preferences.getString(API_TOKEN_KEY, null) ?: defaultAPIToken
 
@@ -35,4 +40,21 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
     override fun setApiToken(apiToken: String) {
         preferences.edit().putString(API_TOKEN_KEY, apiToken).apply()
     }
+
+    private fun createPreferences(context: Context) =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            EncryptedSharedPreferences.create(
+                context,
+                PREFERENCES_FILENAME,
+                MasterKey(context),
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+
+
+        } else {
+            PreferenceManager.getDefaultSharedPreferences(context)
+        }
 }
+
+private const val PREFERENCES_FILENAME = "fpjs_prefs"
