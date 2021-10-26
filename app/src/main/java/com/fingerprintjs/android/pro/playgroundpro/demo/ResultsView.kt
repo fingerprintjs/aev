@@ -5,8 +5,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fingerprintjs.android.pro.playgroundpro.R
+import com.fingerprintjs.android.pro.playgroundpro.adapters.ResultAdapter
+import com.fingerprintjs.android.pro.playgroundpro.demo.api.Verdict
 import com.fingerprintjs.android.pro.playgroundpro.extensions.hide
 import com.fingerprintjs.android.pro.playgroundpro.extensions.show
 
@@ -16,6 +19,7 @@ interface ResultsView {
     fun setOnRawResultsButtonClickedListener(listener: () -> (Unit))
     fun setOnAboutResultsBtnClickedListener(listener: () -> (Unit))
     fun setDeviceId(requestId: String)
+    fun setVerdict(verdict: List<Verdict>)
     fun showResultsProgressBar()
     fun hideResultsProgressBar()
 }
@@ -31,6 +35,11 @@ class ResultsViewImpl(private val activity: DemoActivity) : ResultsView {
     private val progressIndicator: ProgressBar =
         activity.findViewById(R.id.results_progress_indicator)
     private val deviceIdContainer: View = activity.findViewById(R.id.device_id_container)
+
+    init {
+        resultsRecyclerView.layoutManager = LinearLayoutManager(activity)
+        resultsRecyclerView.adapter = ResultAdapter(activity)
+    }
 
     override fun setOnTryAgainButtonClickedListener(listener: () -> Unit) {
         TODO("Not yet implemented")
@@ -48,6 +57,10 @@ class ResultsViewImpl(private val activity: DemoActivity) : ResultsView {
         activity.runOnUiThread {
             deviceIdTextView.text = requestId
         }
+    }
+
+    override fun setVerdict(verdict: List<Verdict>) {
+        (resultsRecyclerView.adapter as? ResultAdapter)?.setDataset(verdict)
     }
 
     override fun showResultsProgressBar() {

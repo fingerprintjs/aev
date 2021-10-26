@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.pro.playgroundpro.demo.get_results
+package com.fingerprintjs.android.pro.playgroundpro.demo.api
 
 
 import com.fingerprintjs.android.pro.fingerprint.transport.HttpClient
@@ -27,7 +27,7 @@ class GetResultsInteractorImpl(
             verifyTokenRequest
         )
 
-        val response = VerifyTokenResponse(rawRequestResult.type, rawRequestResult.rawResponse)
+        val response = VerificationResultResponse(rawRequestResult.type, rawRequestResult.rawResponse)
         rawRequestResult.rawResponse?.let {
             print("Response: ${String(it, Charsets.UTF_8)}")
         }

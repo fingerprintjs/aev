@@ -4,8 +4,9 @@ package com.fingerprintjs.android.pro.playgroundpro.demo
 import com.fingerprintjs.android.pro.fingerprint.ApplicationVerifier
 import com.fingerprintjs.android.pro.fingerprint.logger.Logger
 import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
-import com.fingerprintjs.android.pro.playgroundpro.demo.get_results.GetResultsInteractor
-import com.fingerprintjs.android.pro.playgroundpro.demo.get_results.VerificationResult
+import com.fingerprintjs.android.pro.playgroundpro.demo.api.GetResultsInteractor
+import com.fingerprintjs.android.pro.playgroundpro.demo.api.VerificationResult
+import com.fingerprintjs.android.pro.playgroundpro.demo.api.ApplicationVerifierBuilder
 import org.json.JSONObject
 import java.util.LinkedList
 import java.util.concurrent.Executors
@@ -73,6 +74,7 @@ class ReceiveTokenPresenterImpl(
                 getResultsByRequestId(requestId) {
                     hideResultsProgressBar()
                     setDeviceId(it.deviceId)
+                    setVerdict(it.verdicts)
                 }
             }
         }

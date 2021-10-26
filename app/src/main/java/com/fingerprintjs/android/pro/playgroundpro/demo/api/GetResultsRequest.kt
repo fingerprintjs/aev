@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.pro.playgroundpro.demo.get_results
+package com.fingerprintjs.android.pro.playgroundpro.demo.api
 
 
 import com.fingerprintjs.android.pro.fingerprint.transport.Request
@@ -10,7 +10,8 @@ import java.util.*
 
 
 class Verdict(
-    val description: String
+    val name: String,
+    val value: Boolean
 )
 
 class VerificationResult(
@@ -18,7 +19,7 @@ class VerificationResult(
     val verdicts: List<Verdict>
 )
 
-class VerifyTokenResponse(
+class VerificationResultResponse(
     type: RequestResultType,
     rawResponse: ByteArray?
 ) : TypedRequestResult<VerificationResult>(type, rawResponse) {
@@ -31,12 +32,21 @@ class VerifyTokenResponse(
             val results = jsonBody.getJSONObject(RESULTS_KEY)
             val verdictList = LinkedList<Verdict>()
             results.keys().forEach {
-                verdictList.add(Verdict("$it: ${results.getJSONObject(it).toString(2)}"))
+                val value = results.getJSONObject(it).getBoolean(VALUE_KEY)
+                verdictList.add(Verdict(splitCamelCaseString(it), value))
             }
             VerificationResult(deviceId, verdictList)
         } catch (exception: Exception) {
             errorResponse
         }
+    }
+
+    private fun splitCamelCaseString(camelCaseString: String): String {
+        return camelCaseString.map {
+            if (it.isUpperCase()) {
+                " ${it.toLowerCase()}"
+            } else it
+        }.joinToString("").capitalize()
     }
 }
 
@@ -57,3 +67,4 @@ class VerifyTokenRequest(
 
 private const val DEVICE_ID_KEY = "deviceId"
 private const val RESULTS_KEY = "results"
+private const val VALUE_KEY = "v"

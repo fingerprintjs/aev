@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.pro.playgroundpro.demo
+package com.fingerprintjs.android.pro.playgroundpro.demo.api
 
 
 import android.content.Context
