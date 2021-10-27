@@ -3,6 +3,7 @@ package com.fingerprintjs.android.pro.playgroundpro.demo
 
 import android.app.Activity
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -28,7 +29,7 @@ class RequestIdViewImpl(
 
     private val logsButton = activity.findViewById<TextView>(R.id.logs_btn)
     private val requestIdAboutBtn = activity.findViewById<ImageView>(R.id.request_id_about_btn)
-    private val getResultsButton = activity.findViewById<TextView>(R.id.get_results_btn)
+    private val getResultsButton = activity.findViewById<FrameLayout>(R.id.get_results_btn)
     private val requestIdTextView = activity.findViewById<TextView>(R.id.request_id_tv)
     private val requestIdContainer = activity.findViewById<View>(R.id.request_id_container)
     private val progressBar = activity.findViewById<ProgressBar>(R.id.progress_indicator)
@@ -63,11 +64,12 @@ class RequestIdViewImpl(
     }
 
     override fun setRunBtnEnabled(enabled: Boolean) {
+        val tv = getResultsButton.findViewById<View>(R.id.get_result_btn_tv)
         if (enabled) {
-            getResultsButton.background = buttonEnabledDrawable
+            tv.background = buttonEnabledDrawable
             getResultsButton.isClickable = true
         } else {
-            getResultsButton.background = buttonDisabledDrawable
+            tv.background = buttonDisabledDrawable
             getResultsButton.isClickable = false
         }
     }

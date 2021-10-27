@@ -2,6 +2,7 @@ package com.fingerprintjs.android.pro.playgroundpro.demo
 
 
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -25,7 +26,7 @@ interface ResultsView {
 }
 
 class ResultsViewImpl(private val activity: DemoActivity) : ResultsView {
-    private val tryAgainButton: TextView = activity.findViewById(R.id.try_again_btn)
+    private val tryAgainButton: FrameLayout = activity.findViewById(R.id.try_again_btn)
     private val rawResultsButton: TextView = activity.findViewById(R.id.raw_results_btn)
     private val aboutBtn: ImageView = activity.findViewById(R.id.about_results_btn)
 
