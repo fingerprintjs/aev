@@ -6,7 +6,6 @@ import android.os.Build
 import androidx.preference.PreferenceManager
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import androidx.security.crypto.MasterKeys
 
 
 interface ApplicationPreferences {
@@ -32,7 +31,6 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
 
     override fun getApiToken() = preferences.getString(API_TOKEN_KEY, null) ?: defaultAPIToken
 
-
     override fun setEndpointUrl(endpointUrl: String) {
         preferences.edit().putString(ENDPOINT_URL_KEY, endpointUrl).apply()
     }
@@ -50,8 +48,6 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
-
-
         } else {
             PreferenceManager.getDefaultSharedPreferences(context)
         }

@@ -53,6 +53,7 @@ dependencies {
     implementation "com.github.fingerprintjs:fingerprint-android:1.2"
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'androidx.security:security-crypto-ktx:1.1.0-alpha02'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     testImplementation 'junit:junit:4.+'
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

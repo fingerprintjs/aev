@@ -49,4 +49,28 @@ class DemoActivity : AppCompatActivity(), DemoRouter {
         clipboard?.setPrimaryClip(clip)
         Toast.makeText(this, "Token is copied!", Toast.LENGTH_LONG).show()
     }
+
+    override fun refresh() {
+        presenter.detachRouter()
+        presenter.detachView()
+        init()
+        presenter.attachRouter(this)
+        presenter.attachView(
+            DemoViewImpl(
+                this
+            )
+        )
+    }
+
+    override fun openSettings() {
+        TODO("Not yet implemented")
+    }
+
+    override fun openRepositoryLink() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showLogs(logs: List<String>) {
+        TODO("Not yet implemented")
+    }
 }
