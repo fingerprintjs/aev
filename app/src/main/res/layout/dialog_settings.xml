@@ -2,15 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
     android:orientation="vertical">
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edit_text_endpoint_url"/>
 
     <EditText
+        android:id="@+id/edit_text_endpoint_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_text_api_token"/>
+        android:layout_marginHorizontal="16dp" />
+
+    <EditText
+        android:id="@+id/edit_text_api_token"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp" />
 </LinearLayout>

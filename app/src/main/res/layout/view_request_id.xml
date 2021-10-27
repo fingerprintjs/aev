@@ -60,14 +60,22 @@
                 android:textAlignment="center"
                 tools:text="1yoc9t4lWxaG5TxngTywJZUN3QJ" />
 
-            <TextView
+            <FrameLayout
                 android:id="@+id/get_results_btn"
-                style="@style/MainActionButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="8dp"
-                android:text="@string/get_results_by_request_id" />
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/btn_ripple">
+
+                <TextView
+                    style="@style/MainActionButton"
+                    android:id="@+id/get_result_btn_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="16dp"
+                    android:text="@string/get_results_by_request_id" />
+            </FrameLayout>
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>
