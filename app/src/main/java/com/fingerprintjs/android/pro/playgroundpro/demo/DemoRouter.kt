@@ -5,6 +5,6 @@ interface DemoRouter {
     fun saveTextToBuffer(text: String)
     fun refresh()
     fun openSettings()
-    fun openRepositoryLink()
+    fun openLink()
     fun showLogs(logs: List<String>)
 }
