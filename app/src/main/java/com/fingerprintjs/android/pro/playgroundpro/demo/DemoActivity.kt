@@ -3,17 +3,17 @@ package com.fingerprintjs.android.pro.playgroundpro.demo
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferencesImpl
+import com.fingerprintjs.android.pro.playgroundpro.ActionMenuActivity
 import com.fingerprintjs.android.pro.playgroundpro.R
 import com.fingerprintjs.android.pro.playgroundpro.demo.api.ApplicationVerifierBuilder
 import com.fingerprintjs.android.pro.playgroundpro.dialogs.LogsDialogView
 
 
-class DemoActivity : AppCompatActivity(), DemoRouter {
+class DemoActivity : ActionMenuActivity(), DemoRouter {
 
     private lateinit var presenter: ReceiveTokenPresenter
 
@@ -31,7 +31,6 @@ class DemoActivity : AppCompatActivity(), DemoRouter {
     }
 
     private fun init() {
-        val applicationPreferences = ApplicationPreferencesImpl(this)
         presenter =
             ReceiveTokenPresenterImpl(
                 ApplicationVerifierBuilder(this.applicationContext),
@@ -59,12 +58,9 @@ class DemoActivity : AppCompatActivity(), DemoRouter {
         )
     }
 
-    override fun openSettings() {
-        TODO("Not yet implemented")
-    }
-
-    override fun openLink() {
-        TODO("Not yet implemented")
+    override fun openLink(link: String) {
+        val webpage: Uri = Uri.parse(link)
+        openLink(webpage)
     }
 
     override fun showLogs(logs: List<String>) {

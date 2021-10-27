@@ -70,6 +70,9 @@ class ReceiveTokenPresenterImpl(
             setOnTryAgainButtonClickedListener {
                 router?.refresh()
             }
+            setOnAboutResultsBtnClickedListener {
+                router?.openLink(RESPONSE_DOCS_URL)
+            }
         }
     }
 
@@ -87,6 +90,9 @@ class ReceiveTokenPresenterImpl(
             }
             setOnRefreshListener {
                 router?.refresh()
+            }
+            setOnAboutRequestIdBtnClickedListener {
+                router?.openLink(REQUEST_ID_DOCS_URL)
             }
         }
     }
