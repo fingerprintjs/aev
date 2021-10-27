@@ -57,6 +57,7 @@ class RequestIdViewImpl(
     override fun setRequestId(requestId: String) {
         activity.runOnUiThread {
             hideRequestIdProgressBar()
+            setRunBtnEnabled(true)
             requestIdTextView.text = requestId
         }
     }

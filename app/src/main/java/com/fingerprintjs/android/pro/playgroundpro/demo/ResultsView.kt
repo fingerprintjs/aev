@@ -42,7 +42,9 @@ class ResultsViewImpl(private val activity: DemoActivity) : ResultsView {
     }
 
     override fun setOnTryAgainButtonClickedListener(listener: () -> Unit) {
-        TODO("Not yet implemented")
+        tryAgainButton.setOnClickListener {
+            listener.invoke()
+        }
     }
 
     override fun setOnRawResultsButtonClickedListener(listener: () -> Unit) {

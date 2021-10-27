@@ -29,10 +29,5 @@
         <activity
             android:name=".demo.DemoActivity"
             android:exported="false" />
-
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/network_security_config" />
-
     </application>
 </manifest>
