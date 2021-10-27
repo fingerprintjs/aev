@@ -15,7 +15,9 @@ import java.util.concurrent.Executors
 interface ReceiveTokenPresenter {
     fun attachView(view: DemoView)
     fun detachView()
+
     fun attachRouter(router: DemoRouter)
+    fun detachRouter()
 }
 
 
@@ -59,10 +61,14 @@ class ReceiveTokenPresenterImpl(
     override fun attachView(view: DemoView) {
         this.view = view
         subscribeToView()
+        view.dismissRefresh()
         startGettingRequestId()
     }
 
     override fun detachView() {
+        view?.apply {
+            hideResults()
+        }
         view = null
     }
 
@@ -77,6 +83,12 @@ class ReceiveTokenPresenterImpl(
                     setDeviceId(it.deviceId)
                     setVerdict(it.verdicts)
                 }
+            }
+            setOnRefreshListener {
+                router?.refresh()
+            }
+            setOnTryAgainButtonClickedListener {
+                router?.refresh()
             }
         }
     }
@@ -100,6 +112,10 @@ class ReceiveTokenPresenterImpl(
     }
     override fun attachRouter(router: DemoRouter) {
         this.router = router
+    }
+
+    override fun detachRouter() {
+        this.router = null
     }
 
     private fun getResultsByRequestId(requestId: String, listener: (VerificationResult) -> (Unit)) {
