@@ -7,12 +7,10 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.fingerprintjs.android.pro.fingerprint.logger.ConsoleLogger
-import com.fingerprintjs.android.pro.fingerprint.transport.OkHttpClientImpl
 import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferencesImpl
 import com.fingerprintjs.android.pro.playgroundpro.R
-import com.fingerprintjs.android.pro.playgroundpro.demo.api.GetResultsInteractorImpl
 import com.fingerprintjs.android.pro.playgroundpro.demo.api.ApplicationVerifierBuilder
+import com.fingerprintjs.android.pro.playgroundpro.dialogs.LogsDialogView
 
 
 class DemoActivity : AppCompatActivity(), DemoRouter {
@@ -37,7 +35,6 @@ class DemoActivity : AppCompatActivity(), DemoRouter {
         presenter =
             ReceiveTokenPresenterImpl(
                 ApplicationVerifierBuilder(this.applicationContext),
-                GetResultsInteractorImpl(OkHttpClientImpl(ConsoleLogger()), applicationPreferences),
                 applicationPreferences
             )
     }
@@ -47,7 +44,7 @@ class DemoActivity : AppCompatActivity(), DemoRouter {
             ContextCompat.getSystemService(this, ClipboardManager::class.java)
         val clip = ClipData.newPlainText("", text)
         clipboard?.setPrimaryClip(clip)
-        Toast.makeText(this, "Token is copied!", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Copied!", Toast.LENGTH_LONG).show()
     }
 
     override fun refresh() {
@@ -66,11 +63,17 @@ class DemoActivity : AppCompatActivity(), DemoRouter {
         TODO("Not yet implemented")
     }
 
-    override fun openRepositoryLink() {
+    override fun openLink() {
         TODO("Not yet implemented")
     }
 
     override fun showLogs(logs: List<String>) {
-        TODO("Not yet implemented")
+        LogsDialogView(this).showLogs(logs) {
+            val sb = StringBuilder()
+            logs.forEach {
+                sb.append("$it \n")
+            }
+            saveTextToBuffer(sb.toString())
+        }
     }
 }

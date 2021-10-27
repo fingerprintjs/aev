@@ -48,11 +48,15 @@ class ResultsViewImpl(private val activity: DemoActivity) : ResultsView {
     }
 
     override fun setOnRawResultsButtonClickedListener(listener: () -> Unit) {
-        TODO("Not yet implemented")
+        rawResultsButton.setOnClickListener {
+            listener.invoke()
+        }
     }
 
     override fun setOnAboutResultsBtnClickedListener(listener: () -> Unit) {
-        TODO("Not yet implemented")
+        aboutBtn.setOnClickListener {
+            listener.invoke()
+        }
     }
 
     override fun setDeviceId(requestId: String) {
@@ -78,5 +82,4 @@ class ResultsViewImpl(private val activity: DemoActivity) : ResultsView {
             deviceIdContainer.show()
         }
     }
-
 }
