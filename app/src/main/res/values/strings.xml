@@ -18,4 +18,7 @@
     <string name="try_again_btn_text">Try again?</string>
     <string name="verdict_detected_string">YES</string>
     <string name="verdict_not_detected_string">NO</string>
+    <string name="copy_button_image_description">Copy button</string>
+    <string name="menu_repository_page_title">Repository page</string>
+    <string name="menu_settings_title">Settings</string>
 </resources>

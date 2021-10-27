@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_repository"
+        android:icon="@drawable/ic_github_logo_small"
+        android:title="@string/menu_repository_page_title"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/menu_settings_title"
+        app:showAsAction="always" />
+</menu>
