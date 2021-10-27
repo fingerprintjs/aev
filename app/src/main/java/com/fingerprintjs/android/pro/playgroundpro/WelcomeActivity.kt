@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fingerprintjs.android.pro.playgroundpro.demo.DemoActivity
 
 
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : ActionMenuActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
