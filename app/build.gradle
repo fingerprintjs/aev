@@ -36,7 +36,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "App-V-Playground-${variant.name}-${variant.versionName}.apk"
+            outputFileName = "Mobile-Application-Protection-Demo-${variant.name}-${variant.versionName}.apk"
         }
     }
 

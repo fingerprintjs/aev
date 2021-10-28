@@ -15,7 +15,7 @@ import com.fingerprintjs.android.pro.playgroundpro.dialogs.LogsDialogView
 
 class DemoActivity : ActionMenuActivity(), DemoRouter {
 
-    private lateinit var presenter: ReceiveTokenPresenter
+    private lateinit var presenter: DemoPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +32,7 @@ class DemoActivity : ActionMenuActivity(), DemoRouter {
 
     private fun init() {
         presenter =
-            ReceiveTokenPresenterImpl(
+            DemoPresenterImpl(
                 ApplicationVerifierBuilder(this.applicationContext),
                 applicationPreferences
             )

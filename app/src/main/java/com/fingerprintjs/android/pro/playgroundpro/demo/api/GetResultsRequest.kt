@@ -50,7 +50,7 @@ class VerificationResultResponse(
     }
 }
 
-class VerifyTokenRequest(
+class GetResultsRequest(
     endpointUrl: String,
     autorizationToken: String,
     requestId: String

@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">App-Protect Demo</string>
+    <string name="app_name">Mobile Application Protection Demo</string>
     <string name="run_btn_text">Run</string>
     <string name="btn_verify_text">VERIFY</string>
     <string name="endpointUrlKey">endpointUrl</string>
     <string name="defaultEndpointUrl">https://app-protect-dev-use1.fpjs.sh</string>
     <string name="apiTokenKey">apiToken</string>
     <string name="defaultApiToken">1zzjNALL0FY8Z0vGPKrO7iZItG4</string>
-    <string name="demo_description">The demo app shows general capabilities of the app-protect library for verification security of environment. The library sends a bunch of signals to the server, which performs verification of the application environment.</string>
+    <string name="demo_description">The demo app shows capabilities of the mobile-application-protection library for verification security of environment. The library sends a set of signals to the server. The server verifies safety of the application environment.</string>
     <string name="get_started_btn_text">Verify environment</string>
     <string name="agreement">by clicking this button I agree to the terms.</string>
     <string name="fingerprintjs">FingerprintJS</string>
@@ -15,7 +15,7 @@
     <string name="get_results_by_request_id">Get results by Request ID</string>
     <string name="device_id_title">Device ID</string>
     <string name="raw_btn_text">Raw</string>
-    <string name="try_again_btn_text">Try again?</string>
+    <string name="try_again_btn_text">Try again</string>
     <string name="verdict_detected_string">YES</string>
     <string name="verdict_not_detected_string">NO</string>
     <string name="copy_button_image_description">Copy button</string>
