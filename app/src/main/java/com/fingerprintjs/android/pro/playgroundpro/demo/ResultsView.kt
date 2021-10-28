@@ -43,20 +43,26 @@ class ResultsViewImpl(private val activity: DemoActivity) : ResultsView {
     }
 
     override fun setOnTryAgainButtonClickedListener(listener: () -> Unit) {
-        tryAgainButton.setOnClickListener {
-            listener.invoke()
+        activity.runOnUiThread {
+            tryAgainButton.setOnClickListener {
+                listener.invoke()
+            }
         }
     }
 
     override fun setOnRawResultsButtonClickedListener(listener: () -> Unit) {
-        rawResultsButton.setOnClickListener {
-            listener.invoke()
+        activity.runOnUiThread {
+            rawResultsButton.setOnClickListener {
+                listener.invoke()
+            }
         }
     }
 
     override fun setOnAboutResultsBtnClickedListener(listener: () -> Unit) {
-        aboutBtn.setOnClickListener {
-            listener.invoke()
+        activity.runOnUiThread {
+            aboutBtn.setOnClickListener {
+                listener.invoke()
+            }
         }
     }
 
@@ -67,7 +73,9 @@ class ResultsViewImpl(private val activity: DemoActivity) : ResultsView {
     }
 
     override fun setVerdict(verdict: List<Verdict>) {
-        (resultsRecyclerView.adapter as? ResultAdapter)?.setDataset(verdict)
+        activity.runOnUiThread {
+            (resultsRecyclerView.adapter as? ResultAdapter)?.setDataset(verdict)
+        }
     }
 
     override fun showResultsProgressBar() {

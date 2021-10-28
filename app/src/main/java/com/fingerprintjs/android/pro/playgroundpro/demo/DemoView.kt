@@ -45,6 +45,8 @@ class DemoViewImpl(
     }
 
     override fun dismissRefresh() {
-        swipeToRefreshLayout.isRefreshing = false
+        activity.runOnUiThread {
+            swipeToRefreshLayout.isRefreshing = false
+        }
     }
 }

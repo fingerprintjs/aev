@@ -36,7 +36,9 @@ internal class ApplicationVerifierImpl(
                             .build()
                     ).let {
                         if (it.requestId.isEmpty()) {
-                            val errorMessage = it.errorMessage ?: "Unknown"
+                            val errorMessage =
+                                if (it.errorMessage.isNullOrEmpty()) "Unknown error. Check the API token or the endpoint URL and try again." else it.errorMessage
+
                             logger.debug(this, "Token hasn't been received. $errorMessage")
                             errorListener.invoke(errorMessage)
                         } else {
