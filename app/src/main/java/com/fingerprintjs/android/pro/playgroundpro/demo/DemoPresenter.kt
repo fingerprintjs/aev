@@ -12,7 +12,7 @@ import java.util.*
 import java.util.concurrent.Executors
 
 
-interface ReceiveTokenPresenter {
+interface DemoPresenter {
     fun attachView(view: DemoView)
     fun detachView()
 
@@ -21,10 +21,10 @@ interface ReceiveTokenPresenter {
 }
 
 
-class ReceiveTokenPresenterImpl(
+class DemoPresenterImpl(
     private val applicationVerifierBuilder: ApplicationVerifierBuilder,
     private val preferences: ApplicationPreferences
-) : ReceiveTokenPresenter {
+) : DemoPresenter {
 
     private val receiveRequestIdLogs = LinkedList<String>()
     private val verificationResultsLogs = LinkedList<String>()
@@ -55,7 +55,7 @@ class ReceiveTokenPresenterImpl(
     private fun subscribeToResultsView() {
         this.view?.apply {
             setOnGetResultsButtonClickedListener {
-                setRunBtnEnabled(false)
+                setGetResultsBtnEnabled(false)
                 showResults()
                 showResultsProgressBar()
                 getResultsByRequestId(requestId) {
@@ -80,11 +80,17 @@ class ReceiveTokenPresenterImpl(
         this.view?.apply {
             hideResults()
             showRequestIdProgressBar()
-            applicationVerifier?.getToken {
+            applicationVerifier?.getToken(listener = {
                 hideRequestIdProgressBar()
                 requestId = it.requestId
                 setRequestId(it.requestId)
-            }
+                setGetResultsBtnEnabled(true)
+            }, errorListener = {
+                hideRequestIdProgressBar()
+                setGetResultsBtnEnabled(false)
+                setRequestId(it)
+            })
+
             setOnLogsButtonClickedListener {
                 router?.showLogs(receiveRequestIdLogs)
             }

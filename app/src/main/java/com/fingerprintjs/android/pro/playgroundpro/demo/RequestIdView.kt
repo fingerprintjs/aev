@@ -18,7 +18,7 @@ interface RequestIdView {
     fun setOnLogsButtonClickedListener(listener: () -> (Unit))
     fun setOnAboutRequestIdBtnClickedListener(listener: () -> (Unit))
     fun setRequestId(requestId: String)
-    fun setRunBtnEnabled(enabled: Boolean = true)
+    fun setGetResultsBtnEnabled(enabled: Boolean = true)
     fun showRequestIdProgressBar()
     fun hideRequestIdProgressBar()
 }
@@ -34,43 +34,52 @@ class RequestIdViewImpl(
     private val requestIdContainer = activity.findViewById<View>(R.id.request_id_container)
     private val progressBar = activity.findViewById<ProgressBar>(R.id.progress_indicator)
 
-    private val buttonEnabledDrawable =  ContextCompat.getDrawable(activity, R.drawable.bg_primary_btn)
-    private val buttonDisabledDrawable = ContextCompat.getDrawable(activity, R.drawable.bg_primary_btn_disabled)
+    private val buttonEnabledDrawable =
+        ContextCompat.getDrawable(activity, R.drawable.bg_primary_btn)
+    private val buttonDisabledDrawable =
+        ContextCompat.getDrawable(activity, R.drawable.bg_primary_btn_disabled)
 
     override fun setOnGetResultsButtonClickedListener(listener: () -> Unit) {
-        getResultsButton.setOnClickListener {
-            listener.invoke()
+        activity.runOnUiThread {
+            getResultsButton.setOnClickListener {
+                listener.invoke()
+            }
         }
     }
 
     override fun setOnLogsButtonClickedListener(listener: () -> Unit) {
-        logsButton.setOnClickListener {
-            listener.invoke()
+        activity.runOnUiThread {
+            logsButton.setOnClickListener {
+                listener.invoke()
+            }
         }
     }
 
     override fun setOnAboutRequestIdBtnClickedListener(listener: () -> Unit) {
-        requestIdAboutBtn.setOnClickListener {
-            listener.invoke()
+        activity.runOnUiThread {
+            requestIdAboutBtn.setOnClickListener {
+                listener.invoke()
+            }
         }
     }
 
     override fun setRequestId(requestId: String) {
         activity.runOnUiThread {
             hideRequestIdProgressBar()
-            setRunBtnEnabled(true)
             requestIdTextView.text = requestId
         }
     }
 
-    override fun setRunBtnEnabled(enabled: Boolean) {
-        val tv = getResultsButton.findViewById<View>(R.id.get_result_btn_tv)
-        if (enabled) {
-            tv.background = buttonEnabledDrawable
-            getResultsButton.isClickable = true
-        } else {
-            tv.background = buttonDisabledDrawable
-            getResultsButton.isClickable = false
+    override fun setGetResultsBtnEnabled(enabled: Boolean) {
+        activity.runOnUiThread {
+            val tv = getResultsButton.findViewById<View>(R.id.get_result_btn_tv)
+            if (enabled) {
+                tv.background = buttonEnabledDrawable
+                getResultsButton.isClickable = true
+            } else {
+                tv.background = buttonDisabledDrawable
+                getResultsButton.isClickable = false
+            }
         }
     }
 

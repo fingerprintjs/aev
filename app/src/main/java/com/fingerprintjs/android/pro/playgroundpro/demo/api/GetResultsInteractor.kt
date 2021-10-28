@@ -7,21 +7,21 @@ import com.fingerprintjs.android.pro.playgroundpro.ApplicationPreferences
 
 
 interface GetResultsInteractor {
-    fun results(token: String): VerificationResult
+    fun results(requestId: String): VerificationResult
 }
 
 class GetResultsInteractorImpl(
     private val applicationPreferences: ApplicationPreferences,
     private val logger: Logger
 ) : GetResultsInteractor {
-    override fun results(token: String): VerificationResult {
+    override fun results(requestId: String): VerificationResult {
         val endpointURL = applicationPreferences.getEndpointUrl()
         val authorizationToken = applicationPreferences.getApiToken()
 
-        val verifyTokenRequest = VerifyTokenRequest(
+        val verifyTokenRequest = GetResultsRequest(
             endpointURL,
             authorizationToken,
-            token
+            requestId
         )
         val httpClient = OkHttpClientImpl(logger)
         val rawRequestResult = httpClient.performRequest(
