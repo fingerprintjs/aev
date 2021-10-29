@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.fingerprintjs.android.pro.playgroundpro">
-
-    <uses-permission android:name="android.permission.INTERNET" />
+    package="com.fingerprintjs.android.application_protector.demo">
 
     <uses-sdk tools:overrideLibrary="androidx.security.ktx" />
 
@@ -30,7 +28,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".demo.DemoActivity"
+            android:name=".demo_screen.DemoActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
     </application>

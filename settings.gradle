@@ -1,4 +1,3 @@
-include ':application-verifier'
+include ':application-protector'
 include ':app'
-include ':fingerprint-android:fingerprint'
-rootProject.name = "Fingerprint-Android PRO"
+rootProject.name = "Mobile Application Protection API"
