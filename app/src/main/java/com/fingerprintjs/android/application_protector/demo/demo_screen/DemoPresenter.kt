@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.application_protector.demo.demo_screen
 
 
-import com.fingerprintjs.android.application_protector.ApplicationVerifier
+import com.fingerprintjs.android.application_protector.ApplicationProtector
 import com.fingerprintjs.android.application_protector.demo.ApplicationPreferences
 import com.fingerprintjs.android.application_protector.demo.demo_screen.api.ApplicationVerifierBuilder
 import com.fingerprintjs.android.application_protector.demo.demo_screen.api.GetResultsInteractorImpl
@@ -20,7 +20,6 @@ interface DemoPresenter {
     fun detachRouter()
 }
 
-
 class DemoPresenterImpl(
     private val applicationVerifierBuilder: ApplicationVerifierBuilder,
     private val preferences: ApplicationPreferences
@@ -31,7 +30,7 @@ class DemoPresenterImpl(
 
     private var view: DemoView? = null
     private var router: DemoRouter? = null
-    private var applicationVerifier: ApplicationVerifier? = null
+    private var applicationProtector: ApplicationProtector? = null
 
     private val executor = Executors.newSingleThreadExecutor()
 
@@ -52,6 +51,43 @@ class DemoPresenterImpl(
         view = null
     }
 
+    override fun attachRouter(router: DemoRouter) {
+        this.router = router
+    }
+
+    override fun detachRouter() {
+        this.router = null
+    }
+
+    private fun subscribeToRequestIdView() {
+        this.view?.apply {
+            hideResults()
+            showRequestIdProgressBar()
+            applicationProtector?.getRequestId(
+                listener = {
+                    hideRequestIdProgressBar()
+                    requestId = it
+                    setRequestId(it)
+                    setGetResultsBtnEnabled(true)
+                }
+            ) {
+                hideRequestIdProgressBar()
+                setGetResultsBtnEnabled(false)
+                setRequestId(it)
+            }
+
+            setOnLogsButtonClickedListener {
+                router?.showLogs(receiveRequestIdLogs)
+            }
+            setOnRefreshListener {
+                router?.refresh()
+            }
+            setOnAboutRequestIdBtnClickedListener {
+                router?.openLink(REQUEST_ID_DOCS_URL)
+            }
+        }
+    }
+
     private fun subscribeToResultsView() {
         this.view?.apply {
             setOnGetResultsButtonClickedListener {
@@ -59,9 +95,9 @@ class DemoPresenterImpl(
                 showResults()
                 showResultsProgressBar()
                 getResultsByRequestId(requestId) {
-                    hideResultsProgressBar()
-                    setDeviceId(it.deviceId)
                     setVerdict(it.verdicts)
+                    setDeviceId(it.deviceId)
+                    hideResultsProgressBar()
                 }
             }
             setOnRawResultsButtonClickedListener {
@@ -76,38 +112,8 @@ class DemoPresenterImpl(
         }
     }
 
-    private fun subscribeToRequestIdView() {
-        this.view?.apply {
-            hideResults()
-            showRequestIdProgressBar()
-            applicationVerifier?.getRequestId(
-                listener = {
-                    hideRequestIdProgressBar()
-                    requestId = it.requestId
-                    setRequestId(it.requestId)
-                    setGetResultsBtnEnabled(true)
-                },
-                errorListener = {
-                    hideRequestIdProgressBar()
-                    setGetResultsBtnEnabled(false)
-                    setRequestId(it)
-                }
-            )
-
-            setOnLogsButtonClickedListener {
-                router?.showLogs(receiveRequestIdLogs)
-            }
-            setOnRefreshListener {
-                router?.refresh()
-            }
-            setOnAboutRequestIdBtnClickedListener {
-                router?.openLink(REQUEST_ID_DOCS_URL)
-            }
-        }
-    }
-
     private fun initApplicationVerifier() {
-        applicationVerifier = applicationVerifierBuilder
+        applicationProtector = applicationVerifierBuilder
             .withLoggers(listOf(object : Logger {
                 override fun debug(obj: Any, message: String?) {
                     message?.let {
@@ -132,14 +138,6 @@ class DemoPresenterImpl(
             .withUrl(preferences.getEndpointUrl())
             .withAuthToken(preferences.getApiToken())
             .build()
-    }
-
-    override fun attachRouter(router: DemoRouter) {
-        this.router = router
-    }
-
-    override fun detachRouter() {
-        this.router = null
     }
 
     private fun getResultsByRequestId(

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mobile Application Protection Demo</string>
+    <string name="app_name">App. Protection Demo</string>
     <string name="run_btn_text">Run</string>
     <string name="btn_verify_text">VERIFY</string>
     <string name="endpointUrlKey">endpointUrl</string>
