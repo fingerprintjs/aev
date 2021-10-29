@@ -9,7 +9,7 @@
 
 <small><i>currently in beta - API may change</i></small>
 
-A library for verification security of the application environment.
+A library for security verification of application environments.
 
 The library sends a set of signals to the server.
 
