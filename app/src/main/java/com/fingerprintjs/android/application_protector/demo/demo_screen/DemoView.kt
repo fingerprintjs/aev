@@ -39,8 +39,10 @@ class DemoViewImpl(
     }
 
     override fun setOnRefreshListener(listener: () -> Unit) {
-        swipeToRefreshLayout.setOnRefreshListener {
-            listener.invoke()
+        activity.runOnUiThread {
+            swipeToRefreshLayout.setOnRefreshListener {
+                listener.invoke()
+            }
         }
     }
 

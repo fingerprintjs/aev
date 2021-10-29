@@ -48,7 +48,7 @@ class SensorsDataCollectorImpl(private val sensorManager: SensorManager) : Senso
             }
 
         }
-        sensorManager.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_FASTEST)
+        sensorManager.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_UI)
 
         try {
             countdownLatch.await(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)

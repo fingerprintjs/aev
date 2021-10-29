@@ -18,14 +18,14 @@ import com.fingerprintjs.android.application_protector.transport.OkHttpClientImp
 import org.json.JSONObject
 
 
-object ApplicationVerifierFactory {
+object ApplicationProtectorFactory {
 
     private var ossInstance: Fingerprinter? = null
     private var hasher: Hasher = MurMur3x64x128Hasher()
     private var ossConfiguration: Configuration = Configuration(version = 1, hasher)
     private val logger = getLogger()
 
-    private var instance: ApplicationVerifier? = null
+    private var instance: ApplicationProtector? = null
 
     private var consoleLogger = ConsoleLogger()
     private var outerLoggers: List<Logger>? = null
@@ -37,12 +37,12 @@ object ApplicationVerifierFactory {
         endpointUrl: String,
         authToken: String,
         outerLoggers: List<Logger> = emptyList()
-    ): ApplicationVerifier {
+    ): ApplicationProtector {
         val ossInstance = FingerprinterFactory.getInstance(applicationContext, ossConfiguration)
-        ApplicationVerifierFactory.ossInstance = ossInstance
-        ApplicationVerifierFactory.outerLoggers = outerLoggers
+        ApplicationProtectorFactory.ossInstance = ossInstance
+        ApplicationProtectorFactory.outerLoggers = outerLoggers
 
-        val instance = ApplicationVerifierImpl(
+        val instance = ApplicationProtectorImpl(
             ossInstance,
             getApiInteractor(
                 endpointUrl,
@@ -53,7 +53,7 @@ object ApplicationVerifierFactory {
             getLogger()
         )
 
-        ApplicationVerifierFactory.instance = instance
+        ApplicationProtectorFactory.instance = instance
         return instance
     }
 

@@ -3,26 +3,25 @@ package com.fingerprintjs.android.application_protector
 
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.application_protector.logger.Logger
-import com.fingerprintjs.android.application_protector.requests.FetchTokenResponse
 import com.fingerprintjs.android.application_protector.signals.SignalProviderImpl
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
-internal class ApplicationVerifierImpl(
+internal class ApplicationProtectorImpl(
     private val ossAgent: Fingerprinter,
     private val apiInteractor: ApiInteractor,
     private val signalProviderBuilder: SignalProviderImpl.SignalProviderBuilder,
     private val logger: Logger
-) : ApplicationVerifier {
+) : ApplicationProtector {
 
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
-    override fun getRequestId(listener: (FetchTokenResponse) -> Unit) {
+    override fun getRequestId(listener: (String) -> Unit) {
         getRequestId(listener, {})
     }
 
-    override fun getRequestId(listener: (FetchTokenResponse) -> Unit, errorListener: (String) -> Unit) {
+    override fun getRequestId(listener: (String) -> Unit, errorListener: (String) -> Unit) {
         executor.execute {
             logger.debug(this, "Start getting requestId.")
             ossAgent.getDeviceId { deviceIdResult ->
@@ -43,7 +42,7 @@ internal class ApplicationVerifierImpl(
                             errorListener.invoke(errorMessage)
                         } else {
                             logger.debug(this, "Got requestId: ${it.requestId}")
-                            listener.invoke(it)
+                            listener.invoke(it.requestId)
                         }
                     }
                 }
