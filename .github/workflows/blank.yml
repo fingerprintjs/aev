@@ -24,15 +24,15 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Lint
-        run: ./gradlew application-verifier:lint
+        run: ./gradlew application-protector:lint
         
       - name: Build library
-        run: ./gradlew application-verifier:assembleRelease
+        run: ./gradlew application-protector:assembleRelease
 
       - name: Save library to artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: application-verifier/build/outputs/aar/*
+          path: application-protector/build/outputs/aar/*
 
       - name: Build App
         run: ./gradlew app:assembleRelease
