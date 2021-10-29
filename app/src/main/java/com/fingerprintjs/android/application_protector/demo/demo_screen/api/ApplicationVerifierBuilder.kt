@@ -2,8 +2,8 @@ package com.fingerprintjs.android.application_protector.demo.demo_screen.api
 
 
 import android.content.Context
-import com.fingerprintjs.android.application_protector.ApplicationVerifier
-import com.fingerprintjs.android.application_protector.ApplicationVerifierFactory
+import com.fingerprintjs.android.application_protector.ApplicationProtector
+import com.fingerprintjs.android.application_protector.ApplicationProtectorFactory
 import com.fingerprintjs.android.application_protector.logger.Logger
 
 
@@ -30,7 +30,7 @@ class ApplicationVerifierBuilder(
         return this
     }
 
-    fun build(): ApplicationVerifier {
-        return ApplicationVerifierFactory.getInstance(applicationContext, url, token, loggers)
+    fun build(): ApplicationProtector {
+        return ApplicationProtectorFactory.getInstance(applicationContext, url, token, loggers)
     }
 }
