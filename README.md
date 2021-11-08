@@ -73,14 +73,14 @@ Kotlin
 ```kotlin
 
 // Initialization
-val protector = AevClientFactory.getInstance(
+val aevClient = AevClientFactory.getInstance(
     applicationContext,
     YOUR_API_TOKEN
 )
 
 
 // Get the RequestID
-applicationProtector.getRequestId(
+aevClient.getRequestId(
                 listener = { requestId ->
                     // Handle the string with requestId
                 },
