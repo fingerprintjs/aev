@@ -3,9 +3,13 @@
     <img src="resources/logo.svg" alt="FingerprintJS" width="300px" />
   </a>
 </p>
-																		      
-																		      
-# Android Application Protection API
+<p align="center">
+  <a href="https://discord.gg/39EpE2neBg">
+    <img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server">
+  </a>
+</p>
+
+# Android Application Environment Verification API
 
 <small><i>currently in beta - API may change</i></small>
 
@@ -52,7 +56,7 @@ If your application is written in Java, add `kotlin-stdlib` dependency first (it
 ```gradle
 dependencies {
   implementation "com.github.fingerprintjs:fingerprint-android:1.2"
-  implementation(name:'Mobile-Application-Protection-1.0.0-release', ext:'aar')
+  implementation(name:'AEV-1.0.0-release', ext:'aar')
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
@@ -69,7 +73,7 @@ Kotlin
 ```kotlin
 
 // Initialization
-val protector = ApplicationProtectorFactory.getInstance(
+val protector = AevClientFactory.getInstance(
     applicationContext,
     YOUR_API_TOKEN
 )
@@ -90,7 +94,7 @@ applicationProtector.getRequestId(
 
 #### Request
 ```http request
-GET /results?id=1xu9PyL9pclHYbHupthsiupaRci
+GET https://app-protect.fpapi.io/results?id=1xu9PyL9pclHYbHupthsiupaRci
 Auth-Token: YOUR_API_TOKEN
 ```
 
@@ -109,7 +113,17 @@ Auth-Token: YOUR_API_TOKEN
 }
 ```
 
+A **free token** is required to connect to our Application Environment Verification API.
+
+_To get your token, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
+_(just type `token` in the email subject, no need to compose a body)_
+<br/>
+_The free token is limited to 1M API calls per month while in beta._
+
+
 ## Demo app
+
+Try all the features in the Demo App.
 
 ## Android API support
 
