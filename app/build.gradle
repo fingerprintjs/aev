@@ -36,7 +36,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "Mobile-Application-Protection-DemoApp-${variant.name}-${variant.versionName}.apk"
+            outputFileName = "AEV-Demo-${variant.name}-${variant.versionName}.apk"
         }
     }
 
@@ -47,7 +47,7 @@ android {
 }
 
 dependencies {
-    implementation project(':application-protector')
+    implementation project(':aev')
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation "com.github.fingerprintjs:fingerprint-android:1.2"
