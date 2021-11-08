@@ -93,7 +93,7 @@ applicationProtector.getRequestId(
 ### Get the results of verification by the requestId
 
 #### Request
-```http request
+```sh
 GET https://app-protect.fpapi.io/results?id=1xu9PyL9pclHYbHupthsiupaRci
 Auth-Token: YOUR_API_TOKEN
 ```
