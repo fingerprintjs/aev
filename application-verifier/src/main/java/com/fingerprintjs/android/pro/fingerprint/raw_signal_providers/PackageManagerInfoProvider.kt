@@ -10,8 +10,7 @@ import java.security.cert.X509Certificate
 
 
 class CertificateInfo(
-    val dnameList: List<String>,
-    val sigAlgInfo: List<String>
+    val dnameList: List<String>
 )
 
 interface PackageManagerInfoProvider {
@@ -22,17 +21,15 @@ class PackageManagerInfoProviderImpl(
     private val packageManager: PackageManager
 ) : PackageManagerInfoProvider {
     override fun getCertificateInfo(packageName: String): CertificateInfo {
-        val certificates = getSigningCertificates(packageName)
         return CertificateInfo(
-            certificates.map { it.issuerDN.name },
-            certificates.map { it.sigAlgName }
+            getSigningCertificates(packageName).map { it.issuerDN.name }
         )
     }
 
     private fun getSigningCertificates(packageName: String): List<X509Certificate> {
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             val packageInfo =
-                packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+                packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
             packageInfo.signatures.mapNotNull {
                 extractX509FromSignature(it.toByteArray())
             }
