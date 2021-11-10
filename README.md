@@ -17,11 +17,11 @@
 
 # Android Application Environment Verification API
 
-<small><i>currently in beta - API may change</i></small>
+Android library to verify application environments. 
 
-A library for security verification of application environments.
+Make sure every API call from a device is safe and trusted. 
 
-Check whether your app runs on a rooted or emulated device. 
+Instantly detects rooted devices or emulators. 
 
 The library sends a set of signals to the server.
 
@@ -86,8 +86,6 @@ A **free token** is required to connect to our Application Environment Verificat
 _To get your token, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
 _(just type `token` in the email subject, no need to compose a body)_
 <br/>
-_The free token is limited to 1M API calls per month while in beta._
-
 
 ### Get the request ID
 
