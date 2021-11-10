@@ -1,6 +1,6 @@
 # Application Environment Verification API
 
-Once you get the requestId from a [client](clien_api.md), send it to your backend, and use the server API to get results of verification.
+Once you get the requestId from a [client](client_api.md), send it to your backend, and use the server API to get results of verification.
 For security reasons it's the best way to check if the device has been compromised. 
 
 | **Detection scenarios** | **What's triggering**                                                          | **Results**       |
