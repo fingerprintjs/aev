@@ -8,6 +8,12 @@
     <img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server">
   </a>
 </p>
+<p align="center">
+    <a href="https://android-arsenal.com/api?level=21">
+    <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
+  </a>
+</p>
+
 
 # Android Application Environment Verification API
 
@@ -15,37 +21,46 @@
 
 A library for security verification of application environments.
 
+Check whether your app runs on a rooted or emulated device. 
+
 The library sends a set of signals to the server.
 
 The server verifies safety of the application environment.
 
-Fully written in Kotlin.
-
 
 ## Table of Contents
 1. [Quick start](#quick-start)
-2. [Usage](#usage)
-4. [Demo App](#demo-app)
+2. [API token](#get-an-api-token)
+3. [Demo App](#demo-app)
+
 
 
 ## Quick start
 
-### Add repository
+### Add the repository to the build.gradle.
 
-Add these lines to your `build.gradle`.
+If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
 
 
 ```gradle
-allprojects {
+allprojects {	
   repositories {
   ...
-  maven { url 'https://jitpack.io' }
+  maven { url 'https://jitpack.io' }	
 }}
+```
+
+If your version of Gradle is 7 or newer, add these lines to your `settings.gradle`.
+```gradle
+repositories {
+  ...
+  maven { url "https://jitpack.io" }
+}
 ```
 
 ### Add dependencies
 
-Download the latest release and store it to the `libs` folder of your module. 
+Download the latest [release](releases) and store it to the `libs` folder of your module. 
  
 Add these lines to `build.gradle` of a module.
 
@@ -56,6 +71,7 @@ If your application is written in Java, add `kotlin-stdlib` dependency first (it
 ```gradle
 dependencies {
   implementation "com.github.fingerprintjs:fingerprint-android:1.2"
+  implementation 'com.squareup.okhttp3:okhttp:4.9.0'
   implementation(name:'AEV-1.0.0-release', ext:'aar')
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -63,8 +79,15 @@ dependencies {
 
 ```
 
+### Get an API token
 
-## Usage
+A **free token** is required to connect to our Application Environment Verification API.
+
+_To get your token, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
+_(just type `token` in the email subject, no need to compose a body)_
+<br/>
+_The free token is limited to 1M API calls per month while in beta._
+
 
 ### Get the request ID
 
@@ -90,12 +113,14 @@ aevClient.getRequestId(
 
 ```
 
-### Get the results of verification by the requestId
+See the client [API reference](docs/client_api.md)
+
+### Get the results of verification by the request ID
 
 #### Request
 ```sh
-GET https://app-protect.fpapi.io/results?id=1xu9PyL9pclHYbHupthsiupaRci
-Auth-Token: YOUR_API_TOKEN
+curl --header "Content-Type: application/json" --header "Auth-Token: YOUR_API_TOKEN" https://app-protect.fpapi.io/api/v1/results?id=YOUR_REQUEST_ID
+
 ```
 
 #### Response
@@ -113,17 +138,16 @@ Auth-Token: YOUR_API_TOKEN
 }
 ```
 
-A **free token** is required to connect to our Application Environment Verification API.
-
-_To get your token, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
-_(just type `token` in the email subject, no need to compose a body)_
-<br/>
-_The free token is limited to 1M API calls per month while in beta._
-
+See the server [API reference](docs/server_api.md)
 
 ## Demo app
 
-Try all the features in the Demo App.
+Try all the features in the [Demo App](releases).
+
+<p align="center">
+    <img src="resources/demoapp.png" alt="PlaygroundApp" width="260px" />
+</p>
+
 
 ## Android API support
 
