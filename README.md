@@ -21,7 +21,7 @@ Android library to verify application environments.
 
 Make sure every API call from a device is safe and trusted. 
 
-Instantly detects rooted devices or emulators. 
+Instantly detect rooted devices or emulators. 
 
 The library sends a set of signals to the server.
 
