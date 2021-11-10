@@ -135,6 +135,10 @@ See the server [API reference](docs/server_api.md)
 
 Try all the features in the Demo App.
 
+<p align="center">
+    <img src="resources/demoapp.png" alt="PlaygroundApp" width="780px" />
+</p>
+
 ## Android API support
 
 Android application protection library  supports API versions from 21 (Android 5.0) and higher.
