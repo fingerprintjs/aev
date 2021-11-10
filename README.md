@@ -136,7 +136,7 @@ See the server [API reference](docs/server_api.md)
 Try all the features in the Demo App.
 
 <p align="center">
-    <img src="resources/demoapp.png" alt="PlaygroundApp" width="780px" />
+    <img src="resources/demoapp.png" alt="PlaygroundApp" width="260px" />
 </p>
 
 ## Android API support
