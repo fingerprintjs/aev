@@ -29,23 +29,32 @@ The server verifies safety of the application environment.
 
 ## Table of Contents
 1. [Quick start](#quick-start)
-2. [Usage](#usage)
-4. [Demo App](#demo-app)
+2. [API token](#get-an-api-token)
+3. [Demo App](#demo-app)
 
 
-## Import the library to your project
+## Quick start
 
-### Add repository
 
-Add these lines to your `build.gradle`.
+### Add the repository to the gradle.
+
+If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
 
 
 ```gradle
-allprojects {
+allprojects {	
   repositories {
   ...
-  maven { url 'https://jitpack.io' }
+  maven { url 'https://jitpack.io' }	
 }}
+```
+
+If your version of Gradle is 7 or newer, add these lines to your `settings.gradle`.
+```gradle
+repositories {
+  ...
+  maven { url "https://jitpack.io" }
+}
 ```
 
 ### Add dependencies
@@ -68,6 +77,7 @@ dependencies {
 
 ```
 
+### Get an API token
 
 A **free token** is required to connect to our Application Environment Verification API.
 
@@ -76,9 +86,6 @@ _(just type `token` in the email subject, no need to compose a body)_
 <br/>
 _The free token is limited to 1M API calls per month while in beta._
 
-
-
-## Usage
 
 ### Get the request ID
 
@@ -106,7 +113,7 @@ aevClient.getRequestId(
 
 See the client [API reference](docs/client_api.md)
 
-### Get the results of verification by the requestId
+### Get the results of verification by the request ID
 
 #### Request
 ```sh
