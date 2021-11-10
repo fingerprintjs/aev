@@ -83,7 +83,7 @@ class DemoPresenterImpl(
                 router?.refresh()
             }
             setOnAboutRequestIdBtnClickedListener {
-                router?.openLink(REQUEST_ID_DOCS_URL)
+                router?.openLink(CLIENT_API_DOCS_URL)
             }
         }
     }
@@ -107,7 +107,7 @@ class DemoPresenterImpl(
                 router?.refresh()
             }
             setOnAboutResultsBtnClickedListener {
-                router?.openLink(RESPONSE_DOCS_URL)
+                router?.openLink(SERVER_API_DOCS_URL)
             }
         }
     }
