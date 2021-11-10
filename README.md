@@ -8,6 +8,11 @@
     <img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server">
   </a>
 </p>
+<p align="center">
+    <a href="https://android-arsenal.com/api?level=21">
+    <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
+  </a>
+  </p>
 
 # Android Application Environment Verification API
 
@@ -15,11 +20,11 @@
 
 A library for security verification of application environments.
 
+Check whether your app runs on a rooted or emulated device. 
+
 The library sends a set of signals to the server.
 
 The server verifies safety of the application environment.
-
-Fully written in Kotlin.
 
 
 ## Table of Contents
@@ -28,7 +33,7 @@ Fully written in Kotlin.
 4. [Demo App](#demo-app)
 
 
-## Quick start
+## Import the library to your project
 
 ### Add repository
 
@@ -45,7 +50,7 @@ allprojects {
 
 ### Add dependencies
 
-Download the latest release and store it to the `libs` folder of your module. 
+Download the latest [release](releases) and store it to the `libs` folder of your module. 
  
 Add these lines to `build.gradle` of a module.
 
@@ -62,6 +67,15 @@ dependencies {
 }
 
 ```
+
+
+A **free token** is required to connect to our Application Environment Verification API.
+
+_To get your token, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
+_(just type `token` in the email subject, no need to compose a body)_
+<br/>
+_The free token is limited to 1M API calls per month while in beta._
+
 
 
 ## Usage
@@ -90,12 +104,14 @@ aevClient.getRequestId(
 
 ```
 
+See the client [API reference](docs/client_api.md)
+
 ### Get the results of verification by the requestId
 
 #### Request
 ```sh
-GET https://app-protect.fpapi.io/results?id=1xu9PyL9pclHYbHupthsiupaRci
-Auth-Token: YOUR_API_TOKEN
+curl --header "Content-Type: application/json" --header "Auth-Token: YOUR_API_TOKEN" https://app-protect.fpapi.io/api/v1/results?id=YOUR_REQUEST_ID
+
 ```
 
 #### Response
@@ -113,13 +129,7 @@ Auth-Token: YOUR_API_TOKEN
 }
 ```
 
-A **free token** is required to connect to our Application Environment Verification API.
-
-_To get your token, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
-_(just type `token` in the email subject, no need to compose a body)_
-<br/>
-_The free token is limited to 1M API calls per month while in beta._
-
+See the server [API reference](docs/server_api.md)
 
 ## Demo app
 
