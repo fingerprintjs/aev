@@ -30,6 +30,7 @@ object AevClientFactory {
 
 
     @JvmStatic
+    @JvmOverloads
     fun getInstance(
         applicationContext: Context,
         authToken: String,

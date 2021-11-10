@@ -70,6 +70,7 @@ If your application is written in Java, add `kotlin-stdlib` dependency first (it
 ```gradle
 dependencies {
   implementation "com.github.fingerprintjs:fingerprint-android:1.2"
+  implementation 'com.squareup.okhttp3:okhttp:4.9.0'
   implementation(name:'AEV-1.0.0-release', ext:'aar')
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
