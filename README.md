@@ -60,7 +60,7 @@ repositories {
 
 ### Add dependencies
 
-Download the latest [release](releases) and store it to the `libs` folder of your module. 
+Download the latest [release](https://github.com/fingerprintjs/aev/releases) and store it to the `libs` folder of your module. 
  
 Add these lines to `build.gradle` of a module.
 
@@ -142,7 +142,7 @@ See the server [API reference](docs/server_api.md)
 
 ## Demo app
 
-Try all the features in the [Demo App](releases).
+Try all the features in the [Demo App](https://github.com/fingerprintjs/aev/releases).
 
 <p align="center">
     <img src="resources/demoapp.png" alt="PlaygroundApp" width="260px" />
