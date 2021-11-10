@@ -133,7 +133,7 @@ See the server [API reference](docs/server_api.md)
 
 ## Demo app
 
-Try all the features in the Demo App.
+Try all the features in the [Demo App](releases).
 
 <p align="center">
     <img src="resources/demoapp.png" alt="PlaygroundApp" width="260px" />
