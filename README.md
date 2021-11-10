@@ -12,7 +12,8 @@
     <a href="https://android-arsenal.com/api?level=21">
     <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
   </a>
-  </p>
+</p>
+
 
 # Android Application Environment Verification API
 
@@ -33,10 +34,10 @@ The server verifies safety of the application environment.
 3. [Demo App](#demo-app)
 
 
+
 ## Quick start
 
-
-### Add the repository to the gradle.
+### Add the repository to the build.gradle.
 
 If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
 
@@ -146,6 +147,7 @@ Try all the features in the [Demo App](releases).
 <p align="center">
     <img src="resources/demoapp.png" alt="PlaygroundApp" width="260px" />
 </p>
+
 
 ## Android API support
 

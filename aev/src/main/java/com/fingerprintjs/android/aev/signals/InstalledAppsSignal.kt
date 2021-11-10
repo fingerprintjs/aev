@@ -1,7 +1,6 @@
 package com.fingerprintjs.android.aev.signals
 
 
-
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.aev.raw_signal_providers.CertificateInfo
 
