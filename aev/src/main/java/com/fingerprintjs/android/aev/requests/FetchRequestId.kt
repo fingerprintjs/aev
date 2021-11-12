@@ -9,22 +9,22 @@ import com.fingerprintjs.android.aev.transport.TypedRequestResult
 import org.json.JSONObject
 
 
-data class FetchTokenResponse(
+data class FetchRequestIdResponse(
     val requestId: String,
     val errorMessage: String? = ""
 )
 
-class FetchTokenRequestResult(
+class FetchRequestIdResult(
     type: RequestResultType,
     rawResponse: ByteArray?
-) : TypedRequestResult<FetchTokenResponse>(type, rawResponse) {
-    override fun typedResult(): FetchTokenResponse {
-        val errorResponse = FetchTokenResponse("", rawResponse?.toString(Charsets.UTF_8))
+) : TypedRequestResult<FetchRequestIdResponse>(type, rawResponse) {
+    override fun typedResult(): FetchRequestIdResponse {
+        val errorResponse = FetchRequestIdResponse("", rawResponse?.toString(Charsets.UTF_8))
         val body = rawResponse?.toString(Charsets.UTF_8) ?: return errorResponse
         return try {
             val jsonBody = JSONObject(body)
-            val token = jsonBody.getString(TOKEN_RESPONSE_KEY)
-            FetchTokenResponse(token)
+            val token = jsonBody.getString(REQUEST_ID_RESPONSE_KEY)
+            FetchRequestIdResponse(token)
         } catch (exception: Exception) {
             errorResponse
         }
@@ -32,7 +32,7 @@ class FetchTokenRequestResult(
 }
 
 
-class FetchTokenRequest(
+class FetchRequestId(
     endpointUrl: String,
     appName: String,
     autorizationToken: String,

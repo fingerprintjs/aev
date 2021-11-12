@@ -28,7 +28,7 @@ internal class AevClientImpl(
                 logger.debug(this, "Got deviceId: ${deviceIdResult.deviceId}")
                 ossAgent.getFingerprint { fingerprintResult ->
                     logger.debug(this, "Got fingerprint: ${fingerprintResult.fingerprint}")
-                    apiInteractor.getToken(
+                    apiInteractor.getRequestId(
                         signalProviderBuilder
                             .withDeviceIdResult(deviceIdResult)
                             .withFingerprintResult(fingerprintResult)

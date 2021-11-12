@@ -2,17 +2,17 @@ package com.fingerprintjs.android.aev
 
 
 import com.fingerprintjs.android.aev.logger.Logger
-import com.fingerprintjs.android.aev.requests.FetchTokenRequest
-import com.fingerprintjs.android.aev.requests.FetchTokenRequestResult
-import com.fingerprintjs.android.aev.requests.FetchTokenResponse
+import com.fingerprintjs.android.aev.requests.FetchRequestId
+import com.fingerprintjs.android.aev.requests.FetchRequestIdResult
+import com.fingerprintjs.android.aev.requests.FetchRequestIdResponse
 import com.fingerprintjs.android.aev.signals.SignalProvider
 import com.fingerprintjs.android.aev.transport.HttpClient
 
 
 interface ApiInteractor {
-    fun getToken(
+    fun getRequestId(
         signalProvider: SignalProvider
-    ): FetchTokenResponse
+    ): FetchRequestIdResponse
 }
 
 class ApiInteractorImpl(
@@ -22,11 +22,11 @@ class ApiInteractorImpl(
     private val logger: Logger,
     private val authorizationToken: String
 ) : ApiInteractor {
-    override fun getToken(
+    override fun getRequestId(
         signalProvider: SignalProvider
-    ): FetchTokenResponse {
+    ): FetchRequestIdResponse {
 
-        val fetchTokenRequest = FetchTokenRequest(
+        val fetchTokenRequest = FetchRequestId(
             endpointURL, appId, authorizationToken, signalProvider
         )
 
@@ -34,7 +34,7 @@ class ApiInteractorImpl(
             fetchTokenRequest
         )
 
-        val response = FetchTokenRequestResult(rawRequestResult.type, rawRequestResult.rawResponse)
+        val response = FetchRequestIdResult(rawRequestResult.type, rawRequestResult.rawResponse)
         rawRequestResult.rawResponse?.let {
             logger.debug(this, "Response: ${String(it, Charsets.UTF_8)}")
         }
