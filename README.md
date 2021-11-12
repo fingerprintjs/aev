@@ -12,6 +12,9 @@
     <a href="https://android-arsenal.com/api?level=21">
     <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
   </a>
+     <a href="https://jitpack.io/#fingerprintjs/aev">
+    <img src="https://jitpack.io/v/fingerprintjs/aev.svg" alt="Latest release">
+  </a>
 </p>
 
 
