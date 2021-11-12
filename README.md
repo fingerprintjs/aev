@@ -12,15 +12,16 @@
     <a href="https://android-arsenal.com/api?level=21">
     <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
   </a>
-  </p>
+</p>
+
 
 # Android Application Environment Verification API
 
-<small><i>currently in beta - API may change</i></small>
+Android library to verify application environments. 
 
-A library for security verification of application environments.
+Make sure every API call from a device is safe and trusted. 
 
-Check whether your app runs on a rooted or emulated device. 
+Instantly detect rooted devices or emulators. 
 
 The library sends a set of signals to the server.
 
@@ -33,10 +34,10 @@ The server verifies safety of the application environment.
 3. [Demo App](#demo-app)
 
 
+
 ## Quick start
 
-
-### Add the repository to the gradle.
+### Add the repository to the build.gradle.
 
 If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
 
@@ -59,11 +60,11 @@ repositories {
 
 ### Add dependencies
 
-Download the latest [release](releases) and store it to the `libs` folder of your module. 
+Download the latest [release](https://github.com/fingerprintjs/aev/releases) and store it to the `libs` folder of your module. 
  
 Add these lines to `build.gradle` of a module.
 
-This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/).
+This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/), [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) and [okhttp](https://github.com/square/okhttp).
 
 If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
 
@@ -82,11 +83,9 @@ dependencies {
 
 A **free token** is required to connect to our Application Environment Verification API.
 
-_To get your token, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
+_To get your token, please ping us on [Discord](https://discord.gg/7NWETgnW) or email us at android@fingerprintjs.com_
 _(just type `token` in the email subject, no need to compose a body)_
 <br/>
-_The free token is limited to 1M API calls per month while in beta._
-
 
 ### Get the request ID
 
@@ -141,11 +140,12 @@ See the server [API reference](docs/server_api.md)
 
 ## Demo app
 
-Try all the features in the [Demo App](releases).
+Try all the features in the [Demo App](https://github.com/fingerprintjs/aev/releases).
 
 <p align="center">
     <img src="resources/demoapp.png" alt="PlaygroundApp" width="260px" />
 </p>
+
 
 ## Android API support
 
