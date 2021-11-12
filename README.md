@@ -60,19 +60,18 @@ repositories {
 
 ### Add dependencies
 
-Download the latest [release](https://github.com/fingerprintjs/aev/releases) and store it to the `libs` folder of your module. 
+This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/), [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) and [okhttp](https://github.com/square/okhttp).
  
 Add these lines to `build.gradle` of a module.
-
-This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/), [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) and [okhttp](https://github.com/square/okhttp).
 
 If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
 
 ```gradle
 dependencies {
   implementation "com.github.fingerprintjs:fingerprint-android:1.2"
+  implementation "com.github.fingerprintjs:aev:1.0.0-rc4"
   implementation 'com.squareup.okhttp3:okhttp:4.9.0'
-  implementation(name:'AEV-1.0.0-release', ext:'aar')
+
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
