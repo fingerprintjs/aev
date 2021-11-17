@@ -49,7 +49,7 @@ object AevClientFactory {
                 authToken
             ),
             getSignalProviderBuilder(applicationContext),
-            getLogger()
+            logger
         )
 
         AevClientFactory.instance = instance
