@@ -119,8 +119,10 @@ See the client [API reference](docs/client_api.md)
 
 #### Request
 ```sh
-curl --header "Content-Type: application/json" --header "Auth-Token: YOUR_API_TOKEN" https://app-protect.fpapi.io/api/v1/results?id=YOUR_REQUEST_ID
-
+curl \
+--header "Content-Type: application/json" \
+--header "Auth-Token: YOUR_API_TOKEN" \
+"https://app-protect.fpapi.io/api/v1/results?id=YOUR_REQUEST_ID"
 ```
 
 #### Response
