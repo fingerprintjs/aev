@@ -136,7 +136,7 @@ class DemoPresenterImpl(
                 }
             }))
             .withUrl(preferences.getEndpointUrl())
-            .withAuthToken(preferences.getApiToken())
+            .withAuthToken(preferences.getPublicApiToken())
             .build()
     }
 

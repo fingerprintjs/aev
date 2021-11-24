@@ -11,7 +11,13 @@
         android:layout_marginHorizontal="16dp" />
 
     <EditText
-        android:id="@+id/edit_text_api_token"
+        android:id="@+id/edit_text_public_api_token"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp" />
+
+    <EditText
+        android:id="@+id/edit_text_private_api_token"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp" />

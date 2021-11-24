@@ -16,7 +16,7 @@ class GetResultsInteractorImpl(
 ) : GetResultsInteractor {
     override fun results(requestId: String): VerificationResult {
         val endpointURL = applicationPreferences.getEndpointUrl()
-        val authorizationToken = applicationPreferences.getApiToken()
+        val authorizationToken = applicationPreferences.getPrivateApiToken()
 
         val verifyTokenRequest = GetResultsRequest(
             endpointURL,

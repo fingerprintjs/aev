@@ -32,7 +32,7 @@ class VerificationResultResponse(
             val results = jsonBody.getJSONObject(RESULTS_KEY)
             val verdictList = LinkedList<Verdict>()
             results.keys().forEach {
-                val value = results.getJSONObject(it).getBoolean(VALUE_KEY)
+                val value = results.getBoolean(it)
                 verdictList.add(Verdict(splitCamelCaseString(it), value))
             }
             VerificationResult(deviceId, verdictList)
@@ -52,19 +52,24 @@ class VerificationResultResponse(
 
 class GetResultsRequest(
     endpointUrl: String,
-    autorizationToken: String,
-    requestId: String
+    private val autorizationToken: String,
+    private val requestId: String
 ) : Request {
-    override val url = "$endpointUrl/api/v1/results?id=${requestId}"
-    override val type = RequestType.GET
+    override val url = "$endpointUrl/api/v1/verify"
+    override val type = RequestType.POST
     override val headers = mapOf(
-        "Content-Type" to "application/json",
-        "Auth-Token" to autorizationToken
+        "Content-Type" to "application/json"
     )
 
-    override fun bodyAsMap() = emptyMap<String, Any>()
+    override fun bodyAsMap(): Map<String, Any> {
+        val resultMap = HashMap<String, Any>()
+
+        resultMap["privateApiKey"] = autorizationToken
+        resultMap["requestId"] = requestId
+
+        return resultMap
+    }
 }
 
 private const val DEVICE_ID_KEY = "deviceId"
 private const val RESULTS_KEY = "results"
-private const val VALUE_KEY = "v"

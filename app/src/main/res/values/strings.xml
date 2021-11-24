@@ -3,9 +3,11 @@
     <string name="run_btn_text">Run</string>
     <string name="btn_verify_text">VERIFY</string>
     <string name="endpointUrlKey">endpointUrl</string>
-    <string name="defaultEndpointUrl">https://app-protect.fpapi.io</string>
+    <string name="defaultEndpointUrl">https://aev.fpapi.io</string>
     <string name="apiTokenKey">apiToken</string>
-    <string name="defaultApiToken">20ijrA1pGBHn0OJHz5w5bTXGFUM</string>
+    <string name="privateApiTokenKey">privateApiToken</string>
+    <string name="defaultPublicApiToken">21KHLENYJ7sWloSrbHePFenk9OH</string>
+    <string name="defaultPrivateApiToken">21KHLF6MbRpcHnBpecFom0KGNAn</string>
     <string name="demo_description">The demo app shows capabilities of the AEV library for verification security of environment. The library sends a set of signals to the server. The server verifies safety of the application environment.</string>
     <string name="get_started_btn_text">Verify environment</string>
     <string name="agreement">by clicking this button I agree to the terms.</string>
