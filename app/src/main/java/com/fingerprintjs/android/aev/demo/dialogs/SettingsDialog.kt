@@ -31,10 +31,12 @@ class SettingsDialog(
         val view = LayoutInflater.from(activity).inflate(R.layout.dialog_settings, null)
 
         val endpointUrlEditText = view.findViewById<EditText>(R.id.edit_text_endpoint_url)
-        val apiTokenEditText = view.findViewById<EditText>(R.id.edit_text_api_token)
+        val publicApiTokenEditText = view.findViewById<EditText>(R.id.edit_text_public_api_token)
+        val privateApiTokenEditText = view.findViewById<EditText>(R.id.edit_text_private_api_token)
 
         endpointUrlEditText.text = SpannableStringBuilder(preferences.getEndpointUrl())
-        apiTokenEditText.text = SpannableStringBuilder(preferences.getApiToken())
+        publicApiTokenEditText.text = SpannableStringBuilder(preferences.getPublicApiToken())
+        privateApiTokenEditText.text = SpannableStringBuilder(preferences.getPrivateApiToken())
 
         dialog = builder
             .setTitle("Settings")
@@ -43,7 +45,8 @@ class SettingsDialog(
             ) { _, _ ->
                 applyPreferences(
                     endpointUrlEditText.text.toString(),
-                    apiTokenEditText.text.toString()
+                    publicApiTokenEditText.text.toString(),
+                    privateApiTokenEditText.text.toString()
                 )
             }
             .setNegativeButton(
@@ -70,9 +73,11 @@ class SettingsDialog(
 
     private fun applyPreferences(
         endpointUrl: String,
-        apiToken: String
+        apiToken: String,
+        privateApiToken: String
     ) {
         preferences.setEndpointUrl(endpointUrl)
-        preferences.setApiToken(apiToken)
+        preferences.setPublicApiToken(apiToken)
+        preferences.setPrivateApiToken(privateApiToken)
     }
 }

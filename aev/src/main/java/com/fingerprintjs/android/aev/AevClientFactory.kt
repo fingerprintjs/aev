@@ -115,4 +115,4 @@ object AevClientFactory {
     }
 }
 
-private const val DEFAULT_ENDPOINT_URL = "https://app-protect.fpapi.io"
+private const val DEFAULT_ENDPOINT_URL = "https://aev.fpapi.io"

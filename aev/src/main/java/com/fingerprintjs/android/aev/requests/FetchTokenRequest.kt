@@ -35,16 +35,14 @@ class FetchTokenRequestResult(
 class FetchTokenRequest(
     endpointUrl: String,
     appName: String,
-    autorizationToken: String,
+    private val autorizationToken: String,
     private val signalProvider: SignalProvider
 ) : Request {
 
-    override val url = "$endpointUrl/api/v1/verify"
+    override val url = "$endpointUrl/api/v1/init"
     override val type = RequestType.POST
     override val headers = mapOf(
-        "App-Name" to appName,
-        "Content-Type" to "application/json",
-        "Auth-Token" to autorizationToken
+        "Content-Type" to "application/json"
     )
 
     override fun bodyAsMap(): Map<String, Any> {
@@ -54,7 +52,7 @@ class FetchTokenRequest(
         signalProvider.signals().forEach {
             signalsMap[it.name] = it.toMap()
         }
-
+        resultMap["publicApiKey"] = autorizationToken
         resultMap["signals"] = signalsMap
 
         return resultMap

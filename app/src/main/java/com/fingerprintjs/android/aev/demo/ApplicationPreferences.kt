@@ -10,10 +10,12 @@ import androidx.security.crypto.MasterKey
 
 interface ApplicationPreferences {
     fun getEndpointUrl(): String
-    fun getApiToken(): String
+    fun getPublicApiToken(): String
+    fun getPrivateApiToken(): String
 
     fun setEndpointUrl(endpointUrl: String)
-    fun setApiToken(apiToken: String)
+    fun setPublicApiToken(apiToken: String)
+    fun setPrivateApiToken(apiToken: String)
 }
 
 class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
@@ -21,22 +23,30 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
     private val preferences = createPreferences(context)
 
     private val defaultEndpointUrl = context.getString(R.string.defaultEndpointUrl)
-    private val defaultAPIToken = context.getString(R.string.defaultApiToken)
+    private val defaultPublicApiToken = context.getString(R.string.defaultPublicApiToken)
+    private val defaultPrivateApiToken = context.getString(R.string.defaultPrivateApiToken)
 
     private val API_TOKEN_KEY = context.getString(R.string.apiTokenKey)
+    private val PRIVATE_API_TOKEN_KEY = context.getString(R.string.privateApiTokenKey)
     private val ENDPOINT_URL_KEY = context.getString(R.string.endpointUrlKey)
 
     override fun getEndpointUrl() =
         preferences.getString(ENDPOINT_URL_KEY, null) ?: defaultEndpointUrl
 
-    override fun getApiToken() = preferences.getString(API_TOKEN_KEY, null) ?: defaultAPIToken
+    override fun getPublicApiToken() = preferences.getString(API_TOKEN_KEY, null) ?: defaultPublicApiToken
+
+    override fun getPrivateApiToken(): String =preferences.getString(PRIVATE_API_TOKEN_KEY, null) ?: defaultPrivateApiToken
 
     override fun setEndpointUrl(endpointUrl: String) {
         preferences.edit().putString(ENDPOINT_URL_KEY, endpointUrl).apply()
     }
 
-    override fun setApiToken(apiToken: String) {
+    override fun setPublicApiToken(apiToken: String) {
         preferences.edit().putString(API_TOKEN_KEY, apiToken).apply()
+    }
+
+    override fun setPrivateApiToken(apiToken: String) {
+        preferences.edit().putString(PRIVATE_API_TOKEN_KEY, apiToken).apply()
     }
 
     private fun createPreferences(context: Context) =
