@@ -6,26 +6,26 @@ import com.fingerprintjs.android.aev.logger.Logger
 import com.fingerprintjs.android.aev.transport.OkHttpClientImpl
 
 
-interface GetResultsInteractor {
-    fun results(requestId: String): VerificationResult
+interface VerifyInteractor {
+    fun verify(requestId: String): VerificationResult
 }
 
-class GetResultsInteractorImpl(
+class VerifyInteractorImpl(
     private val applicationPreferences: ApplicationPreferences,
     private val logger: Logger
-) : GetResultsInteractor {
-    override fun results(requestId: String): VerificationResult {
+) : VerifyInteractor {
+    override fun verify(requestId: String): VerificationResult {
         val endpointURL = applicationPreferences.getEndpointUrl()
-        val authorizationToken = applicationPreferences.getPrivateApiToken()
+        val privateApiKey = applicationPreferences.getPrivateApiKey()
 
-        val verifyTokenRequest = GetResultsRequest(
+        val verifyRequest = VerifyRequest(
             endpointURL,
-            authorizationToken,
+            privateApiKey,
             requestId
         )
         val httpClient = OkHttpClientImpl(logger)
         val rawRequestResult = httpClient.performRequest(
-            verifyTokenRequest
+            verifyRequest
         )
 
         val response =

@@ -19,7 +19,7 @@ import org.json.JSONObject
 
 object AevClientFactory {
 
-    private var ossInstance: Fingerprinter? = null
+    private var fingerprintJSInstance: Fingerprinter? = null
     private var ossConfiguration: Configuration = Configuration(version = 3, MurMur3x64x128Hasher())
     private val logger = getLogger()
 
@@ -33,12 +33,12 @@ object AevClientFactory {
     @JvmOverloads
     fun getInstance(
         applicationContext: Context,
-        authToken: String,
+        publicApiKey: String,
         endpointUrl: String = DEFAULT_ENDPOINT_URL,
         outerLoggers: List<Logger> = emptyList()
     ): AevClient {
         val ossInstance = FingerprinterFactory.getInstance(applicationContext, ossConfiguration)
-        AevClientFactory.ossInstance = ossInstance
+        fingerprintJSInstance = ossInstance
         AevClientFactory.outerLoggers = outerLoggers
 
         val instance = AevClientImpl(
@@ -46,7 +46,7 @@ object AevClientFactory {
             getApiInteractor(
                 endpointUrl,
                 getAppName(applicationContext),
-                authToken
+                publicApiKey
             ),
             getSignalProviderBuilder(applicationContext),
             logger
@@ -59,13 +59,13 @@ object AevClientFactory {
     private fun getApiInteractor(
         endpointUrl: String,
         appName: String,
-        authToken: String
+        publicApiKey: String
     ) = ApiInteractorImpl(
         getHttpClient(),
         endpointUrl,
         appName,
         logger,
-        authToken
+        publicApiKey
     )
 
     private fun getHttpClient() = OkHttpClientImpl(logger)

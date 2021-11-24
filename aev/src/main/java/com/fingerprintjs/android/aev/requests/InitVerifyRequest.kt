@@ -9,22 +9,22 @@ import com.fingerprintjs.android.aev.transport.TypedRequestResult
 import org.json.JSONObject
 
 
-data class FetchTokenResponse(
+data class InitVerifyResponse(
     val requestId: String,
     val errorMessage: String? = ""
 )
 
-class FetchTokenRequestResult(
+class InitVerifyResult(
     type: RequestResultType,
     rawResponse: ByteArray?
-) : TypedRequestResult<FetchTokenResponse>(type, rawResponse) {
-    override fun typedResult(): FetchTokenResponse {
-        val errorResponse = FetchTokenResponse("", rawResponse?.toString(Charsets.UTF_8))
+) : TypedRequestResult<InitVerifyResponse>(type, rawResponse) {
+    override fun typedResult(): InitVerifyResponse {
+        val errorResponse = InitVerifyResponse("", rawResponse?.toString(Charsets.UTF_8))
         val body = rawResponse?.toString(Charsets.UTF_8) ?: return errorResponse
         return try {
             val jsonBody = JSONObject(body)
-            val token = jsonBody.getString(TOKEN_RESPONSE_KEY)
-            FetchTokenResponse(token)
+            val requestId = jsonBody.getString(REQUEST_ID_KEY)
+            InitVerifyResponse(requestId)
         } catch (exception: Exception) {
             errorResponse
         }
@@ -32,10 +32,10 @@ class FetchTokenRequestResult(
 }
 
 
-class FetchTokenRequest(
+class InitVerifyRequest(
     endpointUrl: String,
     appName: String,
-    private val autorizationToken: String,
+    private val publicApiKey: String,
     private val signalProvider: SignalProvider
 ) : Request {
 
@@ -52,8 +52,8 @@ class FetchTokenRequest(
         signalProvider.signals().forEach {
             signalsMap[it.name] = it.toMap()
         }
-        resultMap["publicApiKey"] = autorizationToken
-        resultMap["signals"] = signalsMap
+        resultMap[PUBLIC_API_KEY] = publicApiKey
+        resultMap[SIGNALS_KEY] = signalsMap
 
         return resultMap
     }

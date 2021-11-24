@@ -35,8 +35,8 @@ class SettingsDialog(
         val privateApiTokenEditText = view.findViewById<EditText>(R.id.edit_text_private_api_token)
 
         endpointUrlEditText.text = SpannableStringBuilder(preferences.getEndpointUrl())
-        publicApiTokenEditText.text = SpannableStringBuilder(preferences.getPublicApiToken())
-        privateApiTokenEditText.text = SpannableStringBuilder(preferences.getPrivateApiToken())
+        publicApiTokenEditText.text = SpannableStringBuilder(preferences.getPublicApKey())
+        privateApiTokenEditText.text = SpannableStringBuilder(preferences.getPrivateApiKey())
 
         dialog = builder
             .setTitle("Settings")
@@ -77,7 +77,7 @@ class SettingsDialog(
         privateApiToken: String
     ) {
         preferences.setEndpointUrl(endpointUrl)
-        preferences.setPublicApiToken(apiToken)
-        preferences.setPrivateApiToken(privateApiToken)
+        preferences.setPublicApiKey(apiToken)
+        preferences.setPrivateApiKey(privateApiToken)
     }
 }

@@ -13,7 +13,7 @@ class AevClientBuilder(
 
     private var loggers = emptyList<Logger>()
     private var url: String = ""
-    private var token: String = ""
+    private var publicApiKey: String = ""
 
     fun withLoggers(loggers: List<Logger>): AevClientBuilder {
         this.loggers = loggers
@@ -25,12 +25,12 @@ class AevClientBuilder(
         return this
     }
 
-    fun withAuthToken(token: String): AevClientBuilder {
-        this.token = token
+    fun withPublicApiKey(publicApiKey: String): AevClientBuilder {
+        this.publicApiKey = publicApiKey
         return this
     }
 
     fun build(): AevClient {
-        return AevClientFactory.getInstance(applicationContext, token, url, loggers)
+        return AevClientFactory.getInstance(applicationContext, publicApiKey, url, loggers)
     }
 }
