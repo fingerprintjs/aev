@@ -4,8 +4,8 @@
     <string name="btn_verify_text">VERIFY</string>
     <string name="endpointUrlKey">endpointUrl</string>
     <string name="defaultEndpointUrl">https://aev.fpapi.io</string>
-    <string name="apiTokenKey">apiToken</string>
-    <string name="privateApiTokenKey">privateApiToken</string>
+    <string name="apiTokenKey">apiKey</string>
+    <string name="privateApiTokenKey">privateApiKey</string>
     <string name="defaultPublicApiToken">21KHLENYJ7sWloSrbHePFenk9OH</string>
     <string name="defaultPrivateApiToken">21KHLF6MbRpcHnBpecFom0KGNAn</string>
     <string name="demo_description">The demo app shows capabilities of the AEV library for verification security of environment. The library sends a set of signals to the server. The server verifies safety of the application environment.</string>

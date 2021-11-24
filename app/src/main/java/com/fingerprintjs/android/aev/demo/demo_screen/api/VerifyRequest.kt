@@ -50,7 +50,7 @@ class VerificationResultResponse(
     }
 }
 
-class GetResultsRequest(
+class VerifyRequest(
     endpointUrl: String,
     private val autorizationToken: String,
     private val requestId: String
@@ -64,12 +64,9 @@ class GetResultsRequest(
     override fun bodyAsMap(): Map<String, Any> {
         val resultMap = HashMap<String, Any>()
 
-        resultMap["privateApiKey"] = autorizationToken
-        resultMap["requestId"] = requestId
+        resultMap[PRIVATE_API_KEY] = autorizationToken
+        resultMap[REQUEST_ID_KEY] = requestId
 
         return resultMap
     }
 }
-
-private const val DEVICE_ID_KEY = "deviceId"
-private const val RESULTS_KEY = "results"

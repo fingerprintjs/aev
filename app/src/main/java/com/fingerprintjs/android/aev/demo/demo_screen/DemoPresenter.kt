@@ -4,7 +4,7 @@ package com.fingerprintjs.android.aev.demo.demo_screen
 import com.fingerprintjs.android.aev.AevClient
 import com.fingerprintjs.android.aev.demo.ApplicationPreferences
 import com.fingerprintjs.android.aev.demo.demo_screen.api.AevClientBuilder
-import com.fingerprintjs.android.aev.demo.demo_screen.api.GetResultsInteractorImpl
+import com.fingerprintjs.android.aev.demo.demo_screen.api.VerifyInteractorImpl
 import com.fingerprintjs.android.aev.demo.demo_screen.api.VerificationResult
 import com.fingerprintjs.android.aev.logger.Logger
 import org.json.JSONObject
@@ -136,7 +136,7 @@ class DemoPresenterImpl(
                 }
             }))
             .withUrl(preferences.getEndpointUrl())
-            .withAuthToken(preferences.getPublicApiToken())
+            .withPublicApiKey(preferences.getPublicApKey())
             .build()
     }
 
@@ -145,7 +145,7 @@ class DemoPresenterImpl(
         listener: (VerificationResult) -> (Unit)
     ) {
         executor.execute {
-            val getResultsInteractor = GetResultsInteractorImpl(preferences, object : Logger {
+            val getResultsInteractor = VerifyInteractorImpl(preferences, object : Logger {
                 override fun debug(obj: Any, message: String?) {
                     message?.let {
                         verificationResultsLogs.add(it)
@@ -166,7 +166,7 @@ class DemoPresenterImpl(
                     verificationResultsLogs.add(exception.localizedMessage ?: "")
                 }
             })
-            listener.invoke(getResultsInteractor.results(requestId))
+            listener.invoke(getResultsInteractor.verify(requestId))
         }
     }
 }
