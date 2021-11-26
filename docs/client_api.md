@@ -3,7 +3,7 @@
 
 ## What is request ID?
 
-When the application environment is not secure it does not make sense to get results on the device. The only thing that library is returning is request ID. It does not contain any information. But with using this you are able to use [server API](server_api.md) from more secured environment (e.g. your own server side).
+When the application environment is not secure it does not make sense to get results on the device because they can be compromised. The only thing that library is returning is request ID. It does not contain any information. But with using this you are able to use [server API](server_api.md) from more secured environment (e.g. your own server side).
 
 ## Android library public API
 
@@ -16,20 +16,18 @@ interface AevClient {
 
 ## Get the request ID
 
-A **free token** is required to connect to our Application Environment Verification API.
+A **free API keys** are required to connect to our Application Environment Verification API. Use the Public one in the library.
 
-_To get your token, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
-_(just type `token` in the email subject, no need to compose a body)_
-<br/>
+_To get your API keys, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
+_(just type `API keys` in the email subject, no need to compose a body)_
 
 Kotlin
-
 ```kotlin
 
 // Initialization
 val aevClient = AevClientFactory.getInstance(
     applicationContext,
-    "YOUR_API_TOKEN"
+    "YOUR_PUBLIC_API_KEY"
 )
 
 
@@ -43,11 +41,10 @@ aevClient.getRequestId(
                 })
 
 ```
-
-Java 
+Java
 ```java
 
-AevClient aevClient = AevClientFactory.getInstance(applicationContext, "YOUR_API_TOKEN");
+AevClient aevClient = AevClientFactory.getInstance(applicationContext, "YOUR_PUBLIC_API_KEY");
 
 aevClient.getRequestId(new Function1<String, Unit>() {
         @Override

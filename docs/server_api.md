@@ -12,31 +12,33 @@ For security reasons it's the best way to check if the device has been compromis
 
 ### Make sure you have the API token 
 
-A **free token** is required to connect to our Application Environment Verification API.
+A **free API keys** are required to connect to our Application Environment Verification API. Use the Private one on the server side.
 
-_To get your token, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
-_(just type `token` in the email subject, no need to compose a body)_
+_To get your API keys, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
+_(just type `API keys` in the email subject, no need to compose a body)_
+
 <br/>
 
 ### Get the results of verification by the requestId
 
 #### Request
-```sh
-GET https://app-protect.fpapi.io/results?id=REQUEST_ID
-Auth-Token: YOUR_API_TOKEN
+```json
+POST /verify
+Content-Type: application/json
+
+{
+  "privateApiKey": "1xu9KDq6EWYzeSSLmB9TpMe5UXp",
+  "requestId": "1xu9PyL9pclHYbHupthsiupaRci"
+}
 ```
 
 #### Response
 ```json
 {
-  "deviceId": "1xu9l9Ure84KB8CnEbAsdwdqhc",
+  "deviceId": "1xu9l9Ure84KB8CnEbABmteHhhc",
   "results": {
-    "rootManagementAppsDetected": {
-      "v": true
-    },
-    "emulatorDetected": {
-      "v": true
-    }
+    "rootManagementAppsDetected": true,
+    "emulatorDetected": true
   }
 }
 ```
