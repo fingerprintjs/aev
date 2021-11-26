@@ -21,16 +21,14 @@ interface SensorsDataCollector {
 }
 
 class SensorsDataCollectorImpl(private val sensorManager: SensorManager) : SensorsDataCollector {
-    override fun collect(): SensorsResult {
-        return executeSafe({
-            val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-            val gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
-            SensorsResult(
-                collectSensorInfo(accelerometer),
-                collectSensorInfo(gyroscope)
-            )
-        }, SensorsResult(emptyList(), emptyList()))
-    }
+    override fun collect() = executeSafe({
+        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        val gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
+        SensorsResult(
+            collectSensorInfo(accelerometer),
+            collectSensorInfo(gyroscope)
+        )
+    }, SensorsResult(emptyList(), emptyList()))
 
     private fun collectSensorInfo(
         sensor: Sensor?

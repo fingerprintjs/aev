@@ -34,7 +34,7 @@ class InitVerifyResult(
 
 class InitVerifyRequest(
     endpointUrl: String,
-    appName: String,
+    private val appName: String,
     private val publicApiKey: String,
     private val signalProvider: SignalProvider
 ) : Request {
@@ -53,6 +53,7 @@ class InitVerifyRequest(
             signalsMap[it.name] = it.toMap()
         }
         resultMap[PUBLIC_API_KEY] = publicApiKey
+        resultMap[APP_NAME_KEY] = appName
         resultMap[SIGNALS_KEY] = signalsMap
 
         return resultMap
