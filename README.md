@@ -34,7 +34,7 @@ The server verifies safety of the application environment.
 
 ## Table of Contents
 1. [Quick start](#quick-start)
-2. [API token](#get-an-api-token)
+2. [API keys](#get-an-api-keys)
 3. [Demo App](#demo-app)
 
 
@@ -81,13 +81,12 @@ dependencies {
 
 ```
 
-### Get an API token
+### Get an API keys
 
-A **free token** is required to connect to our Application Environment Verification API.
+A **free API keys** are required to connect to our Application Environment Verification API. Use the Public one on the client side, and the Private one on the server side.
 
-_To get your token, please ping us on [Discord](https://discord.gg/7NWETgnW) or email us at android@fingerprintjs.com_
-_(just type `token` in the email subject, no need to compose a body)_
-<br/>
+_To get your API keys, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
+_(just type `API keys` in the email subject, no need to compose a body)_
 
 ### Get the request ID
 
@@ -98,7 +97,7 @@ Kotlin
 // Initialization
 val aevClient = AevClientFactory.getInstance(
     applicationContext,
-    YOUR_API_TOKEN
+    YOUR_PUBLIC_API_KEY
 )
 
 
@@ -119,10 +118,9 @@ See the client [API reference](docs/client_api.md)
 
 #### Request
 ```sh
-curl \
---header "Content-Type: application/json" \
---header "Auth-Token: YOUR_API_TOKEN" \
-"https://app-protect.fpapi.io/api/v1/results?id=YOUR_REQUEST_ID"
+curl --header "Content-Type: application/json" \
+-d "{\"privateApiKey\": \"YOUR_PRIVATE_API_KEY\", \"requestId\": \"YOUR_REQUEST_ID\"}" \
+https://aev.fpapi.io/api/v1/verify
 ```
 
 #### Response
@@ -130,12 +128,8 @@ curl \
 {
   "deviceId": "1xu9l9Ure84KB8CnEbABmteHhhc",
   "results": {
-    "rootManagementAppsDetected": {
-      "v": true
-    },
-    "emulatorDetected": {
-      "v": true
-    }
+    "rootManagementAppsDetected": true,
+    "emulatorDetected": true
   }
 }
 ```
