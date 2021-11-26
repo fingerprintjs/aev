@@ -22,7 +22,7 @@ _(just type `API keys` in the email subject, no need to compose a body)_
 ### Get the results of verification by the requestId
 
 #### Request
-```json
+```http request
 POST /verify
 Content-Type: application/json
 
