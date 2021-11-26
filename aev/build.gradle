@@ -3,6 +3,17 @@ plugins {
     id 'kotlin-android'
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.github.fingerprintjs'
+            artifactId = "aev"
+            version = '1.0.1'
+            artifact("$buildDir/outputs/aar/AEV-1.0.1-release.aar")
+        }
+    }
+}
+
 android {
     compileSdkVersion 31
 
