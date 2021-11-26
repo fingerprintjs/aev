@@ -17,8 +17,6 @@ A **free API keys** are required to connect to our Application Environment Verif
 _To get your API keys, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
 _(just type `API keys` in the email subject, no need to compose a body)_
 
-<br/>
-
 ### Get the results of verification by the requestId
 
 #### Request
