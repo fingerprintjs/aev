@@ -34,10 +34,6 @@ class ApiInteractorImpl(
             fetchTokenRequest
         )
 
-        val response = InitVerifyResult(rawRequestResult.type, rawRequestResult.rawResponse)
-        rawRequestResult.rawResponse?.let {
-            logger.debug(this, "Response: ${String(it, Charsets.UTF_8)}")
-        }
-        return response.typedResult()
+        return InitVerifyResult(rawRequestResult.type, rawRequestResult.rawResponse).typedResult()
     }
 }
