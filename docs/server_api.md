@@ -12,7 +12,7 @@ For security reasons it's the best way to check if the device has been compromis
 
 ### Make sure you have the API token 
 
-A **free API keys** are required to connect to our Application Environment Verification API. Use the Private one on the server side.
+A **free API keys** are required to connect to our Application Environment Verification API. Use the Secret one on the server side.
 
 _To get your API keys, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
 _(just type `API keys` in the email subject, no need to compose a body)_
@@ -25,7 +25,7 @@ POST /verify
 Content-Type: application/json
 
 {
-  "privateApiKey": "1xu9KDq6EWYzeSSLmB9TpMe5UXp",
+  "secretKey": "1xu9KDq6EWYzeSSLmB9TpMe5UXp",
   "requestId": "1xu9PyL9pclHYbHupthsiupaRci"
 }
 ```

@@ -64,7 +64,7 @@ repositories {
 
 ### Add dependencies
 
-This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/), [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android) and [okhttp](https://github.com/square/okhttp).
+This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/), [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android)
  
 Add these lines to `build.gradle` of a module.
 
@@ -73,8 +73,7 @@ If your application is written in Java, add `kotlin-stdlib` dependency first (it
 ```gradle
 dependencies {
   implementation "com.github.fingerprintjs:fingerprint-android:1.2"
-  implementation "com.github.fingerprintjs:aev:1.0.1"
-  implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+  implementation "com.github.fingerprintjs:aev:1.0.2"
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
@@ -83,7 +82,7 @@ dependencies {
 
 ### Get an API keys
 
-A **free API keys** are required to connect to our Application Environment Verification API. Use the Public one on the client side, and the Private one on the server side.
+A **free API keys** are required to connect to our Application Environment Verification API. Use the Public one on the client side, and the Secret one on the server side.
 
 _To get your API keys, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
 _(just type `API keys` in the email subject, no need to compose a body)_
@@ -119,7 +118,7 @@ See the client [API reference](docs/client_api.md)
 #### Request
 ```sh
 curl --header "Content-Type: application/json" \
--d "{\"privateApiKey\": \"YOUR_PRIVATE_API_KEY\", \"requestId\": \"YOUR_REQUEST_ID\"}" \
+-d "{\"secretKey\": \"YOUR_SECRET_API_KEY\", \"requestId\": \"YOUR_REQUEST_ID\"}" \
 https://aev.fpapi.io/api/v1/verify
 ```
 
