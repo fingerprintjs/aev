@@ -9,8 +9,8 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'com.github.fingerprintjs'
             artifactId = "aev"
-            version = '1.0.1'
-            artifact("$buildDir/outputs/aar/AEV-1.0.1-release.aar")
+            version = '1.0.2'
+            artifact("$buildDir/outputs/aar/AEV-1.0.2-release.aar")
         }
     }
 }
