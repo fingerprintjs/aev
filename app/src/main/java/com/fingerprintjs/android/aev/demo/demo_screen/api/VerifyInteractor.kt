@@ -3,7 +3,7 @@ package com.fingerprintjs.android.aev.demo.demo_screen.api
 
 import com.fingerprintjs.android.aev.demo.ApplicationPreferences
 import com.fingerprintjs.android.aev.logger.Logger
-import com.fingerprintjs.android.aev.transport.OkHttpClientImpl
+import com.fingerprintjs.android.aev.transport.NativeHttpClient
 
 
 interface VerifyInteractor {
@@ -23,16 +23,14 @@ class VerifyInteractorImpl(
             privateApiKey,
             requestId
         )
-        val httpClient = OkHttpClientImpl(logger)
+        val httpClient = NativeHttpClient(logger)
         val rawRequestResult = httpClient.performRequest(
             verifyRequest
         )
 
-        val response =
-            VerificationResultResponse(rawRequestResult.type, rawRequestResult.rawResponse)
-        rawRequestResult.rawResponse?.let {
-            logger.debug(this, "Response: ${String(it, Charsets.UTF_8)}")
-        }
-        return response.typedResult()!!
+        return VerificationResultResponse(
+            rawRequestResult.type,
+            rawRequestResult.rawResponse
+        ).typedResult()!!
     }
 }
