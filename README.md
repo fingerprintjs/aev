@@ -117,9 +117,9 @@ See the client [API reference](docs/client_api.md)
 
 #### Request
 ```sh
-curl --header "Content-Type: application/json" \
--d "{\"secretKey\": \"YOUR_SECRET_API_KEY\", \"requestId\": \"YOUR_REQUEST_ID\"}" \
-https://aev.fpapi.io/api/v1/verify
+curl https://aev.fpapi.io/api/v1/verify \
+  -H 'Content-Type: application/json' \
+  -d '{"secretKey": "YOUR_PRIVATE_API_KEY", "requestId": "YOUR_REQUEST_ID"}'
 ```
 
 #### Response
