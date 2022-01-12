@@ -152,4 +152,4 @@ Android application protection library  supports API versions from 21 (Android 5
 ## License
 
 This library is MIT licensed.
-Copyright FingerprintJS, Inc. 2020-2021.
+Copyright FingerprintJS, Inc. 2020-2022.
