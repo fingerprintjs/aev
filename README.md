@@ -153,9 +153,9 @@ Android application protection library  supports API versions from 21 (Android 5
 When publishing to the Play Market make sure you've noted the following information about collected data:
 | Data Types | Collected | Shared | Processed ephemerally | Required or Optional | Purposes |
 | --- | --- | --- | --- | --- | --- |
-| Installed applications | Yes | No | No | Required | Antifraud |
-| User IDs | Yes | No | No | Required | Antifraud |
-| Device or other IDs | Yes | No | No | Required | Antifraud |
+| Installed applications | Yes | No | No | Required | Fraud Prevention |
+| User IDs | Yes | No | No | Required | Fraud Prevention |
+| Device or other IDs | Yes | No | No | Required | Fraud Prevention |
 
 
 ## License
