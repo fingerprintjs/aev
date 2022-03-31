@@ -6,7 +6,7 @@ import org.json.JSONObject
 import java.lang.Exception
 
 
-class ConsoleLogger : Logger {
+internal class ConsoleLogger : Logger {
     override fun debug(obj: Any, message: String?) {
         if (BuildConfig.DEBUG) {
             message?.let {

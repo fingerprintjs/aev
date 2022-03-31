@@ -4,13 +4,13 @@ package com.fingerprintjs.android.aev.signals
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 
 
-class DeviceIdData(
+internal class DeviceIdData(
     val androidId: String,
     val gsfId: String?,
     val mediaDrmId: String?
 )
 
-class DeviceIdSignal(value: DeviceIdData): Signal<DeviceIdData>(DEVICE_ID_SIGNAL_NAME, value) {
+internal class DeviceIdSignal(value: DeviceIdData): Signal<DeviceIdData>(DEVICE_ID_SIGNAL_NAME, value) {
     override fun toMap() = mapOf(
         VALUE_KEY to mapOf(
             ANDROID_ID_KEY to value.androidId,

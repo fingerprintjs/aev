@@ -11,16 +11,16 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 
 
-class CertificateInfo(
+internal class CertificateInfo(
     val dnameList: List<String>,
     val sigAlgInfo: List<String>
 )
 
-interface PackageManagerInfoProvider {
+internal interface PackageManagerInfoProvider {
     fun getCertificateInfo(packageName: String): CertificateInfo
 }
 
-class PackageManagerInfoProviderImpl(
+internal class PackageManagerInfoProviderImpl(
     private val packageManager: PackageManager
 ) : PackageManagerInfoProvider {
     override fun getCertificateInfo(packageName: String) = executeSafe({

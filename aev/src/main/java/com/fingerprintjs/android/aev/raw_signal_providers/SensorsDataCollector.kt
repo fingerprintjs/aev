@@ -11,16 +11,16 @@ import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 
-class SensorsResult(
+internal class SensorsResult(
     val accelerometerData: List<List<Float>>,
     val gyroscopeData: List<List<Float>>
 )
 
-interface SensorsDataCollector {
+internal interface SensorsDataCollector {
     fun collect(): SensorsResult
 }
 
-class SensorsDataCollectorImpl(private val sensorManager: SensorManager) : SensorsDataCollector {
+internal class SensorsDataCollectorImpl(private val sensorManager: SensorManager) : SensorsDataCollector {
     override fun collect() = executeSafe({
         val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         val gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)

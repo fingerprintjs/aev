@@ -1,10 +1,10 @@
 package com.fingerprintjs.android.aev.demo.demo_screen.api
 
 
-import com.fingerprintjs.android.aev.transport.Request
-import com.fingerprintjs.android.aev.transport.RequestResultType
-import com.fingerprintjs.android.aev.transport.RequestType
-import com.fingerprintjs.android.aev.transport.TypedRequestResult
+import com.fingerprintjs.android.aev.demo.utils.network.Request
+import com.fingerprintjs.android.aev.demo.utils.network.RequestResultType
+import com.fingerprintjs.android.aev.demo.utils.network.RequestType
+import com.fingerprintjs.android.aev.demo.utils.network.TypedRequestResult
 import org.json.JSONObject
 import java.util.*
 

@@ -6,6 +6,7 @@ import com.fingerprintjs.android.aev.demo.ApplicationPreferences
 import com.fingerprintjs.android.aev.demo.demo_screen.api.AevClientBuilder
 import com.fingerprintjs.android.aev.demo.demo_screen.api.VerifyInteractorImpl
 import com.fingerprintjs.android.aev.demo.demo_screen.api.VerificationResult
+import com.fingerprintjs.android.aev.demo.utils.network.NativeHttpClient
 import com.fingerprintjs.android.aev.logger.Logger
 import org.json.JSONObject
 import java.util.*
@@ -145,7 +146,7 @@ class DemoPresenterImpl(
         listener: (VerificationResult) -> (Unit)
     ) {
         executor.execute {
-            val getResultsInteractor = VerifyInteractorImpl(preferences, object : Logger {
+            val getResultsInteractor = VerifyInteractorImpl(preferences, object : NativeHttpClient.Logger {
                 override fun debug(obj: Any, message: String?) {
                     message?.let {
                         verificationResultsLogs.add(it)

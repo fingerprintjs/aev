@@ -5,7 +5,7 @@ import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsResult
 
 
-class SensorsSignal(value: SensorsResult) : Signal<SensorsResult>(SENSORS_SIGNAL_NAME, value) {
+internal class SensorsSignal(value: SensorsResult) : Signal<SensorsResult>(SENSORS_SIGNAL_NAME, value) {
 
     override fun toMap() = mapOf(
         VALUE_KEY to mapOf(

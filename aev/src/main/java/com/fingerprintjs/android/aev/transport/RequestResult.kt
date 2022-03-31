@@ -1,17 +1,17 @@
 package com.fingerprintjs.android.aev.transport
 
 
-enum class RequestResultType {
+internal enum class RequestResultType {
     SUCCESS,
     ERROR
 }
 
-open class RawRequestResult(
+internal open class RawRequestResult(
     val type: RequestResultType,
     val rawResponse: ByteArray?
 )
 
-abstract class TypedRequestResult<T>(
+internal abstract class TypedRequestResult<T>(
     type: RequestResultType,
     rawResponse: ByteArray?
 ) : RawRequestResult(type, rawResponse) {

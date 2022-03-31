@@ -10,14 +10,14 @@ import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollector
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsResult
 
 
-interface SignalProvider {
+internal interface SignalProvider {
     fun signals(): List<Signal<*>>
     fun deviceIdSignal(): Signal<DeviceIdData>
     fun installedAppsSignal(): Signal<InstalledAppsData>
     fun sensorsSignal(): Signal<SensorsResult>
 }
 
-class SignalProviderImpl private constructor(
+internal class SignalProviderImpl private constructor(
     private val packageManagerInfoProvider: PackageManagerInfoProvider,
     private val sensorsDataCollector: SensorsDataCollector,
     private val deviceIdResult: DeviceIdResult,

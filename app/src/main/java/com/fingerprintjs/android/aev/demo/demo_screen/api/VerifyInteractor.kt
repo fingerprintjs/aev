@@ -2,8 +2,7 @@ package com.fingerprintjs.android.aev.demo.demo_screen.api
 
 
 import com.fingerprintjs.android.aev.demo.ApplicationPreferences
-import com.fingerprintjs.android.aev.logger.Logger
-import com.fingerprintjs.android.aev.transport.NativeHttpClient
+import com.fingerprintjs.android.aev.demo.utils.network.NativeHttpClient
 
 
 interface VerifyInteractor {
@@ -12,7 +11,7 @@ interface VerifyInteractor {
 
 class VerifyInteractorImpl(
     private val applicationPreferences: ApplicationPreferences,
-    private val logger: Logger
+    private val logger: NativeHttpClient.Logger
 ) : VerifyInteractor {
     override fun verify(requestId: String): VerificationResult {
         val endpointURL = applicationPreferences.getEndpointUrl()
