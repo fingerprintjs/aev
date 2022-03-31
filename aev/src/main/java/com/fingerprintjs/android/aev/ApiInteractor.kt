@@ -9,13 +9,13 @@ import com.fingerprintjs.android.aev.signals.SignalProvider
 import com.fingerprintjs.android.aev.transport.HttpClient
 
 
-interface ApiInteractor {
+internal interface ApiInteractor {
     fun getToken(
         signalProvider: SignalProvider
     ): InitVerifyResponse
 }
 
-class ApiInteractorImpl(
+internal class ApiInteractorImpl(
     private val httpClient: HttpClient,
     private val endpointURL: String,
     private val appId: String,

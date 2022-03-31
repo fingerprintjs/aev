@@ -1,25 +1,19 @@
-package com.fingerprintjs.android.aev.transport
+package com.fingerprintjs.android.aev.demo.utils.network
 
-import com.fingerprintjs.android.aev.logger.Logger
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.lang.Exception
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 
-internal interface HttpClient {
-    fun performRequest(
-        request: Request
-    ): RawRequestResult
-}
-
-internal class NativeHttpClient(
+class NativeHttpClient(
     private val logger: Logger
-) : HttpClient {
-    override fun performRequest(request: Request): RawRequestResult {
+) {
+    fun performRequest(request: Request): RawRequestResult {
         return executeSafe({
             sendPostRequest(request)
         }, RawRequestResult(RequestResultType.ERROR, "Network error".toByteArray()))
@@ -42,7 +36,7 @@ internal class NativeHttpClient(
             wr.flush()
 
             logger.debug(this, "URL : $url")
-            logger.debug(this,"Response Code : $responseCode")
+            logger.debug(this, "Response Code : $responseCode")
 
             if (responseCode == 200) {
                 BufferedReader(InputStreamReader(inputStream)).use {
@@ -54,9 +48,22 @@ internal class NativeHttpClient(
                         inputLine = it.readLine()
                     }
                     logger.debug(this, "Response : $response")
-                    return RawRequestResult(RequestResultType.SUCCESS, response.toString().toByteArray())
+                    return RawRequestResult(
+                        RequestResultType.SUCCESS,
+                        response.toString().toByteArray()
+                    )
                 }
-            } else return RawRequestResult(RequestResultType.ERROR, "Error: code is $responseCode".toByteArray())
+            } else return RawRequestResult(
+                RequestResultType.ERROR,
+                "Error: code is $responseCode".toByteArray()
+            )
         }
+    }
+
+    interface Logger {
+        fun debug(obj: Any, message: String?)
+        fun debug(obj: Any, message: JSONObject)
+        fun error(obj: Any, message: String?)
+        fun error(obj: Any, exception: Exception)
     }
 }

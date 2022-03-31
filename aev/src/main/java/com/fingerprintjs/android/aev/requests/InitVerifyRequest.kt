@@ -9,12 +9,12 @@ import com.fingerprintjs.android.aev.transport.TypedRequestResult
 import org.json.JSONObject
 
 
-data class InitVerifyResponse(
+internal data class InitVerifyResponse(
     val requestId: String,
     val errorMessage: String? = ""
 )
 
-class InitVerifyResult(
+internal class InitVerifyResult(
     type: RequestResultType,
     rawResponse: ByteArray?
 ) : TypedRequestResult<InitVerifyResponse>(type, rawResponse) {
@@ -32,7 +32,7 @@ class InitVerifyResult(
 }
 
 
-class InitVerifyRequest(
+internal class InitVerifyRequest(
     endpointUrl: String,
     private val appName: String,
     private val publicApiKey: String,
