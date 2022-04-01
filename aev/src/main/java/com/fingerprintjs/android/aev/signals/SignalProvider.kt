@@ -8,6 +8,7 @@ import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.Ins
 import com.fingerprintjs.android.aev.raw_signal_providers.PackageManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollector
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsResult
+import com.fingerprintjs.android.aev.utils.runInParallel
 
 
 internal interface SignalProvider {
@@ -24,11 +25,13 @@ internal class SignalProviderImpl private constructor(
     private val fingerprintResult: FingerprintResult
 ) : SignalProvider {
     override fun signals(): List<Signal<*>> {
-        return listOf(
-            deviceIdSignal(),
-            installedAppsSignal(),
-            sensorsSignal()
+        return runInParallel(
+            { deviceIdSignal() },
+            { installedAppsSignal() },
+            { sensorsSignal() }
         )
+            .run { arrayOf(first, second, third) }
+            .mapNotNull { result -> result.getOrNull() }
     }
 
     override fun deviceIdSignal() = DeviceIdSignal(

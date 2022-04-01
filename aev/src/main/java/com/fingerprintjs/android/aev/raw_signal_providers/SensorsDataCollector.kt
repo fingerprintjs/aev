@@ -5,6 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import com.fingerprintjs.android.aev.utils.runInParallel
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.util.*
 import java.util.concurrent.CountDownLatch
@@ -24,10 +25,15 @@ internal class SensorsDataCollectorImpl(private val sensorManager: SensorManager
     override fun collect() = executeSafe({
         val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         val gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
-        SensorsResult(
-            collectSensorInfo(accelerometer),
-            collectSensorInfo(gyroscope)
-        )
+        runInParallel(
+            { collectSensorInfo(accelerometer) },
+            { collectSensorInfo(gyroscope) }
+        ).let { pair ->
+            SensorsResult(
+                pair.first.getOrDefault(emptyList()),
+                pair.second.getOrDefault(emptyList())
+            )
+        }
     }, SensorsResult(emptyList(), emptyList()))
 
     private fun collectSensorInfo(
