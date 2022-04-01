@@ -16,6 +16,9 @@ interface ApplicationPreferences {
     fun setEndpointUrl(endpointUrl: String)
     fun setPublicApiKey(apiToken: String)
     fun setPrivateApiKey(apiToken: String)
+
+    fun setAgreementToTheTerms(agreed: Boolean)
+    fun getAgreementToTheTerms(): Boolean
 }
 
 class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
@@ -29,6 +32,7 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
     private val API_KEY = context.getString(R.string.apiTokenKey)
     private val PRIVATE_API_KEY = context.getString(R.string.privateApiTokenKey)
     private val ENDPOINT_URL_KEY = context.getString(R.string.endpointUrlKey)
+    private val AGREEMENT_TO_THE_TERMS_KEY = context.getString(R.string.agreementToTheTermsKey)
 
     override fun getEndpointUrl() =
         preferences.getString(ENDPOINT_URL_KEY, null) ?: defaultEndpointUrl
@@ -47,6 +51,14 @@ class ApplicationPreferencesImpl(context: Context) : ApplicationPreferences {
 
     override fun setPrivateApiKey(apiToken: String) {
         preferences.edit().putString(PRIVATE_API_KEY, apiToken).apply()
+    }
+
+    override fun setAgreementToTheTerms(agreed: Boolean) {
+        preferences.edit().putBoolean(AGREEMENT_TO_THE_TERMS_KEY, agreed).apply()
+    }
+
+    override fun getAgreementToTheTerms(): Boolean {
+        return preferences.getBoolean(AGREEMENT_TO_THE_TERMS_KEY, false)
     }
 
     private fun createPreferences(context: Context) =

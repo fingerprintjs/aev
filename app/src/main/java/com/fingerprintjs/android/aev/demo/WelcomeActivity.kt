@@ -9,6 +9,7 @@ import android.text.style.UnderlineSpan
 import android.view.View
 import android.widget.TextView
 import com.fingerprintjs.android.aev.demo.demo_screen.DemoActivity
+import com.fingerprintjs.android.aev.demo.dialogs.PrivacyNoteDialog
 
 
 class WelcomeActivity : ActionMenuActivity() {
@@ -27,7 +28,19 @@ class WelcomeActivity : ActionMenuActivity() {
 
         termsButton.text = spannableTermsBtnText
         termsButton.setOnClickListener { openScreen(TermsActivity::class.java) }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        val applicationPreferences = ApplicationPreferencesImpl(this)
+        if (applicationPreferences.getAgreementToTheTerms()) {
+            return
+        }
+        PrivacyNoteDialog(this, {
+            openScreen(TermsActivity::class.java)
+        }, {
+            applicationPreferences.setAgreementToTheTerms(true)
+        }).show()
     }
 
     private fun openScreen(cls: Class<*>) {
