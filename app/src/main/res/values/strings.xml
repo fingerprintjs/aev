@@ -3,6 +3,7 @@
     <string name="run_btn_text">Run</string>
     <string name="btn_verify_text">VERIFY</string>
     <string name="endpointUrlKey">endpointUrl</string>
+    <string name="agreementToTheTermsKey">agreementToTheTerms</string>
     <string name="defaultEndpointUrl">https://aev.fpapi.io</string>
     <string name="apiTokenKey">apiKey</string>
     <string name="privateApiTokenKey">privateApiKey</string>
@@ -23,4 +24,5 @@
     <string name="copy_button_image_description">Copy button</string>
     <string name="menu_repository_page_title">Repository page</string>
     <string name="menu_settings_title">Settings</string>
+    <string name="privacy_note_in_dialog">This application shows capabilities of the AEV – library for verification devices security. The demo application uses the AEV library and sends to FingerprintJS information about installed applications and sensor measurements for making verdicts about device security. Read more in the terms of use. By continuing use the application you agree to the terms.</string>
 </resources>
