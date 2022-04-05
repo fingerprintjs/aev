@@ -7,7 +7,7 @@
   <a href="https://discord.gg/39EpE2neBg">
     <img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server">
   </a>
-</p>
+</p>                                                                                                                                           
 <p align="center">
     <a href="https://android-arsenal.com/api?level=21">
     <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
@@ -18,12 +18,12 @@
 </p>
 
 <p align="center">
- 	<a href='https://play.google.com/store/apps/details?id=com.fingerprintjs.android.aev.demo'>
- 		<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="240px/>
+ 	<a href="https://play.google.com/store/apps/details?id=com.fingerprintjs.android.aev.demo">
+ 		<img alt='Get it on Google Play' src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png width"=240px/>
  	</a>
 </p>
 
-
+                                                                                                                                          
 # Android Application Environment Verification API
 
 Android library to verify application environments. 
