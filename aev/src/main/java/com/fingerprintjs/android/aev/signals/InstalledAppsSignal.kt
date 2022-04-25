@@ -6,14 +6,14 @@ import com.fingerprintjs.android.aev.raw_signal_providers.CertificateInfo
 import com.fingerprintjs.android.aev.raw_signal_providers.InstallTime
 
 
-internal class AppInfo(
+internal class InstalledAppInfo(
     val packageName: String,
     val signingCertificateInfo: CertificateInfo,
     val installTime: InstallTime?
 )
 
 internal class InstalledAppsData(
-    val installedApps: List<AppInfo>
+    val installedApps: List<InstalledAppInfo>
 )
 
 internal class InstalledAppsSignal(value: InstalledAppsData) :
