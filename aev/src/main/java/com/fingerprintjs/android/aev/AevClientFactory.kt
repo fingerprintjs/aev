@@ -13,6 +13,7 @@ import com.fingerprintjs.android.aev.raw_signal_providers.PackageManagerInfoProv
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollector
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollectorImpl
 import com.fingerprintjs.android.aev.signals.SignalProviderImpl
+import com.fingerprintjs.android.aev.signals.user_profile.UserProfileSignalProviderImpl
 import com.fingerprintjs.android.aev.transport.NativeHttpClient
 import org.json.JSONObject
 
@@ -73,7 +74,8 @@ object AevClientFactory {
     private fun getSignalProviderBuilder(context: Context) =
         SignalProviderImpl.SignalProviderBuilder(
             PackageManagerInfoProviderImpl(context.packageManager),
-            getSensorsDataCollector(context)
+            getSensorsDataCollector(context),
+            UserProfileSignalProviderImpl(context),
         )
 
     private fun getAppName(context: Context) = context.applicationInfo.packageName.toString()
