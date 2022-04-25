@@ -31,3 +31,11 @@ internal inline fun <T1, T2, T3> runInParallel(
         runCatching { f3.get() },
     )
 }
+
+internal fun <T> runInParallelVararg(
+    vararg blocks: () -> T,
+): List<Result<T>> {
+    return blocks
+        .map { block -> executor.submit(Callable { block() }) }
+        .map { future -> runCatching { future.get() } }
+}
