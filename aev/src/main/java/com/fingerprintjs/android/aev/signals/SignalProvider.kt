@@ -51,8 +51,9 @@ internal class SignalProviderImpl private constructor(
             InstalledAppsData(
                 applicationsList[0].value.map {
                     AppInfo(
-                        it.packageName,
-                        packageManagerInfoProvider.getCertificateInfo(it.packageName)
+                        packageName = it.packageName,
+                        signingCertificateInfo = packageManagerInfoProvider.getCertificateInfo(it.packageName),
+                        installTime = packageManagerInfoProvider.getInstallTime(it.packageName),
                     )
                 })
         )

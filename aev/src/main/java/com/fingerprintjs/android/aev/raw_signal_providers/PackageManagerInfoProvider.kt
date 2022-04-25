@@ -16,8 +16,13 @@ internal class CertificateInfo(
     val sigAlgInfo: List<String>
 )
 
+internal class InstallTime(
+    val firstInstallTime: Long
+)
+
 internal interface PackageManagerInfoProvider {
     fun getCertificateInfo(packageName: String): CertificateInfo
+    fun getInstallTime(packageName: String): InstallTime?
 }
 
 internal class PackageManagerInfoProviderImpl(
@@ -30,6 +35,18 @@ internal class PackageManagerInfoProviderImpl(
             certificates.map { it.sigAlgName }
         )
     }, CertificateInfo(emptyList(), emptyList()))
+
+    override fun getInstallTime(packageName: String): InstallTime? {
+        val packageInfo = runCatching {
+            packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
+        }.getOrNull()
+
+        return packageInfo?.let {
+            InstallTime(
+                firstInstallTime = it.firstInstallTime,
+            )
+        }
+    }
 
     @SuppressLint("PackageManagerGetSignatures")
     private fun getSigningCertificates(packageName: String): List<X509Certificate> {
