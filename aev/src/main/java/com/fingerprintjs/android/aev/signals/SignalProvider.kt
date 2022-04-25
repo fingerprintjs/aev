@@ -4,6 +4,8 @@ package com.fingerprintjs.android.aev.signals
 import com.fingerprintjs.android.aev.raw_signal_providers.PackageManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollector
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsResult
+import com.fingerprintjs.android.aev.signals.app.AppSignal
+import com.fingerprintjs.android.aev.signals.app.AppSignalProvider
 import com.fingerprintjs.android.aev.signals.user_profile.UserProfileSignal
 import com.fingerprintjs.android.aev.signals.user_profile.UserProfileSignalProvider
 import com.fingerprintjs.android.aev.utils.runInParallelVararg
@@ -19,7 +21,7 @@ internal interface SignalProvider {
     fun installedAppsSignal(): Signal<InstalledAppsData>
     fun sensorsSignal(): Signal<SensorsResult>
     fun userProfileSignal(): UserProfileSignal?
-    fun appSignal(): Signal<*>?
+    fun appSignal(): AppSignal?
 }
 
 internal class SignalProviderImpl private constructor(
@@ -28,6 +30,7 @@ internal class SignalProviderImpl private constructor(
     private val deviceIdResult: DeviceIdResult,
     private val fingerprintResult: FingerprintResult,
     private val userProfileSignalProvider: UserProfileSignalProvider,
+    private val appSignalProvider: AppSignalProvider,
 ) : SignalProvider {
     override fun signals(): List<Signal<*>> {
         return runInParallelVararg(
@@ -35,6 +38,7 @@ internal class SignalProviderImpl private constructor(
             { installedAppsSignal() },
             { sensorsSignal() },
             { userProfileSignal() },
+            { appSignal() },
         )
             .mapNotNull { result -> result.getOrNull() }
     }
@@ -73,14 +77,15 @@ internal class SignalProviderImpl private constructor(
         return userProfileSignalProvider.getUserProfileSignal()
     }
 
-    override fun appSignal(): Signal<*>? {
-        return null // todo
+    override fun appSignal(): AppSignal? {
+        return appSignalProvider.getAppSignal()
     }
 
     class SignalProviderBuilder(
         private val packageManagerInfoProvider: PackageManagerInfoProvider,
         private val sensorsDataCollector: SensorsDataCollector,
         private val userProfileSignalProvider: UserProfileSignalProvider,
+        private val appSignalProvider: AppSignalProvider,
     ) {
         private lateinit var fingerprintResult: FingerprintResult
         private lateinit var deviceIdResult: DeviceIdResult
@@ -102,6 +107,7 @@ internal class SignalProviderImpl private constructor(
                 deviceIdResult,
                 fingerprintResult,
                 userProfileSignalProvider,
+                appSignalProvider,
             )
         }
     }
