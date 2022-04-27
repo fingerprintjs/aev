@@ -6,7 +6,7 @@ import org.junit.Test
 import org.junit.Assert.*
 import java.lang.Exception
 
-class ConcurrencyUnitTest {
+internal class ConcurrencyUnitTest {
 
     @Test
     fun executesInParallel() {

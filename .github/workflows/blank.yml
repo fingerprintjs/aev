@@ -41,3 +41,15 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           path: app/build/outputs/apk/release/*
+
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Unit tests
+        run: ./gradlew aev:testRelease
