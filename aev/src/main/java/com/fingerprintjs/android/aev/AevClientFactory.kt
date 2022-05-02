@@ -9,11 +9,14 @@ import com.fingerprintjs.android.fingerprint.FingerprinterFactory
 import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 import com.fingerprintjs.android.aev.logger.ConsoleLogger
 import com.fingerprintjs.android.aev.logger.Logger
+import com.fingerprintjs.android.aev.raw_signal_providers.PackageManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.PackageManagerInfoProviderImpl
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollector
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollectorImpl
 import com.fingerprintjs.android.aev.signals.SignalProviderImpl
+import com.fingerprintjs.android.aev.signals.app.AppSignalProvider
 import com.fingerprintjs.android.aev.signals.app.AppSignalProviderImpl
+import com.fingerprintjs.android.aev.signals.user_profile.UserProfileSignalProvider
 import com.fingerprintjs.android.aev.signals.user_profile.UserProfileSignalProviderImpl
 import com.fingerprintjs.android.aev.transport.NativeHttpClient
 import org.json.JSONObject
@@ -74,10 +77,10 @@ object AevClientFactory {
 
     private fun getSignalProviderBuilder(context: Context) =
         SignalProviderImpl.SignalProviderBuilder(
-            PackageManagerInfoProviderImpl(context.packageManager),
+            getPackageManagerInfoProvider(context),
             getSensorsDataCollector(context),
-            UserProfileSignalProviderImpl(context),
-            AppSignalProviderImpl(context),
+            getUserProfileSignalProvider(context),
+            getAppSignalProvider(context),
         )
 
     private fun getAppName(context: Context) = context.applicationInfo.packageName.toString()
@@ -114,9 +117,18 @@ object AevClientFactory {
         }
     }
 
+    private fun getPackageManagerInfoProvider(context: Context): PackageManagerInfoProvider =
+        PackageManagerInfoProviderImpl(context.packageManager)
+
     private fun getSensorsDataCollector(context: Context): SensorsDataCollector {
         return SensorsDataCollectorImpl(context.getSystemService(Context.SENSOR_SERVICE) as SensorManager)
     }
+
+    private fun getUserProfileSignalProvider(context: Context): UserProfileSignalProvider =
+        UserProfileSignalProviderImpl(context)
+
+    private fun getAppSignalProvider(context: Context): AppSignalProvider =
+        AppSignalProviderImpl(context)
 }
 
 private const val DEFAULT_ENDPOINT_URL = "https://aev.fpapi.io"
