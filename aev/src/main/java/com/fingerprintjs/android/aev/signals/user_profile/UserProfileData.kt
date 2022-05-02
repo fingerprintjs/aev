@@ -4,7 +4,7 @@ internal class UserProfileData(
     /**
      * Count of profiles associated with the current user
      */
-    val userProfilesCount: Int,
+    val userProfilesCount: Int?,
     /**
      * Tells whether our app is executed inside managed, or work, profile
      */

@@ -73,11 +73,11 @@ internal class SignalProviderImpl private constructor(
         return SensorsSignal(sensorsResult)
     }
 
-    override fun userProfileSignal(): UserProfileSignal? {
+    override fun userProfileSignal(): UserProfileSignal {
         return userProfileSignalProvider.getUserProfileSignal()
     }
 
-    override fun appSignal(): AppSignal? {
+    override fun appSignal(): AppSignal {
         return appSignalProvider.getAppSignal()
     }
 

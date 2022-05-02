@@ -8,7 +8,7 @@ internal class UserProfileSignal(value: UserProfileData) :
 
     override fun toMap() = mapOf(
         VALUE_KEY to listOfNotNull(
-            USER_PROFILES_COUNT_KEY to value.userProfilesCount,
+            value.userProfilesCount?.let { USER_PROFILES_COUNT_KEY to it },
             value.isManagedProfile?.let { IS_MANAGED_PROFILE_KEY to it },
             value.isSystemUser?.let { IS_SYSTEM_USER_KEY to it },
         ).toMap()

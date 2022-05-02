@@ -7,19 +7,23 @@ internal class AppSignalProviderImpl(
     private val context: Context
 ) : AppSignalProvider {
 
-    override fun getAppSignal(): AppSignal? = runCatching {
-        val packageManager = context.packageManager
+    override fun getAppSignal(): AppSignal = AppSignal(
+        runCatching {
+            val packageManager = context.packageManager
 
-        val appName = context.packageName
-        val appInfo = packageManager.getApplicationInfo(appName, PackageManager.GET_META_DATA)
-        val dataDir = appInfo.dataDir
+            val appName = context.packageName
+            val appInfo = packageManager.getApplicationInfo(appName, PackageManager.GET_META_DATA)
+            val dataDir = appInfo.dataDir
 
-        AppSignal(
             AppData(
                 name = appName,
                 dataDir = dataDir
             )
+        }.getOrDefault(
+            AppData(
+                name = null,
+                dataDir = null
+            )
         )
-    }.getOrNull()
-
+    )
 }
