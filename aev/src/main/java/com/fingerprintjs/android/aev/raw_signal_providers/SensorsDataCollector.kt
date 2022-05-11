@@ -5,7 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import com.fingerprintjs.android.aev.utils.runInParallel
+import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.util.*
 import java.util.concurrent.CountDownLatch

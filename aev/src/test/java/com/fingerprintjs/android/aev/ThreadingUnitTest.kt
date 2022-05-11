@@ -1,12 +1,12 @@
 package com.fingerprintjs.android.aev
 
-import com.fingerprintjs.android.aev.utils.runInParallel
+import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import org.junit.Test
 
 import org.junit.Assert.*
 import java.lang.Exception
 
-internal class ConcurrencyUnitTest {
+internal class ThreadingUnitTest {
 
     @Test
     fun executesInParallel() {
