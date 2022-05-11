@@ -1,10 +1,10 @@
-package com.fingerprintjs.android.aev.signals.app
+package com.fingerprintjs.android.aev.signals
 
-import com.fingerprintjs.android.aev.signals.VALUE_KEY
+import com.fingerprintjs.android.aev.raw_signal_providers.package_manager.AppMetaData
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 
-internal class AppSignal(value: AppData) :
-    Signal<AppData>(APP_SIGNAL_NAME, value) {
+internal class AppSignal(value: AppMetaData) :
+    Signal<AppMetaData>(APP_SIGNAL_NAME, value) {
 
     override fun toMap() = mapOf(
         VALUE_KEY to listOfNotNull(

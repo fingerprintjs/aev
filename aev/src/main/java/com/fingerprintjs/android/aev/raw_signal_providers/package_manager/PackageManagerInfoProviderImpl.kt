@@ -1,5 +1,4 @@
-package com.fingerprintjs.android.aev.raw_signal_providers
-
+package com.fingerprintjs.android.aev.raw_signal_providers.package_manager
 
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
@@ -9,21 +8,6 @@ import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
-
-
-internal class CertificateInfo(
-    val dnameList: List<String>,
-    val sigAlgInfo: List<String>
-)
-
-internal class InstallTime(
-    val firstInstallTime: Long
-)
-
-internal interface PackageManagerInfoProvider {
-    fun getCertificateInfo(packageName: String): CertificateInfo
-    fun getInstallTime(packageName: String): InstallTime?
-}
 
 internal class PackageManagerInfoProviderImpl(
     private val packageManager: PackageManager
@@ -47,6 +31,21 @@ internal class PackageManagerInfoProviderImpl(
             )
         }
     }
+
+    override fun getAppMetaData(packageName: String): AppMetaData = runCatching {
+        val appInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+        val dataDir = appInfo.dataDir
+
+        AppMetaData(
+            name = packageName,
+            dataDir = dataDir
+        )
+    }.getOrDefault(
+        AppMetaData(
+            name = null,
+            dataDir = null
+        )
+    )
 
     @SuppressLint("PackageManagerGetSignatures")
     private fun getSigningCertificates(packageName: String): List<X509Certificate> {
