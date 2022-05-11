@@ -1,10 +1,10 @@
-package com.fingerprintjs.android.aev.signals.user_profile
+package com.fingerprintjs.android.aev.signals
 
-import com.fingerprintjs.android.aev.signals.VALUE_KEY
+import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserProfileInfo
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 
-internal class UserProfileSignal(value: UserProfileData) :
-    Signal<UserProfileData>(USER_PROFILE_SIGNAL_NAME, value) {
+internal class UserProfileSignal(value: UserProfileInfo) :
+    Signal<UserProfileInfo>(USER_PROFILE_SIGNAL_NAME, value) {
 
     override fun toMap() = mapOf(
         VALUE_KEY to listOfNotNull(

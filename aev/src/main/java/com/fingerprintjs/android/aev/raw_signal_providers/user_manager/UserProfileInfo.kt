@@ -1,6 +1,6 @@
-package com.fingerprintjs.android.aev.signals.user_profile
+package com.fingerprintjs.android.aev.raw_signal_providers.user_manager
 
-internal class UserProfileData(
+internal class UserProfileInfo(
     /**
      * Count of profiles associated with the current user
      */
