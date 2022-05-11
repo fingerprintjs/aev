@@ -5,6 +5,12 @@ import java.util.concurrent.Executors
 
 private val executor = Executors.newCachedThreadPool()
 
+internal inline fun runInAnotherThread(
+    crossinline block: () -> Unit,
+) {
+    executor.execute { block.invoke() }
+}
+
 internal inline fun <T1, T2> runInParallel(
     crossinline block1: () -> T1,
     crossinline block2: () -> T2,
