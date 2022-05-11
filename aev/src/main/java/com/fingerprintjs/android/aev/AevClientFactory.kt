@@ -4,20 +4,21 @@ package com.fingerprintjs.android.aev
 import android.content.Context
 import android.hardware.SensorManager
 import android.os.UserManager
-import com.fingerprintjs.android.fingerprint.Configuration
-import com.fingerprintjs.android.fingerprint.Fingerprinter
-import com.fingerprintjs.android.fingerprint.FingerprinterFactory
-import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
+import com.fingerprintjs.android.aev.config.ConfigProvider
+import com.fingerprintjs.android.aev.config.ConfigProviderImpl
 import com.fingerprintjs.android.aev.logger.ConsoleLogger
 import com.fingerprintjs.android.aev.logger.Logger
+import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollectorBuilder
 import com.fingerprintjs.android.aev.raw_signal_providers.package_manager.PackageManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.package_manager.PackageManagerInfoProviderImpl
-import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollector
-import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollectorImpl
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserManagerInfoProviderImpl
 import com.fingerprintjs.android.aev.signals.SignalProviderImpl
 import com.fingerprintjs.android.aev.transport.NativeHttpClient
+import com.fingerprintjs.android.fingerprint.Configuration
+import com.fingerprintjs.android.fingerprint.Fingerprinter
+import com.fingerprintjs.android.fingerprint.FingerprinterFactory
+import com.fingerprintjs.android.fingerprint.tools.hashers.MurMur3x64x128Hasher
 import org.json.JSONObject
 
 
@@ -53,7 +54,8 @@ public object AevClientFactory {
                 publicApiKey
             ),
             getSignalProviderBuilder(applicationContext),
-            logger
+            logger,
+            getConfigProvider()
         )
 
         AevClientFactory.instance = instance
@@ -77,7 +79,7 @@ public object AevClientFactory {
     private fun getSignalProviderBuilder(context: Context) =
         SignalProviderImpl.SignalProviderBuilder(
             getPackageManagerInfoProvider(context),
-            getSensorsDataCollector(context),
+            getSensorsDataCollectorBuilder(context),
             getUserManagerInfoProvider(context),
             getAppName(context),
         )
@@ -120,8 +122,8 @@ public object AevClientFactory {
     private fun getPackageManagerInfoProvider(context: Context): PackageManagerInfoProvider =
         PackageManagerInfoProviderImpl(context.packageManager)
 
-    private fun getSensorsDataCollector(context: Context): SensorsDataCollector {
-        return SensorsDataCollectorImpl(context.getSystemService(Context.SENSOR_SERVICE) as SensorManager)
+    private fun getSensorsDataCollectorBuilder(context: Context): SensorsDataCollectorBuilder {
+        return SensorsDataCollectorBuilder(context.getSystemService(Context.SENSOR_SERVICE) as SensorManager)
     }
 
     private fun getUserManagerInfoProvider(context: Context): UserManagerInfoProvider? {
@@ -129,6 +131,9 @@ public object AevClientFactory {
             UserManagerInfoProviderImpl(it)
         }
     }
+
+    private fun getConfigProvider(): ConfigProvider =
+        ConfigProviderImpl()
 }
 
 private const val DEFAULT_ENDPOINT_URL = "https://aev.fpapi.io"
