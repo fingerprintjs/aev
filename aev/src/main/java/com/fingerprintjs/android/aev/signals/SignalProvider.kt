@@ -7,7 +7,7 @@ import com.fingerprintjs.android.aev.raw_signal_providers.SensorsResult
 import com.fingerprintjs.android.aev.raw_signal_providers.package_manager.AppMetaData
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserProfileInfo
-import com.fingerprintjs.android.aev.utils.runInParallelVararg
+import com.fingerprintjs.android.aev.utils.concurrency.runInParallelVararg
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal

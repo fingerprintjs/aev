@@ -1,4 +1,4 @@
-package com.fingerprintjs.android.aev.utils
+package com.fingerprintjs.android.aev.utils.concurrency
 
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
