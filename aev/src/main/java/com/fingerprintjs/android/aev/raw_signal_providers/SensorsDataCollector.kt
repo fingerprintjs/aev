@@ -5,6 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import com.fingerprintjs.android.aev.config.Config
 import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
 import java.util.*
@@ -21,13 +22,32 @@ internal interface SensorsDataCollector {
     fun collect(): SensorsResult
 }
 
-internal class SensorsDataCollectorImpl(private val sensorManager: SensorManager) : SensorsDataCollector {
+internal class SensorsDataCollectorImpl(
+    private val sensorManager: SensorManager,
+    private val config: Config
+) : SensorsDataCollector {
     override fun collect() = executeSafe({
         val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         val gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE)
         runInParallel(
-            { collectSensorInfo(accelerometer) },
-            { collectSensorInfo(gyroscope) }
+            {
+                if (config.accelerometerSignalEnabled)
+                    collectSensorInfo(
+                        sensor = accelerometer,
+                        valuesCountLimit = config.accelerometerValuesCountLimit,
+                        timeoutMs = config.accelerometerTimeoutMs
+                    )
+                else emptyList()
+            },
+            {
+                if (config.gyroscopeSignalEnabled)
+                    collectSensorInfo(
+                        sensor = gyroscope,
+                        valuesCountLimit = config.gyroscopeValuesCountLimit,
+                        timeoutMs = config.gyroscopeTimeoutMs
+                    )
+                else emptyList()
+            },
         ).let { pair ->
             SensorsResult(
                 pair.first.getOrDefault(emptyList()),
@@ -37,10 +57,12 @@ internal class SensorsDataCollectorImpl(private val sensorManager: SensorManager
     }, SensorsResult(emptyList(), emptyList()))
 
     private fun collectSensorInfo(
-        sensor: Sensor?
+        sensor: Sensor?,
+        valuesCountLimit: Int,
+        timeoutMs: Long,
     ): List<List<Float>> {
         if (sensor == null) return emptyList()
-        val countdownLatch = CountDownLatch(NUMBER_OF_SENSOR_VALUES)
+        val countdownLatch = CountDownLatch(valuesCountLimit)
         val sensorValues = LinkedList<List<Float>>()
 
         val sensorListener = object : SensorEventListener {
@@ -58,7 +80,7 @@ internal class SensorsDataCollectorImpl(private val sensorManager: SensorManager
         sensorManager.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_UI)
 
         try {
-            countdownLatch.await(TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+            countdownLatch.await(timeoutMs, TimeUnit.MILLISECONDS)
         } catch (exception: InterruptedException) {
             // Continue execution
         }
@@ -68,5 +90,20 @@ internal class SensorsDataCollectorImpl(private val sensorManager: SensorManager
     }
 }
 
-private const val NUMBER_OF_SENSOR_VALUES = 30
-private const val TIMEOUT_IN_MILLIS = 1500L
+internal class SensorsDataCollectorBuilder(
+    private val sensorManager: SensorManager,
+) {
+    private var config: Config = Config.DEFAULT
+
+    fun withConfig(config: Config): SensorsDataCollectorBuilder {
+        this.config = config
+        return this
+    }
+
+    fun build(): SensorsDataCollectorImpl {
+        return SensorsDataCollectorImpl(
+            sensorManager = sensorManager,
+            config = config
+        )
+    }
+}

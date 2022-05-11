@@ -1,10 +1,12 @@
 package com.fingerprintjs.android.aev.signals
 
 
-import com.fingerprintjs.android.aev.raw_signal_providers.package_manager.PackageManagerInfoProvider
+import com.fingerprintjs.android.aev.config.Config
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollector
+import com.fingerprintjs.android.aev.raw_signal_providers.SensorsDataCollectorBuilder
 import com.fingerprintjs.android.aev.raw_signal_providers.SensorsResult
 import com.fingerprintjs.android.aev.raw_signal_providers.package_manager.AppMetaData
+import com.fingerprintjs.android.aev.raw_signal_providers.package_manager.PackageManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserProfileInfo
 import com.fingerprintjs.android.aev.utils.concurrency.runInParallelVararg
@@ -29,7 +31,8 @@ internal class SignalProviderImpl private constructor(
     private val deviceIdResult: DeviceIdResult,
     private val fingerprintResult: FingerprintResult,
     private val userManagerInfoProvider: UserManagerInfoProvider?,
-    private val appName: String?
+    private val appName: String?,
+    private val config: Config,
 ) : SignalProvider {
     override fun signals(): List<Signal<*>> {
         return runInParallelVararg(
@@ -57,13 +60,23 @@ internal class SignalProviderImpl private constructor(
 
         return InstalledAppsSignal(
             InstalledAppsData(
-                applicationsList[0].value.map {
-                    InstalledAppInfo(
-                        packageName = it.packageName,
-                        signingCertificateInfo = packageManagerInfoProvider.getCertificateInfo(it.packageName),
-                        installTime = packageManagerInfoProvider.getInstallTime(it.packageName),
-                    )
-                })
+                (when (config.installedAppsCollectionMode) {
+                    Config.InstalledAppsCollectionMode.ALL ->
+                        applicationsList.getOrNull(0)?.value
+                    Config.InstalledAppsCollectionMode.SYSTEM ->
+                        applicationsList.getOrNull(1)?.value
+                    Config.InstalledAppsCollectionMode.NONE ->
+                        null
+                } ?: emptyList())
+                    .map {
+                        InstalledAppInfo(
+                            packageName = it.packageName,
+                            signingCertificateInfo = packageManagerInfoProvider.getCertificateInfo(
+                                it.packageName
+                            ),
+                            installTime = packageManagerInfoProvider.getInstallTime(it.packageName),
+                        )
+                    })
         )
     }
 
@@ -95,12 +108,13 @@ internal class SignalProviderImpl private constructor(
 
     class SignalProviderBuilder(
         private val packageManagerInfoProvider: PackageManagerInfoProvider,
-        private val sensorsDataCollector: SensorsDataCollector,
+        private val sensorsDataCollectorBuilder: SensorsDataCollectorBuilder,
         private val userManagerInfoProvider: UserManagerInfoProvider?,
         private val appName: String?
     ) {
         private lateinit var fingerprintResult: FingerprintResult
         private lateinit var deviceIdResult: DeviceIdResult
+        private lateinit var config: Config
 
         fun withFingerprintResult(fingerprintResult: FingerprintResult): SignalProviderBuilder {
             this.fingerprintResult = fingerprintResult
@@ -112,14 +126,20 @@ internal class SignalProviderImpl private constructor(
             return this
         }
 
+        fun withConfig(config: Config): SignalProviderBuilder {
+            this.config = config
+            return this
+        }
+
         fun build(): SignalProvider {
             return SignalProviderImpl(
                 packageManagerInfoProvider,
-                sensorsDataCollector,
+                sensorsDataCollectorBuilder.withConfig(config).build(),
                 deviceIdResult,
                 fingerprintResult,
                 userManagerInfoProvider,
-                appName
+                appName,
+                config
             )
         }
     }
