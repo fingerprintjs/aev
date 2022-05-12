@@ -35,7 +35,8 @@ internal class SensorsDataCollectorImpl(
                     collectSensorInfo(
                         sensor = accelerometer,
                         valuesCountLimit = config.accelerometerValuesCountLimit,
-                        timeoutMs = config.accelerometerTimeoutMs
+                        timeoutMs = config.accelerometerTimeoutMs,
+                        samplingPeriodUs = config.accelerometerSamplingPeriodUs,
                     )
                 else emptyList()
             },
@@ -44,7 +45,8 @@ internal class SensorsDataCollectorImpl(
                     collectSensorInfo(
                         sensor = gyroscope,
                         valuesCountLimit = config.gyroscopeValuesCountLimit,
-                        timeoutMs = config.gyroscopeTimeoutMs
+                        timeoutMs = config.gyroscopeTimeoutMs,
+                        samplingPeriodUs = config.gyroscopeSamplingPeriodUs,
                     )
                 else emptyList()
             },
@@ -60,6 +62,7 @@ internal class SensorsDataCollectorImpl(
         sensor: Sensor?,
         valuesCountLimit: Int,
         timeoutMs: Long,
+        samplingPeriodUs: Int,
     ): List<List<Float>> {
         if (sensor == null) return emptyList()
         val countdownLatch = CountDownLatch(valuesCountLimit)
@@ -77,7 +80,7 @@ internal class SensorsDataCollectorImpl(
             }
 
         }
-        sensorManager.registerListener(sensorListener, sensor, SensorManager.SENSOR_DELAY_UI)
+        sensorManager.registerListener(sensorListener, sensor, samplingPeriodUs)
 
         try {
             countdownLatch.await(timeoutMs, TimeUnit.MILLISECONDS)
