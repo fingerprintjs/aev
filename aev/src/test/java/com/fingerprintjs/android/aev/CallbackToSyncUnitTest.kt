@@ -1,19 +1,19 @@
 package com.fingerprintjs.android.aev
 
-import com.fingerprintjs.android.aev.utils.concurrency.fromCallback
+import com.fingerprintjs.android.aev.utils.concurrency.callbackToSync
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.concurrent.Executors
 
 
-internal class FromCallbackUnitTest {
+internal class CallbackToSyncUnitTest {
 
     private val executor = Executors.newSingleThreadExecutor()
     private class TestException : Exception()
 
     @Test
-    fun fromCallbackNormalFlowTest() {
-        val v = fromCallback<Boolean?> {
+    fun callbackToSyncNormalFlowTest() {
+        val v = callbackToSync<Boolean?> {
             callbackApiReturningTrue {
                 emit(it)
             }
@@ -23,9 +23,9 @@ internal class FromCallbackUnitTest {
     }
 
     @Test
-    fun fromCallbackExceptionFlowTest() {
+    fun callbackToSyncExceptionFlowTest() {
         val v = runCatching {
-            fromCallback<Boolean?> {
+            callbackToSync<Boolean?> {
                 callbackApiThrowingException {
                     emit(it)
                 }
