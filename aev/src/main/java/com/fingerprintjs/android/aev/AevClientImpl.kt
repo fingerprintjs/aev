@@ -4,7 +4,7 @@ package com.fingerprintjs.android.aev
 import com.fingerprintjs.android.aev.config.ConfigProvider
 import com.fingerprintjs.android.aev.logger.Logger
 import com.fingerprintjs.android.aev.signals.SignalProviderImpl
-import com.fingerprintjs.android.aev.utils.concurrency.fromCallback
+import com.fingerprintjs.android.aev.utils.concurrency.callbackToSync
 import com.fingerprintjs.android.aev.utils.concurrency.runInAnotherThread
 import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
@@ -29,13 +29,13 @@ internal class AevClientImpl(
             runInParallel(
                 {
                     logger.debug(this, "Start getting requestId.")
-                    fromCallback<DeviceIdResult> { ossAgent.getDeviceId { emit(it) } }.also {
+                    callbackToSync<DeviceIdResult> { ossAgent.getDeviceId { emit(it) } }.also {
                         logger.debug(this, "Got deviceId: ${it.deviceId}")
                     }
                 },
                 {
                     logger.debug(this, "Start getting fingerprint.")
-                    fromCallback<FingerprintResult> { ossAgent.getFingerprint { emit(it) } }.also {
+                    callbackToSync<FingerprintResult> { ossAgent.getFingerprint { emit(it) } }.also {
                         logger.debug(this, "Got fingerprint: ${it.fingerprint}")
                     }
                 },
