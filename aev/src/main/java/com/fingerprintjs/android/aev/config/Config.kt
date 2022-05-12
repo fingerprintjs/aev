@@ -6,9 +6,11 @@ internal data class Config(
     val accelerometerSignalEnabled: Boolean,
     val accelerometerTimeoutMs: Long,
     val accelerometerValuesCountLimit: Int,
+    val accelerometerSamplingPeriodUs: Int,
     val gyroscopeSignalEnabled: Boolean,
     val gyroscopeTimeoutMs: Long,
     val gyroscopeValuesCountLimit: Int,
+    val gyroscopeSamplingPeriodUs: Int,
 ) {
     enum class InstalledAppsCollectionMode {
         ALL,
@@ -23,9 +25,11 @@ internal data class Config(
             accelerometerSignalEnabled = true,
             accelerometerTimeoutMs = 1500,
             accelerometerValuesCountLimit = 30,
+            accelerometerSamplingPeriodUs = 5000,
             gyroscopeSignalEnabled = true,
             gyroscopeTimeoutMs = 1500,
-            gyroscopeValuesCountLimit = 30
+            gyroscopeValuesCountLimit = 30,
+            gyroscopeSamplingPeriodUs = 5000,
         )
     }
 }
