@@ -28,7 +28,7 @@ internal class AevClientImpl(
         runInAnotherThread {
             runInParallel(
                 {
-                    logger.debug(this, "Start getting requestId.")
+                    logger.debug(this, "Start getting deviceId.")
                     callbackToSync<DeviceIdResult> { ossAgent.getDeviceId { emit(it) } }.also {
                         logger.debug(this, "Got deviceId: ${it.deviceId}")
                     }
@@ -49,24 +49,32 @@ internal class AevClientImpl(
                 val deviceIdResult = it.first.getOrNull()
                 val fingerprintResult = it.second.getOrNull()
                 val config = it.third.getOrNull()
-                if (deviceIdResult != null && fingerprintResult != null && config != null) {
-                    apiInteractor.getToken(
-                        signalProviderBuilder
-                            .withDeviceIdResult(deviceIdResult)
-                            .withFingerprintResult(fingerprintResult)
-                            .withConfig(config)
-                            .build()
-                    ).let { response ->
-                        if (response.requestId.isEmpty()) {
-                            val errorMessage =
-                                if (response.errorMessage.isNullOrEmpty()) "Unknown error. Check the API token or the endpoint URL and try again." else response.errorMessage
+                if (deviceIdResult == null || fingerprintResult == null || config == null) {
+                    val errorMessage = when {
+                        deviceIdResult == null -> "Internal error. Unable to get deviceId."
+                        fingerprintResult == null -> "Internal error. Unable to get fingerprint."
+                        else -> "Internal error. Unable to get config."
+                    }
+                    logger.debug(this, errorMessage)
+                    errorListener.invoke(errorMessage)
+                    return@runInAnotherThread
+                }
+                apiInteractor.getToken(
+                    signalProviderBuilder
+                        .withDeviceIdResult(deviceIdResult)
+                        .withFingerprintResult(fingerprintResult)
+                        .withConfig(config)
+                        .build()
+                ).let { response ->
+                    if (response.requestId.isEmpty()) {
+                        val errorMessage =
+                            if (response.errorMessage.isNullOrEmpty()) "Unknown error. Check the API token or the endpoint URL and try again." else response.errorMessage
 
-                            logger.debug(this, "The requestId hasn't been received. $errorMessage")
-                            errorListener.invoke(errorMessage)
-                        } else {
-                            logger.debug(this, "Got requestId: ${response.requestId}")
-                            listener.invoke(response.requestId)
-                        }
+                        logger.debug(this, "The requestId hasn't been received. $errorMessage")
+                        errorListener.invoke(errorMessage)
+                    } else {
+                        logger.debug(this, "Got requestId: ${response.requestId}")
+                        listener.invoke(response.requestId)
                     }
                 }
             }
