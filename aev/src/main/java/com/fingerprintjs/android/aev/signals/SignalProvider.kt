@@ -10,6 +10,7 @@ import com.fingerprintjs.android.aev.raw_signal_providers.package_manager.Packag
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserProfileInfo
 import com.fingerprintjs.android.aev.utils.concurrency.runInParallelVararg
+import com.fingerprintjs.android.aev.utils.concurrency.mapParallel
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
@@ -68,7 +69,7 @@ internal class SignalProviderImpl private constructor(
                     Config.InstalledAppsCollectionMode.NONE ->
                         null
                 } ?: emptyList())
-                    .map {
+                    .mapParallel {
                         InstalledAppInfo(
                             packageName = it.packageName,
                             signingCertificateInfo = packageManagerInfoProvider.getCertificateInfo(

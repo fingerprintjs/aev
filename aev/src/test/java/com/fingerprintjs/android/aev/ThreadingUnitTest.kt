@@ -1,10 +1,11 @@
 package com.fingerprintjs.android.aev
 
+import com.fingerprintjs.android.aev.utils.concurrency.mapParallel
 import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import org.junit.Test
 
 import org.junit.Assert.*
-import java.lang.Exception
+import kotlin.Exception
 
 internal class ThreadingUnitTest {
 
@@ -107,6 +108,39 @@ internal class ThreadingUnitTest {
         )
     }
 
+    @Test
+    fun mapParallelTest() {
+        fun testMapping(listSize: Int, threadCount: Int) {
+            val l = List(listSize) { index -> index }
+            val lMapped = l.map { it + 1 }
+            val lMappedP = l.mapParallel(threadCount = threadCount) { it + 1 }
+            assertTrue(lMapped == lMappedP)
+        }
+
+        testMapping(listSize = 10_000, threadCount = 1)
+        testMapping(listSize = 10_000, threadCount = 2)
+        testMapping(listSize = 10_000, threadCount = 3)
+        testMapping(listSize = 10_000, threadCount = 4)
+
+        testMapping(listSize = 0, threadCount = 1)
+        testMapping(listSize = 0, threadCount = 2)
+        testMapping(listSize = 1, threadCount = 1)
+        testMapping(listSize = 1, threadCount = 2)
+        testMapping(listSize = 2, threadCount = 1)
+        testMapping(listSize = 2, threadCount = 2)
+        testMapping(listSize = 2, threadCount = 3)
+
+        val resMapWithException = runCatching {
+            val l = List(1) { it }
+            l.mapParallel { if (it == 0) throw Exception() else it }
+        }
+        assertTrue(resMapWithException.isFailure)
+
+        val resIllegalArg = runCatching {
+            emptyList<Int>().mapParallel(threadCount = 0) { it }
+        }
+        assertTrue(resIllegalArg.exceptionOrNull() is IllegalArgumentException)
+    }
 
     companion object {
 
