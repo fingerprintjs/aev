@@ -100,7 +100,7 @@ internal class SensorsDataCollectorBuilder(
         return this
     }
 
-    fun build(): SensorsDataCollectorImpl {
+    fun build(): SensorsDataCollector {
         return SensorsDataCollectorImpl(
             sensorManager = sensorManager,
             config = config
