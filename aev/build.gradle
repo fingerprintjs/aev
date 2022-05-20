@@ -48,5 +48,6 @@ android {
 dependencies {
     testImplementation 'junit:junit:4.+'
     implementation "com.github.fingerprintjs:fingerprint-android:1.2"
+    implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.16")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

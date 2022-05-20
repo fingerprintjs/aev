@@ -15,6 +15,7 @@ import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
+import com.github.michaelbull.result.get
 
 
 internal interface SignalProvider {
@@ -43,7 +44,7 @@ internal class SignalProviderImpl private constructor(
             { userProfileSignal() },
             { appSignal() },
         )
-            .mapNotNull { result -> result.getOrNull() }
+            .mapNotNull { result -> result.get() }
     }
 
     override fun deviceIdSignal() = DeviceIdSignal(
