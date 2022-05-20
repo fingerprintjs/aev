@@ -8,6 +8,7 @@ import android.hardware.SensorManager
 import com.fingerprintjs.android.aev.config.Config
 import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
+import com.github.michaelbull.result.getOr
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -52,8 +53,8 @@ internal class SensorsDataCollectorImpl(
             },
         ).let { pair ->
             SensorsResult(
-                pair.first.getOrDefault(emptyList()),
-                pair.second.getOrDefault(emptyList())
+                pair.first.getOr(emptyList()),
+                pair.second.getOr(emptyList()),
             )
         }
     }, SensorsResult(emptyList(), emptyList()))

@@ -3,33 +3,7 @@ package com.fingerprintjs.android.aev.requests
 
 import com.fingerprintjs.android.aev.signals.SignalProvider
 import com.fingerprintjs.android.aev.transport.Request
-import com.fingerprintjs.android.aev.transport.RequestResultType
 import com.fingerprintjs.android.aev.transport.RequestType
-import com.fingerprintjs.android.aev.transport.TypedRequestResult
-import org.json.JSONObject
-
-
-internal data class InitVerifyResponse(
-    val requestId: String,
-    val errorMessage: String? = ""
-)
-
-internal class InitVerifyResult(
-    type: RequestResultType,
-    rawResponse: ByteArray?
-) : TypedRequestResult<InitVerifyResponse>(type, rawResponse) {
-    override fun typedResult(): InitVerifyResponse {
-        val errorResponse = InitVerifyResponse("", rawResponse?.toString(Charsets.UTF_8))
-        val body = rawResponse?.toString(Charsets.UTF_8) ?: return errorResponse
-        return try {
-            val jsonBody = JSONObject(body)
-            val requestId = jsonBody.getString(REQUEST_ID_KEY)
-            InitVerifyResponse(requestId)
-        } catch (exception: Exception) {
-            errorResponse
-        }
-    }
-}
 
 
 internal class InitVerifyRequest(

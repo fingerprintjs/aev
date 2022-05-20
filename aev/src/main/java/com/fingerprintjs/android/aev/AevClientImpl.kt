@@ -1,7 +1,9 @@
 package com.fingerprintjs.android.aev
 
 
+import com.fingerprintjs.android.aev.config.Config
 import com.fingerprintjs.android.aev.config.ConfigProvider
+import com.fingerprintjs.android.aev.errors.UnknownInternalError
 import com.fingerprintjs.android.aev.logger.Logger
 import com.fingerprintjs.android.aev.signals.SignalProviderImpl
 import com.fingerprintjs.android.aev.utils.concurrency.callbackToSync
@@ -10,6 +12,10 @@ import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.Fingerprinter
+import com.github.michaelbull.result.binding
+import com.github.michaelbull.result.flatMap
+import com.github.michaelbull.result.fold
+import com.github.michaelbull.result.mapError
 
 
 internal class AevClientImpl(
@@ -46,37 +52,32 @@ internal class AevClientImpl(
                     }
                 }
             ).let {
-                val deviceIdResult = it.first.getOrNull()
-                val fingerprintResult = it.second.getOrNull()
-                val config = it.third.getOrNull()
-                if (deviceIdResult == null || fingerprintResult == null || config == null) {
-                    val errorMessage = when {
-                        deviceIdResult == null -> "Internal error. Unable to get deviceId."
-                        fingerprintResult == null -> "Internal error. Unable to get fingerprint."
-                        else -> "Internal error. Unable to get config."
-                    }
-                    logger.debug(this, errorMessage)
-                    errorListener.invoke(errorMessage)
-                    return@runInAnotherThread
+                binding<Triple<DeviceIdResult, FingerprintResult, Config>, Throwable> {
+                    val deviceIdResult = it.first.bind()
+                    val fingerprintResult = it.second.bind()
+                    val config = it.third.bind()
+                    Triple(deviceIdResult, fingerprintResult, config)
                 }
-                apiInteractor.getToken(
-                    signalProviderBuilder
-                        .withDeviceIdResult(deviceIdResult)
-                        .withFingerprintResult(fingerprintResult)
-                        .withConfig(config)
-                        .build()
-                ).let { response ->
-                    if (response.requestId.isEmpty()) {
-                        val errorMessage =
-                            if (response.errorMessage.isNullOrEmpty()) "Unknown error. Check the API token or the endpoint URL and try again." else response.errorMessage
-
-                        logger.debug(this, "The requestId hasn't been received. $errorMessage")
-                        errorListener.invoke(errorMessage)
-                    } else {
-                        logger.debug(this, "Got requestId: ${response.requestId}")
-                        listener.invoke(response.requestId)
+                    .mapError(::UnknownInternalError)
+                    .flatMap { (deviceIdResult, fingerprintResult, config) ->
+                        apiInteractor.getRequestId(
+                            signalProviderBuilder
+                                .withDeviceIdResult(deviceIdResult)
+                                .withFingerprintResult(fingerprintResult)
+                                .withConfig(config)
+                                .build()
+                        )
                     }
-                }
+                    .fold(
+                        success = { response ->
+                            logger.debug(this, "Got requestId: ${response.requestId}")
+                            listener.invoke(response.requestId)
+                        },
+                        failure = { error ->
+                            logger.debug(this, error.description)
+                            listener.invoke(error.description)
+                        }
+                    )
             }
         }
     }
