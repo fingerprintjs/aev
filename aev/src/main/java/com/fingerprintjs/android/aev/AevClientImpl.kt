@@ -12,10 +12,10 @@ import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.Fingerprinter
-import com.github.michaelbull.result.binding
-import com.github.michaelbull.result.flatMap
-import com.github.michaelbull.result.fold
-import com.github.michaelbull.result.mapError
+import com.cloned.github.michaelbull.result.binding
+import com.cloned.github.michaelbull.result.flatMap
+import com.cloned.github.michaelbull.result.fold
+import com.cloned.github.michaelbull.result.mapError
 
 
 internal class AevClientImpl(

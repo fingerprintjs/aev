@@ -3,7 +3,7 @@ package com.fingerprintjs.android.aev.utils.concurrency
 import java.util.concurrent.Callable
 import java.util.concurrent.Executors
 import kotlin.math.min
-import com.github.michaelbull.result.*
+import com.cloned.github.michaelbull.result.*
 
 private val executor = Executors.newCachedThreadPool()
 

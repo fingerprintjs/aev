@@ -2,9 +2,9 @@ package com.fingerprintjs.android.aev.requests
 
 import com.fingerprintjs.android.aev.errors.ParseError
 import com.fingerprintjs.android.aev.transport.RawResponse
-import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.mapError
-import com.github.michaelbull.result.runCatching
+import com.cloned.github.michaelbull.result.Result
+import com.cloned.github.michaelbull.result.mapError
+import com.cloned.github.michaelbull.result.runCatching
 import org.json.JSONObject
 
 internal data class InitVerifyResponse(

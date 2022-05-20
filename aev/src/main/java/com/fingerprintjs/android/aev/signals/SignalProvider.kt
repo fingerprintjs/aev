@@ -15,7 +15,7 @@ import com.fingerprintjs.android.fingerprint.DeviceIdResult
 import com.fingerprintjs.android.fingerprint.FingerprintResult
 import com.fingerprintjs.android.fingerprint.signal_providers.Signal
 import com.fingerprintjs.android.fingerprint.signal_providers.installed_apps.InstalledAppsSignalGroupProvider
-import com.github.michaelbull.result.get
+import com.cloned.github.michaelbull.result.get
 
 
 internal interface SignalProvider {

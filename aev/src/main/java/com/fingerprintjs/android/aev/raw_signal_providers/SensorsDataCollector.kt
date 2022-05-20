@@ -8,7 +8,7 @@ import android.hardware.SensorManager
 import com.fingerprintjs.android.aev.config.Config
 import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import com.fingerprintjs.android.fingerprint.tools.executeSafe
-import com.github.michaelbull.result.getOr
+import com.cloned.github.michaelbull.result.getOr
 import java.util.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit

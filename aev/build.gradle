@@ -40,6 +40,9 @@ android {
         }
     }
 
+    kotlinOptions {
+        freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
+    }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
@@ -51,6 +54,5 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
 dependencies {
     testImplementation 'junit:junit:4.+'
     implementation "com.github.fingerprintjs:fingerprint-android:1.2"
-    implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.16")
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
