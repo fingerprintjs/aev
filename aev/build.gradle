@@ -40,8 +40,11 @@ android {
         }
     }
 
-    kotlinOptions {
-        freeCompilerArgs += '-Xexplicit-api=warning'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    if (!it.name.contains("Test")) {
+        kotlinOptions.freeCompilerArgs += "-Xexplicit-api=warning"
     }
 }
 
