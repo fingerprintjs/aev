@@ -4,7 +4,7 @@ import com.fingerprintjs.android.aev.utils.concurrency.mapParallel
 import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
 import com.fingerprintjs.android.aev.utils.result.isError
 import com.fingerprintjs.android.aev.utils.result.isOk
-import com.github.michaelbull.result.get
+import com.cloned.github.michaelbull.result.get
 import org.junit.Test
 
 import org.junit.Assert.*

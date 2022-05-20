@@ -3,10 +3,10 @@ package com.fingerprintjs.android.aev.transport
 import com.fingerprintjs.android.aev.errors.*
 import com.fingerprintjs.android.aev.logger.Logger
 import com.fingerprintjs.android.aev.utils.result.flattenMappingError
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.runCatching
+import com.cloned.github.michaelbull.result.Err
+import com.cloned.github.michaelbull.result.Ok
+import com.cloned.github.michaelbull.result.Result
+import com.cloned.github.michaelbull.result.runCatching
 import org.json.JSONObject
 import java.io.IOException
 import java.io.OutputStreamWriter

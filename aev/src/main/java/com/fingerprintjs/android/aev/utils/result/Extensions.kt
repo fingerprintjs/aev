@@ -1,10 +1,10 @@
 package com.fingerprintjs.android.aev.utils.result
 
 import com.fingerprintjs.android.aev.errors.Error
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.flatMap
-import com.github.michaelbull.result.mapError
+import com.cloned.github.michaelbull.result.Ok
+import com.cloned.github.michaelbull.result.Result
+import com.cloned.github.michaelbull.result.flatMap
+import com.cloned.github.michaelbull.result.mapError
 
 internal fun <V, E> Result<Result<V, E>, E>.flatten(): Result<V, E> {
     return flatMap { it }

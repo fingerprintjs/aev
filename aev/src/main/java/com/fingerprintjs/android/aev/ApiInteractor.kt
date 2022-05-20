@@ -7,8 +7,8 @@ import com.fingerprintjs.android.aev.requests.InitVerifyRequest
 import com.fingerprintjs.android.aev.requests.InitVerifyResponse
 import com.fingerprintjs.android.aev.signals.SignalProvider
 import com.fingerprintjs.android.aev.transport.HttpClient
-import com.github.michaelbull.result.Result
-import com.github.michaelbull.result.flatMap
+import com.cloned.github.michaelbull.result.Result
+import com.cloned.github.michaelbull.result.flatMap
 
 
 internal interface ApiInteractor {
