@@ -2,6 +2,9 @@ package com.fingerprintjs.android.aev
 
 import com.fingerprintjs.android.aev.utils.concurrency.mapParallel
 import com.fingerprintjs.android.aev.utils.concurrency.runInParallel
+import com.fingerprintjs.android.aev.utils.result.isError
+import com.fingerprintjs.android.aev.utils.result.isOk
+import com.github.michaelbull.result.get
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -31,8 +34,8 @@ internal class ThreadingUnitTest {
             { Thread.sleep(THREAD_SLEEP_MS) },
         )
 
-        assertTrue(results.first.isFailure)
-        assertTrue(results.second.isSuccess)
+        assertTrue(results.first.isError)
+        assertTrue(results.second.isOk)
     }
 
     @Test
@@ -59,12 +62,12 @@ internal class ThreadingUnitTest {
 
         val resultsFlattened = results
             .run { arrayOf(first, second) }
-            .mapNotNull { it.getOrNull() }
+            .mapNotNull { it.get() }
             .map { listOf(it.first, it.second, it.third) }
             .flatten()
 
         assertTrue(resultsFlattened.size == tasksCount)
-        assertTrue(resultsFlattened.all { it.isSuccess })
+        assertTrue(resultsFlattened.all { it.isOk })
         assertTrue((System.currentTimeMillis() - startTime) < THREAD_SLEEP_MS + EPSILON_MS)
     }
 
