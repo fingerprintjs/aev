@@ -10,7 +10,7 @@ import org.junit.Test
 import org.junit.Assert.*
 import kotlin.Exception
 
-internal class ThreadingUnitTest {
+class ThreadingUnitTest {
 
     @Test
     fun executesInParallel() {

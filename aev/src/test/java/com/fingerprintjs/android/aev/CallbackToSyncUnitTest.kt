@@ -6,7 +6,7 @@ import org.junit.Test
 import java.util.concurrent.Executors
 
 
-internal class CallbackToSyncUnitTest {
+class CallbackToSyncUnitTest {
 
     private val executor = Executors.newSingleThreadExecutor()
     private class TestException : Exception()
