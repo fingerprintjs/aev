@@ -45,7 +45,7 @@ internal class UnknownInternalError(val t: Throwable) : InternalError, HttpClien
 internal object UnauthorizedError : ApiError
 internal class UnknownApiError(
     val errorCode: Int,
-    val body: String
+    val body: String // UTF-8 decoded
 ) : ApiError, HttpClientError {
     override val description: String
         get() = getDescription("Error code: $errorCode. Body: $body")
@@ -58,7 +58,7 @@ internal class ParseError(
         get() = getDescription("Could not parse text to ${toClass.canonicalName}. Text: $fromText")
 }
 
-internal object TimeoutError : Error, NetworkError, HttpClientError
+internal object TimeoutError : NetworkError, HttpClientError
 internal class UnknownNetworkError(val cause: IOException) : NetworkError, HttpClientError {
     override val description: String
         get() = getDescription(cause.toString())

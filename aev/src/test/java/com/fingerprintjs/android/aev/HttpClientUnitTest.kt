@@ -78,7 +78,7 @@ class HttpClientUnitTest {
 
 
     @Test
-    fun unknownHost() {
+    fun requestToUnknownHost() {
         val url = "http://blablabla123.com/"
 
         val request = getDummyRequest(url)
