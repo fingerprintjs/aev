@@ -7,7 +7,7 @@ import com.fingerprintjs.android.aev.errors.NetworkError
 
 class ErrorsUnitTest {
 
-    // We want the build to fail if we do not provide an exhausting set of interfaces for our errors
+    // We want the build to fail if we do not provide an exhausting set of public interfaces for our errors
     @Suppress("UNUSED_VARIABLE")
     fun publicErrorsAreExhausting(e: Error) {
         val v = when (e) {
