@@ -1,19 +1,18 @@
 package com.fingerprintjs.android.aev.transport
 
-import com.fingerprintjs.android.aev.errors.*
-import com.fingerprintjs.android.aev.logger.Logger
-import com.fingerprintjs.android.aev.utils.result.flattenMappingError
 import com.cloned.github.michaelbull.result.Err
 import com.cloned.github.michaelbull.result.Ok
 import com.cloned.github.michaelbull.result.Result
 import com.cloned.github.michaelbull.result.runCatching
+import com.fingerprintjs.android.aev.errors.*
+import com.fingerprintjs.android.aev.logger.Logger
+import com.fingerprintjs.android.aev.utils.result.flattenMappingError
 import org.json.JSONObject
 import java.io.IOException
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
 import java.net.URL
-import javax.net.ssl.HttpsURLConnection
 
 
 internal interface HttpClient {
@@ -34,7 +33,7 @@ internal class NativeHttpClient(
 
             val mURL = URL(request.url)
 
-            with(mURL.openConnection() as HttpsURLConnection) {
+            with(mURL.openConnection() as HttpURLConnection) {
                 request.headers.keys.forEach {
                     setRequestProperty(it, request.headers[it])
                 }
