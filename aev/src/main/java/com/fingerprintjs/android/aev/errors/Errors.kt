@@ -30,8 +30,8 @@ public sealed interface InternalError : Error
 
 //region Interfaces for gathering different errors for domain-specific purposes
 
-internal sealed interface ApiInteractorGetTokenError: Error
-internal sealed interface HttpClientError: Error, ApiInteractorGetTokenError
+internal sealed interface ApiInteractorInitVerifyError: Error
+internal sealed interface HttpClientError: Error, ApiInteractorInitVerifyError
 
 //endregion
 
@@ -53,7 +53,7 @@ internal class UnknownApiError(
 internal class ParseError(
     val fromText: String,
     val toClass: Class<*>
-): ApiError, ApiInteractorGetTokenError {
+): ApiError, ApiInteractorInitVerifyError {
     override val description: String
         get() = getDescription("Could not parse text to ${toClass.canonicalName}. Text: $fromText")
 }

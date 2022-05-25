@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.aev
 
 
-import com.fingerprintjs.android.aev.errors.ApiInteractorGetTokenError
+import com.fingerprintjs.android.aev.errors.ApiInteractorInitVerifyError
 import com.fingerprintjs.android.aev.logger.Logger
 import com.fingerprintjs.android.aev.requests.InitVerifyRequest
 import com.fingerprintjs.android.aev.requests.InitVerifyResponse
@@ -14,7 +14,7 @@ import com.cloned.github.michaelbull.result.flatMap
 internal interface ApiInteractor {
     fun getRequestId(
         signalProvider: SignalProvider
-    ): Result<InitVerifyResponse, ApiInteractorGetTokenError>
+    ): Result<InitVerifyResponse, ApiInteractorInitVerifyError>
 }
 
 internal class ApiInteractorImpl(
@@ -27,14 +27,14 @@ internal class ApiInteractorImpl(
 
     override fun getRequestId(
         signalProvider: SignalProvider
-    ): Result<InitVerifyResponse, ApiInteractorGetTokenError> {
+    ): Result<InitVerifyResponse, ApiInteractorInitVerifyError> {
 
-        val fetchTokenRequest = InitVerifyRequest(
+        val request = InitVerifyRequest(
             endpointURL, appId, authorizationToken, signalProvider
         )
 
         val response = httpClient.performRequest(
-            fetchTokenRequest
+            request
         )
 
         return response.flatMap { InitVerifyResponse.from(it) }
