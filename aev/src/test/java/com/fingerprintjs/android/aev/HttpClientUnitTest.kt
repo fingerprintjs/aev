@@ -20,7 +20,12 @@ import org.junit.Test
 class HttpClientUnitTest {
 
     private val webServer = MockWebServer()
-    private val client = NativeHttpClient(logger = getDummyLogger())
+    private val client = NativeHttpClient(
+        logger = getDummyLogger(),
+        sslPinningConfig = NativeHttpClient.SSLPinningConfig(
+            pinnedCerts = emptyList()
+        )
+    )
 
     @Before
     fun setUp() {

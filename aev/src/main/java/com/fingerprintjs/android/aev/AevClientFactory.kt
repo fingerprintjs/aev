@@ -33,6 +33,10 @@ public object AevClientFactory {
     private var consoleLogger = ConsoleLogger()
     private var outerLoggers: List<Logger>? = null
 
+    private val configProvider: ConfigProvider by lazy {
+        ConfigProviderImpl()
+    }
+
 
     @JvmStatic
     @JvmOverloads
@@ -55,7 +59,7 @@ public object AevClientFactory {
             ),
             getSignalProviderBuilder(applicationContext),
             logger,
-            getConfigProvider()
+            configProvider,
         )
 
         AevClientFactory.instance = instance
@@ -74,7 +78,8 @@ public object AevClientFactory {
         publicApiKey
     )
 
-    private fun getHttpClient() = NativeHttpClient(logger)
+    private fun getHttpClient() =
+        NativeHttpClient(logger, configProvider.getConfig().sslPinningConfig)
 
     private fun getSignalProviderBuilder(context: Context) =
         SignalProviderImpl.SignalProviderBuilder(
@@ -131,9 +136,6 @@ public object AevClientFactory {
             UserManagerInfoProviderImpl(it)
         }
     }
-
-    private fun getConfigProvider(): ConfigProvider =
-        ConfigProviderImpl()
 }
 
 private const val DEFAULT_ENDPOINT_URL = "https://aev.fpapi.io"
