@@ -69,7 +69,7 @@ internal class UnknownNetworkError(val cause: IOException) : NetworkError, HttpC
 //region Helper functions
 
 private fun Error.getDefaultDescription(): String =
-    "Error ${this.javaClass.canonicalName} occurred."
+    "Error ${this.javaClass.simpleName} occurred."
 
 private fun Error.getDescription(internalDescription: String): String =
     getDefaultDescription() + " Description: $internalDescription"
