@@ -59,6 +59,7 @@ internal class ParseError(
 }
 
 internal object TimeoutError : NetworkError, HttpClientError
+internal object SSLPinningError: NetworkError, HttpClientError
 internal class UnknownNetworkError(val cause: IOException) : NetworkError, HttpClientError {
     override val description: String
         get() = getDescription(cause.toString())

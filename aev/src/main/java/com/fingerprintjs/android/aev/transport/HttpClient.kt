@@ -1,9 +1,7 @@
 package com.fingerprintjs.android.aev.transport
 
-import com.cloned.github.michaelbull.result.Err
-import com.cloned.github.michaelbull.result.Ok
-import com.cloned.github.michaelbull.result.Result
-import com.cloned.github.michaelbull.result.runCatching
+import android.util.Base64
+import com.cloned.github.michaelbull.result.*
 import com.fingerprintjs.android.aev.errors.*
 import com.fingerprintjs.android.aev.logger.Logger
 import com.fingerprintjs.android.aev.utils.result.flattenMappingError
@@ -13,6 +11,10 @@ import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
 import java.net.URL
+import java.security.MessageDigest
+import java.security.PublicKey
+import java.security.cert.Certificate
+import javax.net.ssl.HttpsURLConnection
 
 
 internal interface HttpClient {
@@ -22,7 +24,8 @@ internal interface HttpClient {
 }
 
 internal class NativeHttpClient(
-    private val logger: Logger
+    private val logger: Logger,
+    private val sslPinningConfig: SSLPinningConfig,
 ) : HttpClient {
 
     // TODO: add logic for GET request
@@ -33,13 +36,16 @@ internal class NativeHttpClient(
 
             val mURL = URL(request.url)
 
-            with(mURL.openConnection() as HttpURLConnection) {
+            with(mURL.openConnection() as HttpsURLConnection) {
                 request.headers.keys.forEach {
                     setRequestProperty(it, request.headers[it])
                 }
                 doOutput = true
                 connect()
-                runCatching {
+                runCatching afterConnected@ {
+                    if (!checkCertificates(this.serverCertificates)) {
+                        return@afterConnected Err(SSLPinningError)
+                    }
                     val wr = OutputStreamWriter(outputStream)
                     wr.write(reqParam)
                     wr.flush()
@@ -79,5 +85,36 @@ internal class NativeHttpClient(
                 else -> UnknownInternalError(it)
             }
         }
+    }
+
+    private fun checkCertificates(certificates: Array<Certificate>): Boolean = runCatching {
+        sslPinningConfig.pinnedCerts.forEach { pinnedCertInfo ->
+            val certForCheck = certificates[pinnedCertInfo.positionInChain]
+            if (!checkPublicKey(certForCheck.publicKey, pinnedCertInfo.subjPubKeySha256Base64)) {
+                return@runCatching false
+            }
+        }
+        true
+    }.getOr(false)
+
+    private fun checkPublicKey(
+        pubKey: PublicKey,
+        expectedPubKeySha256Base64: String
+    ): Boolean = runCatching {
+        val pubKeyEncoded = pubKey.encoded
+        val pubKeySha256 = MessageDigest.getInstance("SHA-256").digest(pubKeyEncoded)
+        val pubKeySha256Base64 =
+            Base64.encodeToString(pubKeySha256, Base64.DEFAULT or Base64.NO_WRAP)
+        pubKeySha256Base64 == expectedPubKeySha256Base64
+    }.getOr(false)
+
+
+    data class SSLPinningConfig(
+        val pinnedCerts: List<PinnedCertInfo>
+    ) {
+        data class PinnedCertInfo(
+            val positionInChain: Int,
+            val subjPubKeySha256Base64: String,
+        )
     }
 }
