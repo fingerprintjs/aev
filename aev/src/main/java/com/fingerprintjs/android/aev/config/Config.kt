@@ -1,5 +1,6 @@
 package com.fingerprintjs.android.aev.config
 
+import com.fingerprintjs.android.aev.BuildConfig
 import com.fingerprintjs.android.aev.transport.NativeHttpClient
 
 internal data class Config(
@@ -35,12 +36,14 @@ internal data class Config(
             gyroscopeValuesCountLimit = 30,
             gyroscopeSamplingPeriodUs = 5000,
             sslPinningConfig = NativeHttpClient.SSLPinningConfig(
-                pinnedCerts = listOf(
-                    NativeHttpClient.SSLPinningConfig.PinnedCertInfo(
-                        positionInChain = 2,
-                        subjPubKeySha256Base64 = "++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="
+                pinnedCerts = if (!BuildConfig.DEBUG_CONST)
+                    listOf(
+                        NativeHttpClient.SSLPinningConfig.PinnedCertInfo(
+                            positionInChain = 2,
+                            subjPubKeySha256Base64 = "++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="
+                        )
                     )
-                )
+                else emptyList()
             )
         )
     }
