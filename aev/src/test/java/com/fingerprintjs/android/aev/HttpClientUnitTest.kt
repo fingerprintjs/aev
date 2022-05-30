@@ -10,6 +10,7 @@ import com.fingerprintjs.android.aev.transport.Request
 import com.fingerprintjs.android.aev.transport.RequestType
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.tls.internal.TlsUtil
 import org.json.JSONObject
 import org.junit.After
 import org.junit.Assert.assertTrue
@@ -20,16 +21,19 @@ import org.junit.Test
 class HttpClientUnitTest {
 
     private val webServer = MockWebServer()
-    private val client = NativeHttpClient(
+    private val localHostSslSocketFactory = TlsUtil.localhost().sslSocketFactory()
+    private val client = NativeHttpClient.create(
         logger = getDummyLogger(),
         sslPinningConfig = NativeHttpClient.SSLPinningConfig(
             pinnedCerts = emptyList()
-        )
+        ),
+        sslSocketFactory = localHostSslSocketFactory
     )
 
     @Before
     fun setUp() {
         webServer.start()
+        webServer.useHttps(localHostSslSocketFactory, false)
     }
 
     @After
@@ -84,7 +88,7 @@ class HttpClientUnitTest {
 
     @Test
     fun requestToUnknownHost() {
-        val url = "http://blablabla123.com/"
+        val url = "https://blablabla123.com/"
 
         val request = getDummyRequest(url)
 

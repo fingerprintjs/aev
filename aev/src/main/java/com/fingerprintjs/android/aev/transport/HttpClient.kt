@@ -2,6 +2,7 @@ package com.fingerprintjs.android.aev.transport
 
 import android.util.Base64
 import com.cloned.github.michaelbull.result.*
+import com.fingerprintjs.android.aev.annotations.VisibleForTesting
 import com.fingerprintjs.android.aev.errors.*
 import com.fingerprintjs.android.aev.logger.Logger
 import com.fingerprintjs.android.aev.utils.result.flattenMappingError
@@ -15,6 +16,7 @@ import java.security.MessageDigest
 import java.security.PublicKey
 import java.security.cert.Certificate
 import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLSocketFactory
 
 
 internal interface HttpClient {
@@ -23,9 +25,10 @@ internal interface HttpClient {
     ): Result<RawResponse, HttpClientError>
 }
 
-internal class NativeHttpClient(
+internal class NativeHttpClient private constructor(
     private val logger: Logger,
     private val sslPinningConfig: SSLPinningConfig,
+    private val sslSocketFactory: SSLSocketFactory?
 ) : HttpClient {
 
     // TODO: add logic for GET request
@@ -37,6 +40,7 @@ internal class NativeHttpClient(
             val mURL = URL(request.url)
 
             with(mURL.openConnection() as HttpsURLConnection) {
+                this@NativeHttpClient.sslSocketFactory?.let { this.sslSocketFactory = it }
                 request.headers.keys.forEach {
                     setRequestProperty(it, request.headers[it])
                 }
@@ -116,5 +120,20 @@ internal class NativeHttpClient(
             val positionInChain: Int,
             val subjPubKeySha256Base64: String,
         )
+    }
+
+    companion object {
+
+        fun create(
+            logger: Logger,
+            sslPinningConfig: SSLPinningConfig,
+        ): NativeHttpClient = NativeHttpClient(logger, sslPinningConfig, null)
+
+        @VisibleForTesting(otherwise = VisibleForTesting.Otherwise.NONE)
+        fun create(
+            logger: Logger,
+            sslPinningConfig: SSLPinningConfig,
+            sslSocketFactory: SSLSocketFactory?,
+        ): NativeHttpClient = NativeHttpClient(logger, sslPinningConfig, sslSocketFactory)
     }
 }

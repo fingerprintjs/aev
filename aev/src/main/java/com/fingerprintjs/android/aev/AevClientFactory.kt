@@ -79,7 +79,7 @@ public object AevClientFactory {
     )
 
     private fun getHttpClient() =
-        NativeHttpClient(logger, configProvider.getConfig().sslPinningConfig)
+        NativeHttpClient.create(logger, configProvider.getConfig().sslPinningConfig)
 
     private fun getSignalProviderBuilder(context: Context) =
         SignalProviderImpl.SignalProviderBuilder(
