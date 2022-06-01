@@ -1,7 +1,7 @@
 package com.fingerprintjs.android.aev.config
 
 import com.fingerprintjs.android.aev.BuildConfig
-import com.fingerprintjs.android.aev.transport.NativeHttpClient
+import com.fingerprintjs.android.aev.transport.HttpClientImpl
 
 internal data class Config(
     val installedAppsCollectionMode: InstalledAppsCollectionMode,
@@ -15,7 +15,7 @@ internal data class Config(
     val gyroscopeValuesCountLimit: Int,
     val gyroscopeSamplingPeriodUs: Int,
 
-    val sslPinningConfig: NativeHttpClient.SSLPinningConfig
+    val sslPinningConfig: HttpClientImpl.SSLPinningConfig
 ) {
     enum class InstalledAppsCollectionMode {
         ALL,
@@ -35,10 +35,10 @@ internal data class Config(
             gyroscopeTimeoutMs = 1500,
             gyroscopeValuesCountLimit = 30,
             gyroscopeSamplingPeriodUs = 5000,
-            sslPinningConfig = NativeHttpClient.SSLPinningConfig(
+            sslPinningConfig = HttpClientImpl.SSLPinningConfig(
                 pinnedCerts = if (!BuildConfig.DEBUG_CONST)
                     listOf(
-                        NativeHttpClient.SSLPinningConfig.PinnedCertInfo(
+                        HttpClientImpl.SSLPinningConfig.PinnedCertInfo(
                             positionInChain = 2,
                             subjPubKeySha256Base64 = "++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="
                         )
