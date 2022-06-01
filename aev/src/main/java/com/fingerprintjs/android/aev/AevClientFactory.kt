@@ -14,7 +14,7 @@ import com.fingerprintjs.android.aev.raw_signal_providers.package_manager.Packag
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserManagerInfoProvider
 import com.fingerprintjs.android.aev.raw_signal_providers.user_manager.UserManagerInfoProviderImpl
 import com.fingerprintjs.android.aev.signals.SignalProviderImpl
-import com.fingerprintjs.android.aev.transport.NativeHttpClient
+import com.fingerprintjs.android.aev.transport.HttpClientImpl
 import com.fingerprintjs.android.fingerprint.Configuration
 import com.fingerprintjs.android.fingerprint.Fingerprinter
 import com.fingerprintjs.android.fingerprint.FingerprinterFactory
@@ -79,7 +79,7 @@ public object AevClientFactory {
     )
 
     private fun getHttpClient() =
-        NativeHttpClient.create(logger, configProvider.getConfig().sslPinningConfig)
+        HttpClientImpl.create(logger, configProvider.getConfig().sslPinningConfig)
 
     private fun getSignalProviderBuilder(context: Context) =
         SignalProviderImpl.SignalProviderBuilder(

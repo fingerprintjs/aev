@@ -5,7 +5,7 @@ import com.cloned.github.michaelbull.result.getError
 import com.fingerprintjs.android.aev.errors.UnknownApiError
 import com.fingerprintjs.android.aev.errors.UnknownNetworkError
 import com.fingerprintjs.android.aev.logger.Logger
-import com.fingerprintjs.android.aev.transport.NativeHttpClient
+import com.fingerprintjs.android.aev.transport.HttpClientImpl
 import com.fingerprintjs.android.aev.transport.Request
 import com.fingerprintjs.android.aev.transport.RequestType
 import okhttp3.mockwebserver.MockResponse
@@ -22,9 +22,9 @@ class HttpClientUnitTest {
 
     private val webServer = MockWebServer()
     private val localHostSslSocketFactory = TlsUtil.localhost().sslSocketFactory()
-    private val client = NativeHttpClient.create(
+    private val client = HttpClientImpl.create(
         logger = getDummyLogger(),
-        sslPinningConfig = NativeHttpClient.SSLPinningConfig(
+        sslPinningConfig = HttpClientImpl.SSLPinningConfig(
             pinnedCerts = emptyList()
         ),
         sslSocketFactory = localHostSslSocketFactory

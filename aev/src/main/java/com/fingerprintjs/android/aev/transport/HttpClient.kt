@@ -25,7 +25,7 @@ internal interface HttpClient {
     ): Result<RawResponse, HttpClientError>
 }
 
-internal class NativeHttpClient private constructor(
+internal class HttpClientImpl private constructor(
     private val logger: Logger,
     private val sslPinningConfig: SSLPinningConfig,
     private val sslSocketFactory: SSLSocketFactory?
@@ -40,7 +40,7 @@ internal class NativeHttpClient private constructor(
             val mURL = URL(request.url)
 
             with(mURL.openConnection() as HttpsURLConnection) {
-                this@NativeHttpClient.sslSocketFactory?.let { this.sslSocketFactory = it }
+                this@HttpClientImpl.sslSocketFactory?.let { this.sslSocketFactory = it }
                 request.headers.keys.forEach {
                     setRequestProperty(it, request.headers[it])
                 }
@@ -127,13 +127,13 @@ internal class NativeHttpClient private constructor(
         fun create(
             logger: Logger,
             sslPinningConfig: SSLPinningConfig,
-        ): NativeHttpClient = NativeHttpClient(logger, sslPinningConfig, null)
+        ): HttpClientImpl = HttpClientImpl(logger, sslPinningConfig, null)
 
         @VisibleForTesting(otherwise = VisibleForTesting.Otherwise.NONE)
         fun create(
             logger: Logger,
             sslPinningConfig: SSLPinningConfig,
             sslSocketFactory: SSLSocketFactory?,
-        ): NativeHttpClient = NativeHttpClient(logger, sslPinningConfig, sslSocketFactory)
+        ): HttpClientImpl = HttpClientImpl(logger, sslPinningConfig, sslSocketFactory)
     }
 }
