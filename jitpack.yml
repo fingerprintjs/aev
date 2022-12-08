@@ -1,6 +1,6 @@
 jdk:
   - openjdk11
 install:
-      - ./gradlew clean
-      - ./gradlew aev:assembleRelease
-      - ./gradlew aev:publishMavenJavaPublicationToMavenLocal
+  - ./gradlew clean
+  - ./gradlew aev:assembleRelease
+  - ./gradlew aev:publishMavenJavaPublicationToMavenLocal
