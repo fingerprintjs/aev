@@ -1,6 +1,7 @@
 jdk:
   - openjdk11
 install:
+  - chmod +x ./gradlew
   - ./gradlew clean
   - ./gradlew aev:assembleRelease
   - ./gradlew aev:publishMavenJavaPublicationToMavenLocal
