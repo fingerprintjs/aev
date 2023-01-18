@@ -79,7 +79,7 @@ If your application is written in Java, add `kotlin-stdlib` dependency first (it
 
 ```gradle
 dependencies {
-  implementation "com.github.fingerprintjs:fingerprint-android:1.2"
+  implementation "com.github.fingerprintjs:fingerprint-android:2.0.0"
   implementation "com.github.fingerprintjs:aev:1.1.0"
   // Add this line only if you use this library with Java
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
