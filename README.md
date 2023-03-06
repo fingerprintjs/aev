@@ -87,13 +87,6 @@ dependencies {
 
 ```
 
-### Get an API keys
-
-A **free API keys** are required to connect to our Application Environment Verification API. Use the Public one on the client side, and the Secret one on the server side.
-
-_To get your API keys, please ping us on [Discord](https://discord.com/invite/P6Ya76HkbF) or email us at android@fingerprintjs.com_
-_(just type `API keys` in the email subject, no need to compose a body)_
-
 ### Get the request ID
 
 Kotlin
