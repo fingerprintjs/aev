@@ -10,152 +10,16 @@
     <img src="https://img.shields.io/discord/852099967190433792?style=logo&label=Discord&logo=Discord&logoColor=white" alt="Discord server">
   </a>
 </p>                                                                                                                                           
-<p align="center">
-    <a href="https://android-arsenal.com/api?level=21">
-    <img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg" alt="Android minAPI status">
-  </a>
-     <a href="https://jitpack.io/#fingerprintjs/aev">
-    <img src="https://jitpack.io/v/fingerprintjs/aev.svg" alt="Latest release">
-  </a>
-</p>
-
-<p align="center">
- 	<a href="https://play.google.com/store/apps/details?id=com.fingerprintjs.android.aev.demo">
- 		<img alt='Get it on Google Play' src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width=240px/>
- 	</a>
-</p>
 
                                                                                                                                           
-# Android Application Environment Verification API
+# Android Application Environment Verification API (AEV).
 
-Android library to verify application environments. 
+## This repository is archived and no longer maintained. 
 
-Make sure every API call from a device is safe and trusted. 
+## All AEV features were merged into Fingerprint Pro for Android. To use AEV, you need to use Fingerprint Pro for Android now.
 
-Instantly detect rooted devices or emulators. 
+### To enable AEV features on your account, please contact support@fingerprint.com
 
-The library sends a set of signals to the server.
-
-The server verifies safety of the application environment.
-
-
-## Table of Contents
-1. [Quick start](#quick-start)
-2. [API keys](#get-an-api-keys)
-3. [Demo App](#demo-app)
-
-
-
-## Quick start
-
-### Add the repository to the build.gradle.
-
-If your version of Gradle is earlier than 7, add these lines to your `build.gradle`.
-
-
-```gradle
-allprojects {	
-  repositories {
-  ...
-  maven { url 'https://jitpack.io' }	
-}}
-```
-
-If your version of Gradle is 7 or newer, add these lines to your `settings.gradle`.
-```gradle
-repositories {
-  ...
-  maven { url "https://jitpack.io" }
-}
-```
-
-### Add dependencies
-
-This library depends on [kotlin-stdlib](https://kotlinlang.org/api/latest/jvm/stdlib/), [fingerprint-android](https://github.com/fingerprintjs/fingerprint-android)
- 
-Add these lines to `build.gradle` of a module.
-
-If your application is written in Java, add `kotlin-stdlib` dependency first (it's lightweight and has excellent backward and forward compatibility).
-
-```gradle
-dependencies {
-  implementation "com.github.fingerprintjs:fingerprint-android:2.0.0"
-  implementation "com.github.fingerprintjs:aev:1.1.0"
-  // Add this line only if you use this library with Java
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-}
-
-```
-
-### Get the request ID
-
-Kotlin
-
-```kotlin
-
-// Initialization
-val aevClient = AevClientFactory.getInstance(
-    applicationContext,
-    YOUR_PUBLIC_API_KEY
-)
-
-
-// Get the RequestID
-aevClient.getRequestId(
-                listener = { requestId ->
-                    // Handle the string with requestId
-                },
-                errorListener = { error ->
-                    // Handle the error string
-                })
-
-```
-
-See the client [API reference](docs/client_api.md)
-
-### Get the results of verification by the request ID
-
-#### Request
-```sh
-curl https://aev.fpapi.io/api/v1/verify \
-  -H 'Content-Type: application/json' \
-  -d '{"secretKey": "YOUR_PRIVATE_API_KEY", "requestId": "YOUR_REQUEST_ID"}'
-```
-
-#### Response
-```json
-{
-  "deviceId": "1xu9l9Ure84KB8CnEbABmteHhhc",
-  "results": {
-    "rootManagementAppsDetected": true,
-    "emulatorDetected": true
-  }
-}
-```
-
-See the server [API reference](docs/server_api.md)
-
-## Demo app
-
-Try all the features in the [Demo App](https://github.com/fingerprintjs/aev/releases).
-
-<p align="center">
-    <img src="resources/demoapp.png" alt="PlaygroundApp" width="260px" />
-</p>
-
-
-## Android API support
-
-Android application protection library  supports API versions from 21 (Android 5.0) and higher.
-
-## Privacy notes
-
-When publishing to the Play Market make sure you've noted the following information about collected data:
-| Data Types | Collected | Shared | Processed ephemerally | Required or Optional | Purposes |
-| --- | --- | --- | --- | --- | --- |
-| Installed applications | Yes | No | No | Required | Fraud Prevention |
-| User IDs | Yes | No | No | Required | Fraud Prevention |
-| Device or other IDs | Yes | No | No | Required | Fraud Prevention |
 
 
 ## License
